@@ -1,0 +1,519 @@
+/* @file Jason Stys: responsive, high-contrast operator workspace. Selectors/locations: docs/SOURCE_MAP.md. */
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #e9f1f4;
+  background: #101a22;
+  font-synthesis: none;
+  color-scheme: dark;
+  --muted: #acbec9;
+  --line: #344750;
+  --accent: #a1ead3;
+  --ink: #111e25;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+a {
+  color: var(--accent);
+}
+button,
+input {
+  font: inherit;
+}
+button,
+a,
+input {
+  touch-action: manipulation;
+}
+button {
+  border: 1px solid #537079;
+  background: #20323d;
+  color: #edf5f5;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  min-height: 44px;
+}
+button:hover {
+  border-color: var(--accent);
+}
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.primary {
+  background: var(--accent);
+  color: var(--ink);
+  border-color: var(--accent);
+  font-weight: 750;
+}
+input {
+  background: #13232e;
+  color: #f4f7fa;
+  border: 1px solid #59717e;
+  border-radius: 4px;
+  padding: 0.6rem;
+  min-width: 0;
+  width: 100%;
+}
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+input[type="range"] {
+  padding: 0;
+}
+label {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.65rem 0;
+  font-size: 0.85rem;
+  color: #cfdee5;
+}
+header {
+  padding: 1rem 4%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  font-size: 1.8rem;
+  font-weight: 850;
+  letter-spacing: -0.12rem;
+  color: #f2f8f9;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.brand span {
+  color: var(--accent);
+}
+.brand small {
+  font-size: 0.63rem;
+  letter-spacing: 0.12rem;
+  font-weight: 600;
+  margin-left: 1rem;
+  max-width: 140px;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.pill {
+  font-size: 0.68rem;
+  letter-spacing: 0.1rem;
+  border: 1px solid #7e978b;
+  color: #bbedd6;
+  padding: 0.45rem;
+  border-radius: 4px;
+}
+main {
+  max-width: 1640px;
+  margin: auto;
+  padding: 0 4% 2rem;
+}
+.intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2.5rem 0 1rem;
+}
+.eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.17rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+h1 {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+  margin: 0.75rem 0;
+}
+h2 {
+  font-size: 1.25rem;
+}
+h3 {
+  font-size: 1rem;
+}
+p {
+  line-height: 1.6;
+}
+.lede {
+  color: var(--muted);
+}
+.scope {
+  max-width: 360px;
+  border-left: 2px solid #9cc0ac;
+  padding: 0 1.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.scope strong {
+  color: #eaf1f2;
+}
+.scope p {
+  margin: 0.4rem 0;
+}
+.notice {
+  min-height: 1.6rem;
+  font-size: 0.9rem;
+  color: #f4d69e;
+}
+.panel {
+  background: #172630;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.workspace-title,
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+.workspace-title p,
+.panel-title span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.workspace {
+  display: grid;
+  grid-template-columns: 210px minmax(300px, 1fr) 325px;
+  gap: 1rem;
+  align-items: start;
+}
+.fleet {
+  padding: 0.7rem;
+}
+.aircraft {
+  display: grid;
+  text-align: left;
+  width: 100%;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  padding: 1rem 0.7rem;
+  background: #192b35;
+}
+.aircraft span {
+  font-weight: 700;
+}
+.aircraft small {
+  color: #b9cad3;
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+.aircraft em {
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-style: normal;
+  letter-spacing: 0.1rem;
+}
+.aircraft.active {
+  border-color: var(--accent);
+  background: #223e46;
+}
+.muted {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+svg {
+  display: block;
+  width: 100%;
+  background: #11212b;
+  border-radius: 6px;
+  margin-top: 0.8rem;
+}
+svg pattern path {
+  fill: none;
+  stroke: #304552;
+  stroke-width: 1;
+}
+svg text {
+  fill: #c1d6df;
+  font:
+    12px ui-monospace,
+    monospace;
+}
+.envelope {
+  fill: none;
+  stroke: #45636e;
+  stroke-dasharray: 4 8;
+}
+.axes {
+  stroke: #3d5a64;
+  stroke-width: 1;
+  fill: none;
+}
+.route {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 8 4;
+  fill: none;
+}
+.waypoint {
+  fill: #172630;
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.position {
+  fill: #f6c97f;
+  stroke: #172630;
+  stroke-width: 3;
+}
+.home {
+  fill: #d3e5ec;
+}
+.telemetry {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.telemetry div {
+  display: grid;
+  gap: 0.25rem;
+}
+.telemetry small {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.telemetry strong {
+  font:
+    600 1.1rem ui-monospace,
+    monospace;
+}
+.controls {
+  font-size: 0.85rem;
+}
+.controls h3 {
+  margin-top: 0.4rem;
+}
+fieldset {
+  padding: 0.65rem;
+  margin: 1rem 0;
+  border: 1px solid #3e5663;
+  border-radius: 5px;
+}
+legend {
+  font-size: 0.75rem;
+  color: #bfd5dc;
+}
+.point-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.point-row label {
+  font-size: 0.62rem;
+  margin: 0.25rem 0;
+}
+.point-row input {
+  padding: 0.4rem;
+  width: 100%;
+}
+.check {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.75rem;
+}
+.command-row,
+.button-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.8rem 0;
+}
+.blockers {
+  color: #f4d69e;
+  padding-left: 1.2rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+.evidence {
+  margin-top: 1rem;
+}
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.8rem;
+  width: 100%;
+}
+th,
+td {
+  padding: 0.7rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th {
+  color: #c1d5df;
+}
+.audit {
+  padding-left: 1.3rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.audit p {
+  margin: 0.3rem 0 1rem;
+}
+.login {
+  max-width: 480px;
+  margin: 1rem auto 3rem;
+}
+.login p {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.help {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+.help li {
+  margin: 0.5rem 0;
+}
+dialog[open] {
+  position: fixed;
+  inset: 30% auto auto 50%;
+  transform: translateX(-50%);
+  width: min(500px, 90vw);
+  z-index: 10;
+  padding: 1.5rem;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  background: #152a35;
+  box-shadow: 0 0 0 100vmax #000b;
+  color: #eaf5f5;
+}
+footer {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 4%;
+  border-top: 1px solid var(--line);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+footer strong {
+  color: #e4eff3;
+}
+footer span {
+  margin-left: auto;
+}
+.skip {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  background: #fff;
+  color: #000;
+  padding: 0.8rem;
+  z-index: 20;
+}
+.skip:focus {
+  top: 1rem;
+}
+:focus-visible {
+  outline: 3px solid #f8cf90;
+  outline-offset: 3px;
+}
+code {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1150px) {
+  .workspace {
+    grid-template-columns: 190px 1fr;
+  }
+  .controls {
+    grid-column: 1/-1;
+  }
+  .point-row {
+    max-width: 500px;
+  }
+  .intro {
+    align-items: start;
+  }
+  .scope {
+    max-width: 260px;
+  }
+}
+@media (max-width: 650px) {
+  header {
+    align-items: start;
+    flex-direction: column;
+  }
+  .intro {
+    display: block;
+    padding-top: 1rem;
+  }
+  .scope {
+    max-width: none;
+    margin: 1.5rem 0;
+  }
+  .workspace {
+    display: block;
+  }
+  .fleet {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+  .fleet .aircraft {
+    min-width: 155px;
+    margin: 0;
+  }
+  .fleet .muted {
+    display: none;
+  }
+  .controls {
+    margin-top: 1rem;
+  }
+  .workspace-title {
+    align-items: start;
+    flex-direction: column;
+    gap: 0;
+  }
+  .panel-title {
+    align-items: start;
+    flex-wrap: wrap;
+  }
+  footer span {
+    margin: 0;
+  }
+  .telemetry strong {
+    font-size: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}
+@media (forced-colors: active) {
+  .active {
+    outline: 2px solid Highlight;
+  }
+  .route,
+  .axes,
+  .envelope {
+    stroke: CanvasText;
+  }
+  .position,
+  .waypoint {
+    fill: Highlight;
+  }
+}

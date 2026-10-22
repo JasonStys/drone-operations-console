@@ -1,0 +1,128 @@
+# Jason Stys: real local/SQL/browser/container/PX4 acceptance; no Actions caches or artifact uploads.
+name: Validation
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  core:
+    name: Core / ${{ matrix.os }} / ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-24.04, python: '3.12'}
+          - {os: ubuntu-24.04, python: '3.14'}
+          - {os: windows-latest, python: '3.14'}
+          - {os: macos-latest, python: '3.14'}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '${{ matrix.python }}'}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with: {node-version: '24', package-manager-cache: false}
+      - run: python -m pip install --require-hashes -r requirements-dev.lock
+      - run: npm ci --ignore-scripts
+      - run: python -m ruff check console tests tools
+      - run: python -m ruff format --check console tests tools
+      - run: python tools/docs_index.py --check
+      - run: python -m pytest --cov=console --cov-report=term-missing
+      - run: npm run format:check && npm test && npm run build
+      - run: python tools/check_repo.py --dist
+      - if: matrix.os == 'ubuntu-24.04' && matrix.python == '3.14'
+        run: python -m pip_audit --disable-pip --no-deps -r requirements-dev.lock
+      - if: matrix.os == 'ubuntu-24.04' && matrix.python == '3.14'
+        run: npm run audit
+  browser:
+    name: Real service / three browser engines
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.14'}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with: {node-version: '24', package-manager-cache: false}
+      - run: python -m pip install --require-hashes -r requirements-dev.lock
+      - run: npm ci --ignore-scripts && npm run build
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:e2e
+  postgres:
+    name: Native PostgreSQL / concurrent idempotency
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17-bookworm@sha256:858bb5e98eed02eb8cafbcdc007f9a65d1b613972028944a8ec2133ccaf80d27
+        env: {POSTGRES_PASSWORD: synthetic-ci-only, POSTGRES_DB: operations_test}
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.14'}
+      - run: python -m pip install --require-hashes -r requirements-dev.lock
+      - run: python tools/postgres_acceptance.py
+        env:
+          OPS_TEST_POSTGRES: postgresql+psycopg://postgres:synthetic-ci-only@127.0.0.1:5432/operations_test
+  native:
+    name: Actual PX4 SIH / native MAVSDK / API evidence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.12'}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: PX4/PX4-Autopilot
+          ref: d6f12ad1c4f70ad3230afd7d86e971421e02fef4
+          path: .runtime/px4
+          submodules: recursive
+          persist-credentials: false
+      - run: sudo apt-get update && sudo apt-get install -y build-essential cmake ninja-build bc libeigen3-dev
+      - run: python -m pip install --require-hashes -r requirements-sitl.lock
+      - name: Build actual pinned autopilot (not a mock)
+        run: make -C .runtime/px4 px4_sitl_default -j2
+      - name: Assert authenticated real simulator workflow
+        run: python tools/native_acceptance.py
+      - name: Show simulator diagnostics if acceptance fails
+        if: failure()
+        run: test ! -f .runtime/px4-console.log || tail -n 100 .runtime/px4-console.log
+  container:
+    name: Non-root image / real service smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - run: docker build -t drone-console:test .
+      - name: Verify pinned Bicep compiler and compile private cloud reference
+        run: |
+          curl -fsSL https://github.com/Azure/bicep/releases/download/v0.48.1/bicep-linux-x64 -o /tmp/drone-console-bicep
+          echo 'b09ec25a9d376c1f8e33ede6ed22b587f915ad68488d5db77a6f9541748c7f6e  /tmp/drone-console-bicep' | sha256sum -c -
+          chmod +x /tmp/drone-console-bicep
+          /tmp/drone-console-bicep build deploy/main.bicep --outfile /tmp/drone-console-template.json
+      - run: |
+          docker run -d --name console-smoke --read-only --cap-drop ALL --security-opt no-new-privileges --tmpfs /app/.runtime:uid=10001,gid=10001 --tmpfs /tmp:uid=10001,gid=10001 -p 127.0.0.1:8840:8840 drone-console:test
+          for attempt in $(seq 1 30); do
+            if curl --fail http://127.0.0.1:8840/healthz; then break; fi
+            sleep 1
+          done
+          curl --fail http://127.0.0.1:8840/healthz
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8840/api/fleet)" = 401
+          test "$(docker exec console-smoke id -u)" = 10001
+      - if: always()
+        run: docker logs console-smoke; docker rm -f console-smoke

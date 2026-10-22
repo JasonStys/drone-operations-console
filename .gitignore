@@ -1,0 +1,16 @@
+# Generated/private state; no credentials or flight data belong in Git.
+.venv/
+.runtime/
+node_modules/
+dist/
+coverage/
+.coverage*
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+test-results/
+playwright-report/
+*.db*
+*.log
+.env

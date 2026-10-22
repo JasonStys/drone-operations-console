@@ -1,0 +1,10 @@
+.git
+.venv
+.runtime
+node_modules
+coverage
+test-results
+playwright-report
+__pycache__
+*.db*
+.env
