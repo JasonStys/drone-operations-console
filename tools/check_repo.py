@@ -46,6 +46,7 @@ def main():
     if "--dist" in sys.argv:
         scripts = list(Path("dist/assets").glob("*.js"))
         styles = list(Path("dist/assets").glob("*.css"))
+        assert scripts and styles and Path("dist/index.html").is_file(), "Build output is missing"
         js = sum(len(gzip.compress(p.read_bytes())) for p in scripts)
         css = sum(len(gzip.compress(p.read_bytes())) for p in styles)
         assert js <= 100_000 and css <= 12_000, (js, css)

@@ -10,6 +10,9 @@ inform interfaces and safety limits; they do not endorse or certify the applicat
 - [MAVSDK native Python](https://mavsdk.mavlink.io/main/en/python/quickstart.html):
   native 4.0.6 async SDK and plugins; library source signatures were inspected.
   No custom flight-control stack or gRPC exposure is needed.
+  The [pinned 4.0.6 implementation](https://github.com/mavlink/MAVSDK/blob/v4.0.6/cpp/src/mavsdk/plugins/telemetry/telemetry_impl.cpp)
+  reports battery remaining in percentage points (0–100), not legacy fractions;
+  explicit conversion regressions guard that version boundary.
 - [MAVLink security](https://mavlink.io/en/about/faq.html): signing is not encryption.
 - [FastAPI deployment](https://fastapi.tiangolo.com/deployment/docker/) and
   [SQLAlchemy](https://docs.sqlalchemy.org/en/21/): service/persistence patterns;

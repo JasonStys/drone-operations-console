@@ -6,7 +6,6 @@ OS is required; loopback/source hashes are not hardware identity or malicious-ho
 """
 
 import asyncio
-import contextlib
 import hashlib
 import math
 import os
@@ -204,9 +203,7 @@ class ManagedPx4:
         """Cancel subscriptions before destroying native resources; terminate only the owned child."""
         for task in self.tasks:
             task.cancel()
-        for task in self.tasks:
-            with contextlib.suppress(asyncio.CancelledError):
-                await task
+        results = await asyncio.gather(*self.tasks, return_exceptions=True)
         self.tasks.clear()
         if self.sdk is not None:
             self.sdk.destroy()
@@ -222,3 +219,8 @@ class ManagedPx4:
         if self.log:
             self.log.close()
             self.log = None
+        for result in results:
+            if isinstance(result, BaseException) and not isinstance(result, asyncio.CancelledError):
+                raise RuntimeError(
+                    "Native subscription failed; owned resources released"
+                ) from result

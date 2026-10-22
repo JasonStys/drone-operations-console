@@ -335,3 +335,33 @@ def test_concurrent_duplicate_one_effect(workspace):
         assert adapter.calls == 1
 
     asyncio.run(scenario())
+
+
+@pytest.mark.parametrize("during_startup", [True, False])
+def test_failed_sampler_closes_adapter_before_raising(workspace, during_startup):
+    """Startup/background failure cannot be silently swallowed or bypass adapter cleanup."""
+
+    class FailingReplay(Replay):
+        """A lifecycle fault-injection fixture; not native flight evidence."""
+
+        closed = False
+        calls = 0
+
+        async def tick(self):
+            self.calls += 1
+            if during_startup or self.calls > 1:
+                raise ValueError("synthetic sampler fault")
+            await super().tick()
+
+        async def close(self):
+            self.closed = True
+
+    async def scenario():
+        adapter = FailingReplay()
+        app = create_app(workspace, adapter)
+        with pytest.raises(ValueError, match="sampler fault"):
+            async with app.router.lifespan_context(app):
+                await asyncio.sleep(0)
+        assert adapter.closed
+
+    asyncio.run(scenario())

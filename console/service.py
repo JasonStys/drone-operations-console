@@ -83,7 +83,7 @@ class Operations:
 
     async def command(self, actor: str, identifier: str, key: str, intent: Command):
         """Reserve an exact intent before side effects; never automatically retry unknown effects."""
-        vehicle = self.aircraft(identifier)
+        self.aircraft(identifier)
         if intent.aircraft_id != identifier:
             raise HTTPException(409, "Selected aircraft and command target differ")
         if not re.fullmatch(r"[a-zA-Z0-9-]{8,80}", key):

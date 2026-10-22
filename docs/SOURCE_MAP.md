@@ -10,61 +10,62 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `console/__main__.py` | 20 | `parser` |
 | `console/__main__.py` | 25 | `args` |
 | `console/__main__.py` | 28 | `store` |
-| `console/api.py` | 29 | `Login(class)` |
-| `console/api.py` | 32 | `model_config` |
-| `console/api.py` | 33 | `username` |
-| `console/api.py` | 34 | `password` |
-| `console/api.py` | 37 | `PlanUpdate(class)` |
-| `console/api.py` | 40 | `model_config` |
-| `console/api.py` | 41 | `revision` |
-| `console/api.py` | 42 | `plan` |
-| `console/api.py` | 45 | `Approval(class)` |
-| `console/api.py` | 48 | `model_config` |
-| `console/api.py` | 49 | `revision` |
-| `console/api.py` | 50 | `checks` |
-| `console/api.py` | 53 | `create_app(store, adapter, origin, background)` |
-| `console/api.py` | 55 | `origin` |
-| `console/api.py` | 56 | `parsed` |
-| `console/api.py` | 68 | `owned` |
-| `console/api.py` | 71 | `store` |
+| `console/api.py` | 28 | `Login(class)` |
+| `console/api.py` | 31 | `model_config` |
+| `console/api.py` | 32 | `username` |
+| `console/api.py` | 33 | `password` |
+| `console/api.py` | 36 | `PlanUpdate(class)` |
+| `console/api.py` | 39 | `model_config` |
+| `console/api.py` | 40 | `revision` |
+| `console/api.py` | 41 | `plan` |
+| `console/api.py` | 44 | `Approval(class)` |
+| `console/api.py` | 47 | `model_config` |
+| `console/api.py` | 48 | `revision` |
+| `console/api.py` | 49 | `checks` |
+| `console/api.py` | 52 | `create_app(store, adapter, origin, background)` |
+| `console/api.py` | 54 | `origin` |
+| `console/api.py` | 55 | `parsed` |
+| `console/api.py` | 67 | `owned` |
+| `console/api.py` | 70 | `store` |
+| `console/api.py` | 76 | `adapter` |
 | `console/api.py` | 77 | `adapter` |
-| `console/api.py` | 78 | `adapter` |
-| `console/api.py` | 82 | `lifespan(app)` |
-| `console/api.py` | 84 | `row` |
-| `console/api.py` | 86 | `sample_loop()` |
-| `console/api.py` | 90 | `aircraft` |
-| `console/api.py` | 90 | `sample` |
-| `console/api.py` | 94 | `task` |
-| `console/api.py` | 106 | `app` |
-| `console/api.py` | 121 | `boundaries(request, call_next)` |
-| `console/api.py` | 124 | `result` |
+| `console/api.py` | 81 | `lifespan(app)` |
+| `console/api.py` | 84 | `sample_loop()` |
+| `console/api.py` | 88 | `aircraft` |
+| `console/api.py` | 88 | `sample` |
+| `console/api.py` | 92 | `task` |
+| `console/api.py` | 94 | `row` |
+| `console/api.py` | 95 | `task` |
+| `console/api.py` | 111 | `app` |
+| `console/api.py` | 126 | `boundaries(request, call_next)` |
 | `console/api.py` | 129 | `result` |
-| `console/api.py` | 131 | `total` |
-| `console/api.py` | 132 | `parts` |
-| `console/api.py` | 133 | `part` |
-| `console/api.py` | 134 | `total` |
-| `console/api.py` | 139 | `result` |
-| `console/api.py` | 142 | `result` |
-| `console/api.py` | 156 | `health()` |
-| `console/api.py` | 161 | `login(body, request, response)` |
-| `console/api.py` | 163 | `attempts` |
-| `console/api.py` | 164 | `now` |
-| `console/api.py` | 171 | `user` |
-| `console/api.py` | 174 | `csrf` |
-| `console/api.py` | 174 | `token` |
-| `console/api.py` | 187 | `me(request)` |
-| `console/api.py` | 189 | `user` |
-| `console/api.py` | 193 | `logout(request, response)` |
-| `console/api.py` | 201 | `fleet(request)` |
-| `console/api.py` | 210 | `save_plan(identifier, body, request)` |
-| `console/api.py` | 212 | `user` |
-| `console/api.py` | 218 | `approve(identifier, body, request)` |
-| `console/api.py` | 220 | `user` |
-| `console/api.py` | 226 | `command(identifier, body, request)` |
-| `console/api.py` | 228 | `user` |
-| `console/api.py` | 234 | `history(identifier, request)` |
-| `console/api.py` | 241 | `evidence(request)` |
-| `console/api.py` | 256 | `audit_records(request)` |
+| `console/api.py` | 134 | `result` |
+| `console/api.py` | 136 | `total` |
+| `console/api.py` | 137 | `parts` |
+| `console/api.py` | 138 | `part` |
+| `console/api.py` | 139 | `total` |
+| `console/api.py` | 144 | `result` |
+| `console/api.py` | 147 | `result` |
+| `console/api.py` | 161 | `health()` |
+| `console/api.py` | 166 | `login(body, request, response)` |
+| `console/api.py` | 168 | `attempts` |
+| `console/api.py` | 169 | `now` |
+| `console/api.py` | 176 | `user` |
+| `console/api.py` | 179 | `csrf` |
+| `console/api.py` | 179 | `token` |
+| `console/api.py` | 192 | `me(request)` |
+| `console/api.py` | 194 | `user` |
+| `console/api.py` | 198 | `logout(request, response)` |
+| `console/api.py` | 206 | `fleet(request)` |
+| `console/api.py` | 215 | `save_plan(identifier, body, request)` |
+| `console/api.py` | 217 | `user` |
+| `console/api.py` | 223 | `approve(identifier, body, request)` |
+| `console/api.py` | 225 | `user` |
+| `console/api.py` | 231 | `command(identifier, body, request)` |
+| `console/api.py` | 233 | `user` |
+| `console/api.py` | 239 | `history(identifier, request)` |
+| `console/api.py` | 246 | `evidence(request)` |
+| `console/api.py` | 261 | `audit_records(request)` |
 | `console/auth.py` | 20 | `hasher` |
 | `console/auth.py` | 21 | `DUMMY` |
 | `console/auth.py` | 24 | `add_user(store, name, password, role)` |
@@ -134,38 +135,39 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `console/domain.py` | 114 | `default_plan()` |
 | `console/domain.py` | 121 | `e` |
 | `console/domain.py` | 121 | `n` |
-| `console/px4.py` | 21 | `PX4_COMMIT` |
-| `console/px4.py` | 24 | `ManagedPx4(class)` |
-| `console/px4.py` | 27 | `name` |
-| `console/px4.py` | 28 | `live` |
-| `console/px4.py` | 30 | `__init__(self)` |
-| `console/px4.py` | 42 | `open(self, identifiers)` |
-| `console/px4.py` | 48 | `root` |
-| `console/px4.py` | 49 | `git` |
-| `console/px4.py` | 52 | `commit` |
-| `console/px4.py` | 57 | `binary` |
-| `console/px4.py` | 58 | `binary_file` |
-| `console/px4.py` | 60 | `work` |
-| `console/px4.py` | 63 | `env` |
-| `console/px4.py` | 63 | `key` |
-| `console/px4.py` | 63 | `value` |
-| `console/px4.py` | 107 | `key` |
-| `console/px4.py` | 113 | `collect(self, key)` |
-| `console/px4.py` | 115 | `value` |
-| `console/px4.py` | 118 | `tick(self)` |
-| `console/px4.py` | 122 | `key` |
-| `console/px4.py` | 131 | `health` |
-| `console/px4.py` | 131 | `position` |
-| `console/px4.py` | 131 | `velocity` |
-| `console/px4.py` | 136 | `battery` |
-| `console/px4.py` | 158 | `execute(self, aircraft, action, plan)` |
-| `console/px4.py` | 170 | `items` |
-| `console/px4.py` | 171 | `point` |
-| `console/px4.py` | 172 | `latitude` |
-| `console/px4.py` | 172 | `longitude` |
-| `console/px4.py` | 203 | `close(self)` |
-| `console/px4.py` | 205 | `task` |
-| `console/px4.py` | 207 | `task` |
+| `console/px4.py` | 20 | `PX4_COMMIT` |
+| `console/px4.py` | 23 | `ManagedPx4(class)` |
+| `console/px4.py` | 26 | `name` |
+| `console/px4.py` | 27 | `live` |
+| `console/px4.py` | 29 | `__init__(self)` |
+| `console/px4.py` | 41 | `open(self, identifiers)` |
+| `console/px4.py` | 47 | `root` |
+| `console/px4.py` | 48 | `git` |
+| `console/px4.py` | 51 | `commit` |
+| `console/px4.py` | 56 | `binary` |
+| `console/px4.py` | 57 | `binary_file` |
+| `console/px4.py` | 59 | `work` |
+| `console/px4.py` | 62 | `env` |
+| `console/px4.py` | 62 | `key` |
+| `console/px4.py` | 62 | `value` |
+| `console/px4.py` | 106 | `key` |
+| `console/px4.py` | 112 | `collect(self, key)` |
+| `console/px4.py` | 114 | `value` |
+| `console/px4.py` | 117 | `tick(self)` |
+| `console/px4.py` | 121 | `key` |
+| `console/px4.py` | 130 | `health` |
+| `console/px4.py` | 130 | `position` |
+| `console/px4.py` | 130 | `velocity` |
+| `console/px4.py` | 135 | `battery` |
+| `console/px4.py` | 157 | `execute(self, aircraft, action, plan)` |
+| `console/px4.py` | 169 | `items` |
+| `console/px4.py` | 170 | `point` |
+| `console/px4.py` | 171 | `latitude` |
+| `console/px4.py` | 171 | `longitude` |
+| `console/px4.py` | 202 | `close(self)` |
+| `console/px4.py` | 204 | `task` |
+| `console/px4.py` | 206 | `results` |
+| `console/px4.py` | 222 | `result` |
 | `console/replay.py` | 14 | `Replay(class)` |
 | `console/replay.py` | 17 | `name` |
 | `console/replay.py` | 19 | `__init__(self)` |
@@ -195,7 +197,6 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `console/service.py` | 68 | `db` |
 | `console/service.py` | 69 | `result` |
 | `console/service.py` | 84 | `command(self, actor, identifier, key, intent)` |
-| `console/service.py` | 86 | `vehicle` |
 | `console/service.py` | 91 | `fingerprint` |
 | `console/service.py` | 94 | `db` |
 | `console/service.py` | 95 | `previous` |
@@ -338,6 +339,15 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/test_api.py` | 331 | `rows` |
 | `tests/test_api.py` | 332 | `_` |
 | `tests/test_api.py` | 334 | `row` |
+| `tests/test_api.py` | 341 | `test_failed_sampler_closes_adapter_before_raising(workspace, during_startup)` |
+| `tests/test_api.py` | 344 | `FailingReplay(class)` |
+| `tests/test_api.py` | 347 | `closed` |
+| `tests/test_api.py` | 348 | `calls` |
+| `tests/test_api.py` | 350 | `tick(self)` |
+| `tests/test_api.py` | 356 | `close(self)` |
+| `tests/test_api.py` | 359 | `scenario()` |
+| `tests/test_api.py` | 360 | `adapter` |
+| `tests/test_api.py` | 361 | `app` |
 | `tests/test_domain.py` | 23 | `sample()` |
 | `tests/test_domain.py` | 56 | `test_point_rejects_unsafe_values(changes)` |
 | `tests/test_domain.py` | 73 | `i` |
@@ -350,8 +360,15 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/test_domain.py` | 120 | `one` |
 | `tests/test_native_conversion.py` | 17 | `ConnectedSystem(class)` |
 | `tests/test_native_conversion.py` | 20 | `is_connected(self)` |
-| `tests/test_native_conversion.py` | 26 | `test_native_v4_preserves_percentage_points(percentage)` |
+| `tests/test_native_conversion.py` | 26 | `native_adapter()` |
 | `tests/test_native_conversion.py` | 28 | `adapter` |
+| `tests/test_native_conversion.py` | 46 | `test_native_v4_preserves_percentage_points(native_adapter, percentage)` |
+| `tests/test_native_conversion.py` | 54 | `test_native_invalid_percentage_stays_unknown(native_adapter, invalid)` |
+| `tests/test_native_conversion.py` | 61 | `test_native_subscription_failure_releases_resources()` |
+| `tests/test_native_conversion.py` | 63 | `released` |
+| `tests/test_native_conversion.py` | 65 | `scenario()` |
+| `tests/test_native_conversion.py` | 66 | `adapter` |
+| `tests/test_native_conversion.py` | 69 | `fail()` |
 | `tools/check_repo.py` | 15 | `main()` |
 | `tools/check_repo.py` | 17 | `name` |
 | `tools/check_repo.py` | 32 | `path` |
@@ -359,10 +376,10 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tools/check_repo.py` | 44 | `action` |
 | `tools/check_repo.py` | 47 | `scripts` |
 | `tools/check_repo.py` | 48 | `styles` |
-| `tools/check_repo.py` | 49 | `js` |
-| `tools/check_repo.py` | 49 | `p` |
-| `tools/check_repo.py` | 50 | `css` |
+| `tools/check_repo.py` | 50 | `js` |
 | `tools/check_repo.py` | 50 | `p` |
+| `tools/check_repo.py` | 51 | `css` |
+| `tools/check_repo.py` | 51 | `p` |
 | `tools/docs_index.py` | 13 | `ROOT` |
 | `tools/docs_index.py` | 14 | `EXCLUDED` |
 | `tools/docs_index.py` | 29 | `files()` |

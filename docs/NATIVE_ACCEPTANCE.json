@@ -1,0 +1,38 @@
+{
+  "author": "Jason Stys",
+  "kind": "measured excerpt, not synthetic replay or hardware evidence",
+  "source_commit": "c2b91fd65842919354ca478b49f624b7537ece1b",
+  "run_url": "https://github.com/JasonStys/drone-operations-console/actions/runs/39700515246",
+  "job_id": 119568327665,
+  "reported_at_utc": "2026-10-22T00:39:10Z",
+  "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "binary_sha256": "f6d77964078ddea36f2eae1d0e3583fa19525866f899d9512a2bd0242cd4ca26",
+  "mavsdk": "4.0.6",
+  "mode": "genuine PX4 SIH, native MAVSDK, authenticated ASGI service",
+  "observations": {
+    "initial_battery_percentage_points": 100.0,
+    "takeoff": {
+      "relative_altitude_m": 3.9150002002716064,
+      "mode": "MISSION",
+      "armed": true
+    },
+    "hold": {
+      "relative_altitude_m": 3.63700008392334,
+      "mode": "HOLD",
+      "armed": true
+    },
+    "return_and_disarm": {
+      "relative_altitude_m": 0.4140000343322754,
+      "mode": "HOLD",
+      "armed": false
+    }
+  },
+  "assertions": {
+    "upload_start_hold_return_accepted": true,
+    "duplicate_upload_same_intent_id": true,
+    "distinct_persisted_commands": 4,
+    "wrong_target_http_status": 409,
+    "stopped_simulator_stale_command_http_status": 409
+  },
+  "limits": "One managed simulated aircraft; build hash is not reproducible-build or hardware attestation. Full observations remain in the linked job log."
+}

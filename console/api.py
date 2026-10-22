@@ -5,7 +5,6 @@ uploads, arbitrary aircraft endpoints, plugins or executable user code are accep
 """
 
 import asyncio
-import contextlib
 import os
 import time
 from collections import deque
@@ -81,7 +80,6 @@ def create_app(store=None, adapter=None, origin=None, background=True):
     @asynccontextmanager
     async def lifespan(app):
         """Start only the selected adapter and bounded sampler; cancel owned tasks at shutdown."""
-        await adapter.open([row["id"] for row in store.all_vehicles()])
 
         async def sample_loop():
             """Persist at most one observation per aircraft per second; no unlimited live queues."""
@@ -91,17 +89,24 @@ def create_app(store=None, adapter=None, origin=None, background=True):
                     store.observe(aircraft, sample)
                 await asyncio.sleep(1)
 
-        task = asyncio.create_task(sample_loop()) if background else None
+        task = None
         try:
+            await adapter.open([row["id"] for row in store.all_vehicles()])
+            task = asyncio.create_task(sample_loop()) if background else None
             yield
         finally:
-            if task:
-                task.cancel()
-                with contextlib.suppress(asyncio.CancelledError):
-                    await task
-            await adapter.close()
-            if owned:
-                store.close()
+            try:
+                if task:
+                    task.cancel()
+                    await asyncio.gather(task, return_exceptions=True)
+            finally:
+                try:
+                    await adapter.close()
+                finally:
+                    if owned:
+                        store.close()
+            if task and not task.cancelled():
+                task.result()  # Surface sampler failure, but only after releasing owned resources.
 
     app = FastAPI(
         title="Drone Operations Console",
