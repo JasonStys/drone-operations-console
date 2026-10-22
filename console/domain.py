@@ -44,7 +44,7 @@ class Plan(BaseModel):
 
 
 class Sample(BaseModel):
-    """A received observation; source sequence and arrival freshness are separate concepts."""
+    """An observation with an adapter counter, not a MAVLink packet sequence or source clock."""
 
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
     sequence: int = Field(ge=0)

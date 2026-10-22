@@ -102,6 +102,8 @@ class ManagedPx4:
                 MissionAsync(self.system),
             )
             await self.telemetry.set_rate_position(2)
+            await self.telemetry.set_rate_velocity_ned(2)
+            await self.telemetry.set_rate_battery(1)
             for key in ("position", "battery", "armed", "health", "flight_mode", "velocity_ned"):
                 self.tasks.append(asyncio.create_task(self.collect(key)))
         except BaseException:
@@ -132,7 +134,8 @@ class ManagedPx4:
             self.values["health"],
         )
         battery = self.values["battery"].remaining_percent
-        if not math.isfinite(battery) or not 0 <= battery <= 1:
+        # Native MAVSDK 4 reports percentage points (0..100), unlike legacy 3.x fractions.
+        if not math.isfinite(battery) or not 0 <= battery <= 100:
             return
         self.sequence += 1
         self.samples["px4-sih"] = Sample(
@@ -143,7 +146,7 @@ class ManagedPx4:
             * math.cos(math.radians(HOME_LAT)),
             north_m=math.radians(position.latitude_deg - HOME_LAT) * EARTH_M,
             altitude_m=position.relative_altitude_m,
-            battery_pct=battery * 100,
+            battery_pct=battery,
             speed_m_s=math.hypot(velocity.north_m_s, velocity.east_m_s),
             mode=self.values["flight_mode"].name,
             armed=self.values["armed"],

@@ -5,7 +5,7 @@ import ts from "typescript";
 
 /** Visit authored TS/TSX/MJS files only; no dependency or runtime tree is evaluated. */
 function collect(root) {
-  return fs.readdirSync(root, { withFileTypes: true }).flatMap((entry) => {
+  return fs.readdirSync(root, { withFileTypes: true }).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0).flatMap((entry) => {
     const name = path.join(root, entry.name);
     return entry.isDirectory() ? collect(name) : /\.(?:ts|tsx|mjs)$/.test(name) ? [name] : [];
   });

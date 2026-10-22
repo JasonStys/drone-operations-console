@@ -29,11 +29,14 @@ EXCLUDED = {
 def files():
     """Enumerate only authored files, excluding all private/runtime/dependency trees."""
     return sorted(
-        path
-        for path in ROOT.rglob("*")
-        if path.is_file()
-        and not any(part in EXCLUDED for part in path.relative_to(ROOT).parts)
-        and not path.name.startswith(".coverage")
+        (
+            path
+            for path in ROOT.rglob("*")
+            if path.is_file()
+            and not any(part in EXCLUDED for part in path.relative_to(ROOT).parts)
+            and not path.name.startswith(".coverage")
+        ),
+        key=lambda path: path.relative_to(ROOT).as_posix(),
     )
 
 

@@ -125,4 +125,8 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8840/api/fleet)" = 401
           test "$(docker exec console-smoke id -u)" = 10001
       - if: always()
-        run: docker logs console-smoke; docker rm -f console-smoke
+        run: |
+          if docker inspect console-smoke > /dev/null 2>&1; then
+            docker logs console-smoke
+            docker rm -f console-smoke
+          fi

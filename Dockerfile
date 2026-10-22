@@ -8,7 +8,7 @@ RUN npm ci --ignore-scripts && npm run build
 FROM python:3.14.6-slim-bookworm@sha256:4c92ffcde4dd6f1ff72a24518f49fd4990b27134987dfa31a733badde66df9f8
 WORKDIR /app
 COPY requirements.lock ./
-RUN pip install --no-cache-dir --require-hashes -r requirements.lock && useradd --uid 10001 --create-home operator && mkdir /app/.runtime && chown operator:operator /app/.runtime
+RUN pip install --no-cache-dir --require-hashes -r requirements.lock && groupadd --gid 10001 droneconsole && useradd --uid 10001 --gid 10001 --create-home droneconsole && mkdir /app/.runtime && chown 10001:10001 /app/.runtime
 COPY console ./console
 COPY --from=ui /build/dist ./dist
 ENV PYTHONDONTWRITEBYTECODE=1 OPS_ADAPTER=replay
