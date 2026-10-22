@@ -5,6 +5,7 @@ through source_index.mjs. The catalogs are navigation, not call-graph/dead-code 
 """
 
 import ast
+import os
 import shutil
 import subprocess
 import sys
@@ -24,18 +25,47 @@ EXCLUDED = {
     "test-results",
     "playwright-report",
 }
+FILE_DESCRIPTIONS = {
+    ".dockerignore": "Exclude private runtime data, databases and local dependencies from image context.",
+    ".gitattributes": "Normalize tracked source line endings across operating systems.",
+    ".gitignore": "Keep databases, secrets, build output, test evidence and dependencies outside Git.",
+    "CONTRIBUTING.md": "Contributor setup, review requirements and unchanged acceptance gates.",
+    "LICENSE": "MIT license for original code; upstream dependency licenses remain independent.",
+    "README.md": "Purpose, capabilities, setup, rehearsal, verification, file map and scope limits.",
+    "SECURITY.md": "Private vulnerability reporting and supported security boundaries.",
+    "docs/ARCHITECTURE.md": "Data flow, requirements, three design decisions and complexity limits.",
+    "docs/FILE_CATALOG.md": "Generated responsibility summary for every tracked deliverable.",
+    "docs/NATIVE_ACCEPTANCE.json": "Measured native PX4 run excerpt, source/build identity and assertions.",
+    "docs/OPERATIONS.md": "Account provisioning, backups, recovery, Linux native mode and deployment.",
+    "docs/RESEARCH.md": "Primary technical sources, version-specific findings and attribution.",
+    "docs/SECURITY.md": "Threat model, workspace privacy, controls, trusted-host assumptions and gaps.",
+    "docs/SOURCE_MAP.md": "Generated exact declaration/parameter/variable line navigation.",
+    "docs/TESTING.md": "Risk-based test matrix, independent oracles, coverage denominators and gaps.",
+    "docs/VALIDATION.md": "Observed results, source-linked CI evidence, failure history and storage checks.",
+    "package.json": "Exact frontend tools, supported Node version and build/test/audit commands.",
+    "package-lock.json": "Resolved npm dependency versions and integrity hashes for reproducible installs.",
+    "pyproject.toml": "Python support, Ruff rules, pytest configuration and explicit coverage boundaries.",
+    "requirements.in": "Direct production Python service and PostgreSQL dependency pins.",
+    "requirements.lock": "Hash-locked transitive production Python dependency graph.",
+    "requirements-dev.in": "Production plus direct Python test, style and dependency-audit pins.",
+    "requirements-dev.lock": "Hash-locked Python development/test dependency graph.",
+    "requirements-sitl.in": "Native MAVSDK and pinned PX4 build tools in addition to development dependencies.",
+    "requirements-sitl.lock": "Hash-locked native SDK, simulator build and integration dependency graph.",
+    "tsconfig.json": "Strict TypeScript checking, browser libraries and no-emission build rules.",
+}
 
 
 def files():
     """Enumerate only authored files, excluding all private/runtime/dependency trees."""
+    paths = []
+    for directory, subdirectories, names in os.walk(ROOT):
+        subdirectories[:] = [name for name in subdirectories if name not in EXCLUDED]
+        for name in names:
+            path = Path(directory) / name
+            if not name.startswith(".coverage") and path.is_file():
+                paths.append(path)
     return sorted(
-        (
-            path
-            for path in ROOT.rglob("*")
-            if path.is_file()
-            and not any(part in EXCLUDED for part in path.relative_to(ROOT).parts)
-            and not path.name.startswith(".coverage")
-        ),
+        paths,
         key=lambda path: path.relative_to(ROOT).as_posix(),
     )
 
@@ -63,10 +93,12 @@ def render():
     for path in files():
         relative = path.relative_to(ROOT).as_posix()
         text = path.read_text(encoding="utf-8")
-        description = next(
-            (line.strip(' #/*-"<>') for line in text.splitlines() if "Jason Stys:" in line),
-            "Configuration, dependency lock or documentation; see file content.",
+        description = FILE_DESCRIPTIONS.get(relative) or next(
+            (line.strip(' #/*!-"<>') for line in text.splitlines() if "Jason Stys:" in line),
+            None,
         )
+        if description is None:
+            raise ValueError(f"Add a meaningful file responsibility for {relative}")
         catalog.append(f"| `{relative}` | {description.replace('|', '/')} |")
         if path.suffix == ".py":
             tree = ast.parse(text)
