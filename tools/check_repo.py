@@ -5,6 +5,7 @@ check, not a complete secret scanner, security certification or proof of functio
 """
 
 import gzip
+import json
 import re
 import sys
 from pathlib import Path
@@ -14,6 +15,10 @@ from docs_index import ROOT, files
 
 def main():
     """Require headers, pinned Actions, named docs, public-safe text and unchanged output budgets."""
+    package = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
+    assert re.search(r"--publish\s+never(?:\s|$)", package["scripts"]["package:desktop"]), (
+        "Packaging must not upload before native acceptance, including on tagged checkouts"
+    )
     for name in (
         "README.md",
         "LICENSE",

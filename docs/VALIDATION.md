@@ -4,6 +4,13 @@ By Jason Stys. Development observations are not release certification.
 
 ## Version 0.2.0 — November 4, 2026
 
+Patch 0.2.1 corrects a tag-specific packaging failure observed after the green PR:
+Electron Builder inferred publication from the 0.2.0 tag on both tag/main checkouts
+and requested a token before post-build tests could run. Packaging now explicitly
+uses `--publish never`. Only the release workflow's named post-acceptance step gets
+a publishing token. No tag was rewritten and no failed run was deleted. The failure
+was in packaging configuration, not route calculation or the installed renderer.
+
 The [candidate Validation run](https://github.com/JasonStys/drone-operations-console/actions/runs/41905498950)
 passed all nine jobs for source `aba2a240a4a82867ef9dcecf2645975a1d4f10a5`:
 four OS/Python core combinations, **15 real-service browser journeys** across all

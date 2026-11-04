@@ -52,8 +52,8 @@ The simulated launch coordinates are PX4's public training defaults, not a user 
 
 ## Quick start: local replay
 
-For installed use on Windows x64, download **Drone Operations Console Setup 0.2.0.exe**
-and **SHA256SUMS.txt** from the [v0.2.0 release](https://github.com/JasonStys/drone-operations-console/releases/tag/v0.2.0).
+For installed use on Windows x64, download **Drone Operations Console Setup 0.2.1.exe**
+and **SHA256SUMS.txt** from the [v0.2.1 release](https://github.com/JasonStys/drone-operations-console/releases/tag/v0.2.1).
 Verify its hash, install and launch the desktop icon. Choose your own account and
 password on first launch. The installer is unsigned; no signing certificate or
 OS-security bypass is provided. See [the rehearsal/desktop guide](docs/REHEARSAL.md).

@@ -77,7 +77,9 @@ jobs:
       - run: python tools/build_desktop.py
       - run: npm run package:desktop
       - run: npm run test:desktop
-      - run: Get-FileHash 'release/installers/Drone Operations Console Setup 0.2.0.exe' -Algorithm SHA256
+      - run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          Get-FileHash "release/installers/Drone Operations Console Setup $version.exe" -Algorithm SHA256
   postgres:
     name: Native PostgreSQL / concurrent idempotency
     runs-on: ubuntu-24.04
