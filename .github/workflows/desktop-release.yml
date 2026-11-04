@@ -35,5 +35,7 @@ jobs:
           if ($env:GITHUB_REF_NAME -ne "v$version") { throw 'Tag and package version must match' }
           $installer = "release/installers/Drone Operations Console Setup $version.exe"
           $digest = (Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant()
-          "$digest  Drone Operations Console Setup $version.exe" | Set-Content release/installers/SHA256SUMS.txt -Encoding ascii
+          # GitHub normalizes spaces in uploaded asset names to dots.
+          $assetName = (Split-Path -Leaf $installer).Replace(' ', '.')
+          "$digest  $assetName" | Set-Content release/installers/SHA256SUMS.txt -Encoding ascii
           gh release create $env:GITHUB_REF_NAME $installer release/installers/SHA256SUMS.txt --verify-tag --title "Drone Operations Console $version" --notes-file docs/RELEASE_0_2.md

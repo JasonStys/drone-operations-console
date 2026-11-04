@@ -11,6 +11,14 @@ uses `--publish never`. Only the release workflow's named post-acceptance step g
 a publishing token. No tag was rewritten and no failed run was deleted. The failure
 was in packaging configuration, not route calculation or the installed renderer.
 
+The [0.2.1 release workflow](https://github.com/JasonStys/drone-operations-console/actions/runs/41908684577)
+then passed actual packaged-app acceptance and published the installer. Its
+SHA-256 is `1b1cd6904c601d44a05b58d029a402cf632a5712363d1c556ed41c9a766d6336`.
+The downloaded 144,317,878-byte installer matched that hash. GitHub normalizes
+spaces in release filenames to dots; the checksum manifest and future publishing
+step now use that canonical filename. Installer bytes were unchanged by this
+metadata-only correction. The original failed tag/runs remain visible as history.
+
 The [candidate Validation run](https://github.com/JasonStys/drone-operations-console/actions/runs/41905498950)
 passed all nine jobs for source `aba2a240a4a82867ef9dcecf2645975a1d4f10a5`:
 four OS/Python core combinations, **15 real-service browser journeys** across all
