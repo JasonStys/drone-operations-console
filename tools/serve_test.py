@@ -25,10 +25,11 @@ def main():
     for name, role in [("pilot", "operator"), ("reader", "viewer")]:
         add_user(store, name, "synthetic-test-password-42", role)
     os.environ["OPS_ADAPTER"] = "replay"
+    port = int(os.environ.get("OPS_TEST_PORT", "8841"))
     uvicorn.run(
-        create_app(store=store, origin="http://127.0.0.1:8841"),
+        create_app(store=store, origin=f"http://127.0.0.1:{port}"),
         host="127.0.0.1",
-        port=8841,
+        port=port,
         access_log=False,
         limit_concurrency=32,
     )

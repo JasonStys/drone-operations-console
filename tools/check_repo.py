@@ -37,7 +37,7 @@ def main():
             r"(?:ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|-----BEGIN [A-Z ]*PRIVATE KEY-----)",
             content,
         ), path
-        if path.suffix in (".py", ".ts", ".tsx", ".css", ".mjs", ".html", ".sh"):
+        if path.suffix in (".py", ".ts", ".tsx", ".css", ".mjs", ".cjs", ".html", ".sh"):
             assert "Jason Stys:" in "\n".join(content.splitlines()[:12]), path
             assert "SOURCE_MAP.md" in "\n".join(content.splitlines()[:12]), path
         if path.parent.name == "workflows":

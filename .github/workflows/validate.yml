@@ -37,6 +37,8 @@ jobs:
       - run: python tools/docs_index.py --check
       - run: python -m pytest --cov=console --cov-report=term-missing
       - run: npm run format:check && npm test && npm run build
+      - if: matrix.os == 'ubuntu-24.04' && matrix.python == '3.14'
+        run: node tools/mutation_smoke.mjs
       - run: python tools/check_repo.py --dist
       - if: matrix.os == 'ubuntu-24.04' && matrix.python == '3.14'
         run: python -m pip_audit --disable-pip --no-deps -r requirements-dev.lock
@@ -57,6 +59,25 @@ jobs:
       - run: npm ci --ignore-scripts && npm run build
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run test:e2e
+  desktop:
+    name: Actual Windows installer / private account / animation / restart
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.14'}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with: {node-version: '24', package-manager-cache: false}
+      - run: python -m pip install --require-hashes -r requirements-desktop.lock
+      - run: npm ci --ignore-scripts
+      - run: node node_modules/electron/install.js
+      - run: npm run build
+      - run: python tools/build_desktop.py
+      - run: npm run package:desktop
+      - run: npm run test:desktop
+      - run: Get-FileHash 'release/installers/Drone Operations Console Setup 0.2.0.exe' -Algorithm SHA256
   postgres:
     name: Native PostgreSQL / concurrent idempotency
     runs-on: ubuntu-24.04

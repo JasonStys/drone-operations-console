@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { createRoot } from "react-dom/client";
 import { freshness, project, routeLength, type Point } from "./geometry";
+import { Rehearsal } from "./RehearsalPanel";
 import "./style.css";
 
 type Sample = Point & {
@@ -90,6 +91,7 @@ async function request<T>(
 /** Render the entire same-workspace UI; server-side roles and safety checks remain authoritative. */
 function App() {
   const [user, setUser] = useState<User | null>(null);
+  const [setupRequired, setSetupRequired] = useState(false);
   const [fleet, setFleet] = useState<Fleet | null>(null);
   const [selected, setSelected] = useState("atlas");
   const [draft, setDraft] = useState<Plan | null>(null);
@@ -137,6 +139,9 @@ function App() {
   }
 
   useEffect(() => {
+    request<{ setup_required: boolean }>("/api/setup")
+      .then((result) => setSetupRequired(result.setup_required))
+      .catch(() => {});
     request<User>("/api/me")
       .then(setUser)
       .catch(() => {});
@@ -208,6 +213,13 @@ function App() {
     const data = new FormData(event.currentTarget);
     setBusy(true);
     try {
+      if (setupRequired) {
+        await request("/api/setup", "POST", {
+          username: data.get("username"),
+          password: data.get("password"),
+        });
+        setSetupRequired(false);
+      }
       setUser(
         await request<User>("/api/login", "POST", {
           username: data.get("username"),
@@ -250,6 +262,7 @@ function App() {
         <div className="header-actions">
           <span className="pill">SIMULATION ONLY</span>
           <button onClick={() => setHelp(!help)}>Operator guide</button>
+          {user && <a href="#route-rehearsal">Flight path rehearsal</a>}
           {user && (
             <button
               disabled={busy}
@@ -323,6 +336,13 @@ function App() {
                 Load retained replay or download JSON evidence. History retains
                 300 observations per aircraft.
               </li>
+              <li>
+                Open Flight path rehearsal to animate independent routes, add
+                circular obstacles, inspect ten-second projections, or practice
+                a cooperative rendezvous at agreed endpoints. Play, pause, step
+                and reset control only the local scene; they never issue
+                aircraft commands.
+              </li>
             </ol>
             <p>
               Acknowledgements are not flight outcomes. Replay is a logical
@@ -334,7 +354,11 @@ function App() {
         {!user ? (
           <section className="panel login">
             <p className="eyebrow">PRIVATE WORKSPACE</p>
-            <h2>Sign in to your console</h2>
+            <h2>
+              {setupRequired
+                ? "Create your local operator account"
+                : "Sign in to your console"}
+            </h2>
             <form onSubmit={(event) => void login(event)}>
               <label>
                 Username
@@ -353,14 +377,17 @@ function App() {
                   autoComplete="current-password"
                   required
                   maxLength={128}
+                  minLength={setupRequired ? 14 : 1}
                 />
               </label>
               <button className="primary" disabled={busy}>
-                Sign in
+                {setupRequired ? "Create local account" : "Sign in"}
               </button>
             </form>
             <p>
-              Create your own account using{" "}
+              {setupRequired
+                ? "Choose a unique 3–40 character lowercase username and a password of at least 14 characters. Desktop accounts remain on this PC. Other accounts can be provisioned using "
+                : "Create your own account using "}
               <code>python -m console --create-user your-name</code>. There is
               no default production password.
             </p>
@@ -667,6 +694,7 @@ function App() {
                 </p>
               </section>
             </div>
+            <Rehearsal />
             <section className="panel evidence">
               <div className="panel-title">
                 <h2>Observation & evidence</h2>
@@ -816,7 +844,7 @@ function App() {
         <a href="https://www.linkedin.com/in/jason-stys-31b30b351/">
           Contact Jason
         </a>
-        <span>Simulator-only engineering portfolio · v0.1.0</span>
+        <span>Simulator-only engineering portfolio · v0.2.0</span>
       </footer>
     </>
   );

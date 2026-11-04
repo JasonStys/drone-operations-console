@@ -5,6 +5,7 @@ uploads, arbitrary aircraft endpoints, plugins or executable user code are accep
 """
 
 import asyncio
+import hmac
 import os
 import time
 from collections import deque
@@ -16,13 +17,14 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
+from sqlalchemy import func, select
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from console.auth import credentials, identity, operator, require_csrf, revoke
+from console.auth import add_user, credentials, identity, operator, require_csrf, revoke
 from console.domain import Command, Plan, Preflight
 from console.replay import Replay
 from console.service import Operations
-from console.store import Store, audit
+from console.store import Store, audit, users
 
 
 class Login(BaseModel):
@@ -110,7 +112,7 @@ def create_app(store=None, adapter=None, origin=None, background=True):
 
     app = FastAPI(
         title="Drone Operations Console",
-        version="0.1.0",
+        version="0.2.0",
         lifespan=lifespan,
         docs_url=None,
         redoc_url=None,
@@ -120,12 +122,23 @@ def create_app(store=None, adapter=None, origin=None, background=True):
     app.state.operations = Operations(store, adapter)
     app.state.login_attempts = deque(maxlen=100)
     app.state.auth_slots = asyncio.Semaphore(2)
+    app.state.setup_lock = asyncio.Lock()
+    launch_token = os.environ.get("OPS_LAUNCH_TOKEN", "")
+    bootstrap = bool(launch_token and os.environ.get("OPS_DESKTOP_BOOTSTRAP") == "1")
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=[parsed.hostname])
 
     @app.middleware("http")
     async def boundaries(request: Request, call_next):
         """Deny cross-origin mutation and oversized bodies; attach restrictive headers on all responses."""
-        if request.method not in ("GET", "HEAD") and request.headers.get("origin") != origin:
+        if (
+            launch_token
+            and request.url.path != "/healthz"
+            and not hmac.compare_digest(
+                request.headers.get("x-ops-launch-token", "").encode(), launch_token.encode()
+            )
+        ):
+            result = JSONResponse({"detail": "Owned desktop session required"}, status_code=403)
+        elif request.method not in ("GET", "HEAD") and request.headers.get("origin") != origin:
             result = JSONResponse({"detail": "Exact configured Origin required"}, status_code=403)
         elif (
             request.method not in ("GET", "HEAD")
@@ -160,7 +173,33 @@ def create_app(store=None, adapter=None, origin=None, background=True):
     @app.get("/healthz")
     async def health():
         """Return liveness only, without workspace content or dependency addresses."""
-        return {"status": "ok", "simulation_only": True}
+        return {
+            "status": "ok",
+            "simulation_only": True,
+            **({"launcher_nonce": os.environ.get("OPS_LAUNCH_NONCE", "")} if launch_token else {}),
+        }
+
+    @app.get("/api/setup")
+    async def setup_status():
+        """Only an owned desktop session can see the first-account form; public registration is off."""
+        with store.engine.connect() as db:
+            empty = db.scalar(select(func.count()).select_from(users)) == 0
+        return {"setup_required": bootstrap and empty}
+
+    @app.post("/api/setup")
+    async def setup(body: Login):
+        """Provision exactly one local operator, serialized within this single-worker desktop service."""
+        if not bootstrap or os.environ.get("OPS_READ_ONLY") == "1":
+            raise HTTPException(404, "Desktop setup unavailable")
+        async with app.state.setup_lock:
+            with store.engine.connect() as db:
+                if db.scalar(select(func.count()).select_from(users)):
+                    raise HTTPException(409, "An account already exists; sign in")
+            try:
+                add_user(store, body.username, body.password, "operator")
+            except ValueError as error:
+                raise HTTPException(422, str(error)) from error
+        return {"created": True}
 
     @app.post("/api/login")
     async def login(body: Login, request: Request, response: Response):
@@ -263,6 +302,7 @@ def create_app(store=None, adapter=None, origin=None, background=True):
         identity(request)
         return store.records(audit)
 
-    if Path("dist").is_dir():
-        app.mount("/", StaticFiles(directory="dist", html=True), name="ui")
+    ui = Path(os.environ.get("OPS_UI_DIR", "dist"))
+    if ui.is_dir():
+        app.mount("/", StaticFiles(directory=str(ui), html=True), name="ui")
     return app
