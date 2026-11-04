@@ -68,6 +68,14 @@ transactional outbox and actuator reconciliation before multi-process operation.
 
 ## Complexity and limits
 
+Version 0.2 adds a separate `RehearsalPanel` with a pure TypeScript route/clock engine.
+It renders bounded synthetic obstacle and cooperative-route scenes after login,
+without calling aircraft APIs, reading real telemetry or changing the SQL mission.
+This preserves the original server-side review/command boundary. A Windows Electron
+shell packages the existing API with a replay-only entry point, ephemeral session
+partition and per-launch capability; no renderer Node API or external endpoint is exposed.
+See [rehearsal model and bounds](REHEARSAL.md) for grid planning/separation complexity.
+
 For fleet F (3 replay or 1 native), plan W (2–12) and history H (300/aircraft): plan
 validation/projection is O(W), fleet composition O(F), bounded evidence output
 O(F + C + A), with at most 100 recent commands/audit events. Observation pruning

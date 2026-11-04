@@ -1,0 +1,39 @@
+# Jason Stys: build and test the actual Windows app before publishing release assets; no Actions artifacts or caches.
+name: Windows release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.14'}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with: {node-version: '24', package-manager-cache: false}
+      - run: python -m pip install --require-hashes -r requirements-desktop.lock
+      - run: npm ci --ignore-scripts
+      - run: node node_modules/electron/install.js
+      - run: npm test
+      - run: npm run build
+      - run: python tools/build_desktop.py
+      - run: npm run package:desktop
+      - run: npm run test:desktop
+      - name: Hash and publish installer after native acceptance
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ($env:GITHUB_REF_NAME -ne "v$version") { throw 'Tag and package version must match' }
+          $installer = "release/installers/Drone Operations Console Setup $version.exe"
+          $digest = (Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$digest  Drone Operations Console Setup $version.exe" | Set-Content release/installers/SHA256SUMS.txt -Encoding ascii
+          gh release create $env:GITHUB_REF_NAME $installer release/installers/SHA256SUMS.txt --verify-tag --title "Drone Operations Console $version" --notes-file docs/RELEASE_0_2.md

@@ -24,6 +24,22 @@ raise size budgets merely to hide regressions, or delete failed attempts.
 
 ## Commands and interpretation
 
+Version 0.2 adds exact timing/coordinate, inflated-disk clearance, detour, blocked
+corridor, cooperative endpoint and crossing-hold assertions. Deliberate-fault smoke
+checks must reject removal of obstacle margins, frozen movement and disabled holds.
+The browser exercise uses clock-driven animation, real obstacle forms and downloaded
+JSON, and asserts the before/after aircraft-command ledger is unchanged. Each browser
+engine has its own test service/database (ports 18841–18843), so the normal login
+budget is not weakened. The existing port-8841 user demo is never reused by tests.
+
+Windows native acceptance launches the actual packaged executable and its real
+backend, creates a disposable account, verifies movement and effective renderer
+isolation, restarts with the same profile and signs in again. `npm run test:desktop`
+uses `playwright.desktop.config.ts`; it is separate from browser tests and Python
+unit-coverage measurement. `OPS_INSTALLED_APP` can select the actually installed copy.
+The new desktop module remains included in the Python coverage denominator, even
+though its runtime is primarily checked by the native integration journey.
+
 Run the README sequence from the repo root. Playwright needs the exact locked
 browser revisions; `npx playwright install` installs them. Windows restricted
 processes may require normal user permissions and a writable temporary directory.

@@ -10,6 +10,91 @@
   --accent: #a1ead3;
   --ink: #111e25;
 }
+/* Independent exercise panels and color-plus-dash route distinctions. */
+.rehearsal {
+  margin-top: 1.5rem;
+}
+.rehearsal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 1fr);
+  gap: 1.5rem;
+}
+.rehearsal-layout > div {
+  min-width: 0;
+}
+.rehearsal svg {
+  width: 100%;
+  max-height: 600px;
+  background: #13232e;
+  border-radius: 8px;
+}
+.rehearsal select {
+  width: 100%;
+  padding: 0.7rem;
+  background: #13232e;
+  color: #edf5f5;
+  border: 1px solid #59717e;
+  border-radius: 4px;
+  font: inherit;
+}
+.rehearsal-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.rehearsal-boundary {
+  stroke: #59717e;
+}
+.rehearsal .planned {
+  fill: none;
+  stroke-width: 2;
+  opacity: 0.7;
+}
+.rehearsal .projected {
+  fill: none;
+  stroke-width: 5;
+  stroke-dasharray: 8 5;
+}
+.aircraft-0 {
+  stroke: #a1ead3;
+}
+.aircraft-1 {
+  stroke: #ffd384;
+}
+.aircraft-2 {
+  stroke: #a6bfff;
+}
+.moving {
+  fill: #101a22;
+  stroke-width: 3;
+}
+.drone-cross {
+  stroke: white;
+  stroke-width: 2;
+}
+.obstacle {
+  fill: #693439;
+  stroke: #ffb1b1;
+}
+.obstacle-margin {
+  fill: #69343933;
+  stroke: #ffb1b1;
+  stroke-dasharray: 3 3;
+}
+.obstacle-list {
+  padding-left: 1.2rem;
+}
+.obstacle-list li {
+  margin: 0.75rem 0;
+}
+.rehearsal-phase {
+  color: #ffd384;
+}
+@media (max-width: 800px) {
+  .rehearsal-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 * {
   box-sizing: border-box;
 }

@@ -1,6 +1,43 @@
-# Validation record — 0.1.0
+# Validation record
 
 By Jason Stys. Development observations are not release certification.
+
+## Version 0.2.0 — November 4, 2026
+
+Local Windows/Python 3.14: **66 Python tests passed, 92.08% statement coverage**.
+The new desktop entry point is included in that denominator and separately tested
+as a genuine packaged application. **13 TypeScript tests passed**, reporting 100%
+statement/branch/function/line coverage for `geometry.ts` and `rehearsal.ts`, not for
+the entire React UI. All three deliberate geometry/motion/hold mutations were
+detected by the actual assertions; original source was restored.
+
+Ten real-service browser journeys passed locally across Chromium and WebKit.
+The five Firefox journeys could not start on this Windows host: its dedicated
+Playwright executable reports an incorrect side-by-side configuration, including
+after a fresh official runtime download. This is an environment failure, not a
+passing test; Linux CI retains all three browser engines. No OS protection or
+browser sandbox was disabled. A restricted TestClient process also stalled;
+the same test and the full suite passed with normal local process permissions.
+
+Genuine packaged Windows acceptance passed: first-account creation, moving route
+markers, sandbox/context-isolation/Node-integration checks, close, restart and
+sign-in with retained credentials. Locked Python desktop and npm audits reported
+no known vulnerabilities. The minimatch build-tool advisory was fixed with a
+tested bounded version override. Existing production size/coverage gates remain
+unchanged. Ruff, formatting, TypeScript/build, file/source navigation and workflow
+pin checks passed during development. Current source-linked CI results are available
+in [Validation](https://github.com/JasonStys/drone-operations-console/actions/workflows/validate.yml),
+[CodeQL](https://github.com/JasonStys/drone-operations-console/actions/workflows/codeql.yml)
+and [Windows release](https://github.com/JasonStys/drone-operations-console/actions/workflows/desktop-release.yml).
+Those separate jobs, rather than local replay alone, verify SQL, PX4 and container integration.
+
+Pre-validation Actions inventory: 74,252,020 live artifact bytes, 6,070,433,310
+separate cache bytes across 102 owned repositories; quota percentage unavailable
+through the API. No storage cleanup, cache deletion, retention change or artifact
+upload was performed. New installer downloads use Release assets, separately
+from Actions artifacts. Native PX4, SQL and image acceptance remain required jobs.
+
+## Historical 0.1.0 evidence
 
 ## Measured results
 

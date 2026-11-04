@@ -18,6 +18,8 @@ EXCLUDED = {
     ".runtime",
     "node_modules",
     "dist",
+    "release",
+    "build",
     "coverage",
     "__pycache__",
     ".pytest_cache",
@@ -26,6 +28,9 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "requirements-desktop.lock": "Hash-locked Windows packaging/test dependencies and frozen service builder.",
+    "docs/REHEARSAL.md": "Cooperative scenario guide, obstacle/clock semantics, expected results and desktop setup.",
+    "docs/RELEASE_0_2.md": "Version 0.2.0 feature summary, installer behavior and model boundaries.",
     ".dockerignore": "Exclude private runtime data, databases and local dependencies from image context.",
     ".gitattributes": "Normalize tracked source line endings across operating systems.",
     ".gitignore": "Keep databases, secrets, build output, test evidence and dependencies outside Git.",

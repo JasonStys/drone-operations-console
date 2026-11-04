@@ -10,62 +10,71 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `console/__main__.py` | 20 | `parser` |
 | `console/__main__.py` | 25 | `args` |
 | `console/__main__.py` | 28 | `store` |
-| `console/api.py` | 28 | `Login(class)` |
-| `console/api.py` | 31 | `model_config` |
-| `console/api.py` | 32 | `username` |
-| `console/api.py` | 33 | `password` |
-| `console/api.py` | 36 | `PlanUpdate(class)` |
-| `console/api.py` | 39 | `model_config` |
-| `console/api.py` | 40 | `revision` |
-| `console/api.py` | 41 | `plan` |
-| `console/api.py` | 44 | `Approval(class)` |
-| `console/api.py` | 47 | `model_config` |
-| `console/api.py` | 48 | `revision` |
-| `console/api.py` | 49 | `checks` |
-| `console/api.py` | 52 | `create_app(store, adapter, origin, background)` |
-| `console/api.py` | 54 | `origin` |
-| `console/api.py` | 55 | `parsed` |
-| `console/api.py` | 67 | `owned` |
-| `console/api.py` | 70 | `store` |
-| `console/api.py` | 76 | `adapter` |
-| `console/api.py` | 77 | `adapter` |
-| `console/api.py` | 81 | `lifespan(app)` |
-| `console/api.py` | 84 | `sample_loop()` |
-| `console/api.py` | 88 | `aircraft` |
-| `console/api.py` | 88 | `sample` |
-| `console/api.py` | 92 | `task` |
-| `console/api.py` | 94 | `row` |
-| `console/api.py` | 95 | `task` |
-| `console/api.py` | 111 | `app` |
-| `console/api.py` | 126 | `boundaries(request, call_next)` |
-| `console/api.py` | 129 | `result` |
-| `console/api.py` | 134 | `result` |
-| `console/api.py` | 136 | `total` |
-| `console/api.py` | 137 | `parts` |
-| `console/api.py` | 138 | `part` |
-| `console/api.py` | 139 | `total` |
-| `console/api.py` | 144 | `result` |
+| `console/api.py` | 30 | `Login(class)` |
+| `console/api.py` | 33 | `model_config` |
+| `console/api.py` | 34 | `username` |
+| `console/api.py` | 35 | `password` |
+| `console/api.py` | 38 | `PlanUpdate(class)` |
+| `console/api.py` | 41 | `model_config` |
+| `console/api.py` | 42 | `revision` |
+| `console/api.py` | 43 | `plan` |
+| `console/api.py` | 46 | `Approval(class)` |
+| `console/api.py` | 49 | `model_config` |
+| `console/api.py` | 50 | `revision` |
+| `console/api.py` | 51 | `checks` |
+| `console/api.py` | 54 | `create_app(store, adapter, origin, background)` |
+| `console/api.py` | 56 | `origin` |
+| `console/api.py` | 57 | `parsed` |
+| `console/api.py` | 69 | `owned` |
+| `console/api.py` | 72 | `store` |
+| `console/api.py` | 78 | `adapter` |
+| `console/api.py` | 79 | `adapter` |
+| `console/api.py` | 83 | `lifespan(app)` |
+| `console/api.py` | 86 | `sample_loop()` |
+| `console/api.py` | 90 | `aircraft` |
+| `console/api.py` | 90 | `sample` |
+| `console/api.py` | 94 | `task` |
+| `console/api.py` | 96 | `row` |
+| `console/api.py` | 97 | `task` |
+| `console/api.py` | 113 | `app` |
+| `console/api.py` | 126 | `launch_token` |
+| `console/api.py` | 127 | `bootstrap` |
+| `console/api.py` | 131 | `boundaries(request, call_next)` |
+| `console/api.py` | 140 | `result` |
+| `console/api.py` | 142 | `result` |
 | `console/api.py` | 147 | `result` |
-| `console/api.py` | 161 | `health()` |
-| `console/api.py` | 166 | `login(body, request, response)` |
-| `console/api.py` | 168 | `attempts` |
-| `console/api.py` | 169 | `now` |
-| `console/api.py` | 176 | `user` |
-| `console/api.py` | 179 | `csrf` |
-| `console/api.py` | 179 | `token` |
-| `console/api.py` | 192 | `me(request)` |
-| `console/api.py` | 194 | `user` |
-| `console/api.py` | 198 | `logout(request, response)` |
-| `console/api.py` | 206 | `fleet(request)` |
-| `console/api.py` | 215 | `save_plan(identifier, body, request)` |
-| `console/api.py` | 217 | `user` |
-| `console/api.py` | 223 | `approve(identifier, body, request)` |
-| `console/api.py` | 225 | `user` |
-| `console/api.py` | 231 | `command(identifier, body, request)` |
+| `console/api.py` | 149 | `total` |
+| `console/api.py` | 150 | `parts` |
+| `console/api.py` | 151 | `part` |
+| `console/api.py` | 152 | `total` |
+| `console/api.py` | 157 | `result` |
+| `console/api.py` | 160 | `result` |
+| `console/api.py` | 174 | `health()` |
+| `console/api.py` | 183 | `setup_status()` |
+| `console/api.py` | 185 | `db` |
+| `console/api.py` | 186 | `empty` |
+| `console/api.py` | 190 | `setup(body)` |
+| `console/api.py` | 195 | `db` |
+| `console/api.py` | 205 | `login(body, request, response)` |
+| `console/api.py` | 207 | `attempts` |
+| `console/api.py` | 208 | `now` |
+| `console/api.py` | 215 | `user` |
+| `console/api.py` | 218 | `csrf` |
+| `console/api.py` | 218 | `token` |
+| `console/api.py` | 231 | `me(request)` |
 | `console/api.py` | 233 | `user` |
-| `console/api.py` | 239 | `history(identifier, request)` |
-| `console/api.py` | 246 | `evidence(request)` |
-| `console/api.py` | 261 | `audit_records(request)` |
+| `console/api.py` | 237 | `logout(request, response)` |
+| `console/api.py` | 245 | `fleet(request)` |
+| `console/api.py` | 254 | `save_plan(identifier, body, request)` |
+| `console/api.py` | 256 | `user` |
+| `console/api.py` | 262 | `approve(identifier, body, request)` |
+| `console/api.py` | 264 | `user` |
+| `console/api.py` | 270 | `command(identifier, body, request)` |
+| `console/api.py` | 272 | `user` |
+| `console/api.py` | 278 | `history(identifier, request)` |
+| `console/api.py` | 285 | `evidence(request)` |
+| `console/api.py` | 300 | `audit_records(request)` |
+| `console/api.py` | 305 | `ui` |
 | `console/auth.py` | 20 | `hasher` |
 | `console/auth.py` | 21 | `DUMMY` |
 | `console/auth.py` | 24 | `add_user(store, name, password, role)` |
@@ -84,6 +93,11 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `console/auth.py` | 87 | `revoke(request)` |
 | `console/auth.py` | 89 | `digest` |
 | `console/auth.py` | 90 | `db` |
+| `console/desktop.py` | 18 | `main()` |
+| `console/desktop.py` | 20 | `parser` |
+| `console/desktop.py` | 24 | `args` |
+| `console/desktop.py` | 36 | `server` |
+| `console/desktop.py` | 47 | `watch_parent()` |
 | `console/domain.py` | 13 | `HOME_LAT` |
 | `console/domain.py` | 14 | `HOME_LON` |
 | `console/domain.py` | 15 | `EARTH_M` |
@@ -348,6 +362,12 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/test_api.py` | 359 | `scenario()` |
 | `tests/test_api.py` | 360 | `adapter` |
 | `tests/test_api.py` | 361 | `app` |
+| `tests/test_desktop_boundary.py` | 12 | `test_web_registration_is_off(client)` |
+| `tests/test_desktop_boundary.py` | 21 | `test_desktop_first_user_and_owned_session(monkeypatch, tmp_path)` |
+| `tests/test_desktop_boundary.py` | 26 | `store` |
+| `tests/test_desktop_boundary.py` | 27 | `app` |
+| `tests/test_desktop_boundary.py` | 29 | `client` |
+| `tests/test_desktop_boundary.py` | 69 | `session` |
 | `tests/test_domain.py` | 23 | `sample()` |
 | `tests/test_domain.py` | 56 | `test_point_rejects_unsafe_values(changes)` |
 | `tests/test_domain.py` | 73 | `i` |
@@ -369,6 +389,8 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/test_native_conversion.py` | 65 | `scenario()` |
 | `tests/test_native_conversion.py` | 66 | `adapter` |
 | `tests/test_native_conversion.py` | 69 | `fail()` |
+| `tools/build_desktop.py` | 8 | `main()` |
+| `tools/build_desktop.py` | 10 | `root` |
 | `tools/check_repo.py` | 15 | `main()` |
 | `tools/check_repo.py` | 17 | `name` |
 | `tools/check_repo.py` | 32 | `path` |
@@ -382,37 +404,37 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tools/check_repo.py` | 51 | `p` |
 | `tools/docs_index.py` | 14 | `ROOT` |
 | `tools/docs_index.py` | 15 | `EXCLUDED` |
-| `tools/docs_index.py` | 28 | `FILE_DESCRIPTIONS` |
-| `tools/docs_index.py` | 58 | `files()` |
-| `tools/docs_index.py` | 60 | `paths` |
-| `tools/docs_index.py` | 61 | `directory` |
-| `tools/docs_index.py` | 61 | `names` |
-| `tools/docs_index.py` | 61 | `subdirectories` |
-| `tools/docs_index.py` | 62 | `name` |
-| `tools/docs_index.py` | 63 | `name` |
-| `tools/docs_index.py` | 64 | `path` |
-| `tools/docs_index.py` | 73 | `render()` |
-| `tools/docs_index.py` | 75 | `catalog` |
-| `tools/docs_index.py` | 83 | `source_map` |
-| `tools/docs_index.py` | 93 | `path` |
-| `tools/docs_index.py` | 94 | `relative` |
-| `tools/docs_index.py` | 95 | `text` |
-| `tools/docs_index.py` | 96 | `description` |
-| `tools/docs_index.py` | 97 | `line` |
-| `tools/docs_index.py` | 104 | `tree` |
-| `tools/docs_index.py` | 105 | `records` |
-| `tools/docs_index.py` | 106 | `node` |
-| `tools/docs_index.py` | 108 | `params` |
-| `tools/docs_index.py` | 109 | `arg` |
-| `tools/docs_index.py` | 116 | `line` |
-| `tools/docs_index.py` | 116 | `name` |
-| `tools/docs_index.py` | 118 | `node_binary` |
-| `tools/docs_index.py` | 121 | `node` |
-| `tools/docs_index.py` | 131 | `main()` |
-| `tools/docs_index.py` | 133 | `outputs` |
-| `tools/docs_index.py` | 134 | `content` |
-| `tools/docs_index.py` | 134 | `name` |
-| `tools/docs_index.py` | 135 | `path` |
+| `tools/docs_index.py` | 30 | `FILE_DESCRIPTIONS` |
+| `tools/docs_index.py` | 63 | `files()` |
+| `tools/docs_index.py` | 65 | `paths` |
+| `tools/docs_index.py` | 66 | `directory` |
+| `tools/docs_index.py` | 66 | `names` |
+| `tools/docs_index.py` | 66 | `subdirectories` |
+| `tools/docs_index.py` | 67 | `name` |
+| `tools/docs_index.py` | 68 | `name` |
+| `tools/docs_index.py` | 69 | `path` |
+| `tools/docs_index.py` | 78 | `render()` |
+| `tools/docs_index.py` | 80 | `catalog` |
+| `tools/docs_index.py` | 88 | `source_map` |
+| `tools/docs_index.py` | 98 | `path` |
+| `tools/docs_index.py` | 99 | `relative` |
+| `tools/docs_index.py` | 100 | `text` |
+| `tools/docs_index.py` | 101 | `description` |
+| `tools/docs_index.py` | 102 | `line` |
+| `tools/docs_index.py` | 109 | `tree` |
+| `tools/docs_index.py` | 110 | `records` |
+| `tools/docs_index.py` | 111 | `node` |
+| `tools/docs_index.py` | 113 | `params` |
+| `tools/docs_index.py` | 114 | `arg` |
+| `tools/docs_index.py` | 121 | `line` |
+| `tools/docs_index.py` | 121 | `name` |
+| `tools/docs_index.py` | 123 | `node_binary` |
+| `tools/docs_index.py` | 126 | `node` |
+| `tools/docs_index.py` | 136 | `main()` |
+| `tools/docs_index.py` | 138 | `outputs` |
+| `tools/docs_index.py` | 139 | `content` |
+| `tools/docs_index.py` | 139 | `name` |
+| `tools/docs_index.py` | 140 | `path` |
 | `tools/native_acceptance.py` | 22 | `ORIGIN` |
 | `tools/native_acceptance.py` | 25 | `wait_state(client, predicate, seconds)` |
 | `tools/native_acceptance.py` | 27 | `deadline` |
@@ -461,6 +483,52 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tools/serve_test.py` | 24 | `store` |
 | `tools/serve_test.py` | 25 | `name` |
 | `tools/serve_test.py` | 25 | `role` |
+| `tools/serve_test.py` | 28 | `port` |
+| `ui/src/RehearsalPanel.tsx` | 14 | `svg` |
+| `ui/src/RehearsalPanel.tsx` | 14 | `point` |
+| `ui/src/RehearsalPanel.tsx` | 19 | `Rehearsal` |
+| `ui/src/RehearsalPanel.tsx` | 20 | `[preset, setPreset]` |
+| `ui/src/RehearsalPanel.tsx` | 21 | `[obstacles, setObstacles]` |
+| `ui/src/RehearsalPanel.tsx` | 24 | `[time, setTime]` |
+| `ui/src/RehearsalPanel.tsx` | 25 | `[running, setRunning]` |
+| `ui/src/RehearsalPanel.tsx` | 26 | `[error, setError]` |
+| `ui/src/RehearsalPanel.tsx` | 27 | `[showFuture, setShowFuture]` |
+| `ui/src/RehearsalPanel.tsx` | 28 | `exercise` |
+| `ui/src/RehearsalPanel.tsx` | 32 | `frame` |
+| `ui/src/RehearsalPanel.tsx` | 35 | `handle` |
+| `ui/src/RehearsalPanel.tsx` | 36 | `previous` |
+| `ui/src/RehearsalPanel.tsx` | 37 | `animate` |
+| `ui/src/RehearsalPanel.tsx` | 37 | `stamp` |
+| `ui/src/RehearsalPanel.tsx` | 39 | `delta` |
+| `ui/src/RehearsalPanel.tsx` | 40 | `value` |
+| `ui/src/RehearsalPanel.tsx` | 46 | `visibility` |
+| `ui/src/RehearsalPanel.tsx` | 60 | `reset` |
+| `ui/src/RehearsalPanel.tsx` | 60 | `next` |
+| `ui/src/RehearsalPanel.tsx` | 67 | `addObstacle` |
+| `ui/src/RehearsalPanel.tsx` | 67 | `event` |
+| `ui/src/RehearsalPanel.tsx` | 69 | `data` |
+| `ui/src/RehearsalPanel.tsx` | 70 | `obstacle` |
+| `ui/src/RehearsalPanel.tsx` | 78 | `error` |
+| `ui/src/RehearsalPanel.tsx` | 83 | `download` |
+| `ui/src/RehearsalPanel.tsx` | 84 | `evidence` |
+| `ui/src/RehearsalPanel.tsx` | 91 | `_` |
+| `ui/src/RehearsalPanel.tsx` | 91 | `t` |
+| `ui/src/RehearsalPanel.tsx` | 101 | `url` |
+| `ui/src/RehearsalPanel.tsx` | 106 | `link` |
+| `ui/src/RehearsalPanel.tsx` | 156 | `o` |
+| `ui/src/RehearsalPanel.tsx` | 156 | `i` |
+| `ui/src/RehearsalPanel.tsx` | 180 | `path` |
+| `ui/src/RehearsalPanel.tsx` | 180 | `i` |
+| `ui/src/RehearsalPanel.tsx` | 189 | `a` |
+| `ui/src/RehearsalPanel.tsx` | 189 | `i` |
+| `ui/src/RehearsalPanel.tsx` | 232 | `value` |
+| `ui/src/RehearsalPanel.tsx` | 244 | `e` |
+| `ui/src/RehearsalPanel.tsx` | 259 | `a` |
+| `ui/src/RehearsalPanel.tsx` | 287 | `e` |
+| `ui/src/RehearsalPanel.tsx` | 349 | `o` |
+| `ui/src/RehearsalPanel.tsx` | 349 | `i` |
+| `ui/src/RehearsalPanel.tsx` | 354 | `_` |
+| `ui/src/RehearsalPanel.tsx` | 354 | `j` |
 | `ui/src/geometry.ts` | 5 | `project` |
 | `ui/src/geometry.ts` | 5 | `east` |
 | `ui/src/geometry.ts` | 5 | `north` |
@@ -474,82 +542,253 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `ui/src/geometry.ts` | 28 | `received` |
 | `ui/src/geometry.ts` | 29 | `now` |
 | `ui/src/geometry.ts` | 33 | `age` |
-| `ui/src/main.tsx` | 54 | `checks` |
-| `ui/src/main.tsx` | 63 | `request` |
-| `ui/src/main.tsx` | 64 | `url` |
-| `ui/src/main.tsx` | 65 | `method` |
-| `ui/src/main.tsx` | 66 | `body` |
-| `ui/src/main.tsx` | 67 | `csrf` |
-| `ui/src/main.tsx` | 68 | `key` |
-| `ui/src/main.tsx` | 70 | `response` |
-| `ui/src/main.tsx` | 80 | `value` |
-| `ui/src/main.tsx` | 91 | `App` |
-| `ui/src/main.tsx` | 92 | `[user, setUser]` |
-| `ui/src/main.tsx` | 93 | `[fleet, setFleet]` |
-| `ui/src/main.tsx` | 94 | `[selected, setSelected]` |
-| `ui/src/main.tsx` | 95 | `[draft, setDraft]` |
-| `ui/src/main.tsx` | 96 | `[draftRevision, setDraftRevision]` |
-| `ui/src/main.tsx` | 97 | `[attest, setAttest]` |
-| `ui/src/main.tsx` | 98 | `[notice, setNotice]` |
-| `ui/src/main.tsx` | 99 | `[busy, setBusy]` |
-| `ui/src/main.tsx` | 100 | `[intent, setIntent]` |
-| `ui/src/main.tsx` | 105 | `[history, setHistory]` |
-| `ui/src/main.tsx` | 106 | `[cursor, setCursor]` |
-| `ui/src/main.tsx` | 107 | `[audit, setAudit]` |
-| `ui/src/main.tsx` | 108 | `[help, setHelp]` |
-| `ui/src/main.tsx` | 109 | `[now, setNow]` |
-| `ui/src/main.tsx` | 110 | `dialogRef` |
-| `ui/src/main.tsx` | 111 | `aircraft` |
-| `ui/src/main.tsx` | 111 | `item` |
-| `ui/src/main.tsx` | 112 | `writable` |
-| `ui/src/main.tsx` | 114 | `draftMatches` |
-| `ui/src/main.tsx` | 122 | `timer` |
-| `ui/src/main.tsx` | 126 | `dialog` |
-| `ui/src/main.tsx` | 133 | `refresh` |
-| `ui/src/main.tsx` | 134 | `result` |
-| `ui/src/main.tsx` | 146 | `active` |
-| `ui/src/main.tsx` | 147 | `running` |
-| `ui/src/main.tsx` | 148 | `poll` |
-| `ui/src/main.tsx` | 152 | `value` |
-| `ui/src/main.tsx` | 164 | `timer` |
-| `ui/src/main.tsx` | 173 | `item` |
-| `ui/src/main.tsx` | 184 | `perform` |
-| `ui/src/main.tsx` | 185 | `operation` |
-| `ui/src/main.tsx` | 186 | `success` |
-| `ui/src/main.tsx` | 187 | `reload` |
-| `ui/src/main.tsx` | 195 | `error` |
-| `ui/src/main.tsx` | 206 | `login` |
-| `ui/src/main.tsx` | 206 | `event` |
-| `ui/src/main.tsx` | 208 | `data` |
-| `ui/src/main.tsx` | 218 | `error` |
-| `ui/src/main.tsx` | 225 | `selectAircraft` |
-| `ui/src/main.tsx` | 225 | `id` |
-| `ui/src/main.tsx` | 235 | `shown` |
-| `ui/src/main.tsx` | 236 | `pointPath` |
-| `ui/src/main.tsx` | 238 | `p` |
-| `ui/src/main.tsx` | 338 | `event` |
-| `ui/src/main.tsx` | 378 | `item` |
-| `ui/src/main.tsx` | 430 | `p` |
-| `ui/src/main.tsx` | 430 | `i` |
-| `ui/src/main.tsx` | 431 | `[x, y]` |
-| `ui/src/main.tsx` | 492 | `e` |
-| `ui/src/main.tsx` | 506 | `e` |
-| `ui/src/main.tsx` | 516 | `p` |
-| `ui/src/main.tsx` | 516 | `i` |
-| `ui/src/main.tsx` | 519 | `key` |
-| `ui/src/main.tsx` | 532 | `e` |
-| `ui/src/main.tsx` | 535 | `v` |
-| `ui/src/main.tsx` | 535 | `j` |
-| `ui/src/main.tsx` | 595 | `[key, label]` |
-| `ui/src/main.tsx` | 600 | `e` |
-| `ui/src/main.tsx` | 613 | `key` |
-| `ui/src/main.tsx` | 635 | `action` |
-| `ui/src/main.tsx` | 660 | `issue` |
-| `ui/src/main.tsx` | 681 | `value` |
-| `ui/src/main.tsx` | 719 | `e` |
-| `ui/src/main.tsx` | 735 | `item` |
-| `ui/src/main.tsx` | 754 | `event` |
-| `ui/src/main.tsx` | 786 | `captured` |
+| `ui/src/main.tsx` | 55 | `checks` |
+| `ui/src/main.tsx` | 64 | `request` |
+| `ui/src/main.tsx` | 65 | `url` |
+| `ui/src/main.tsx` | 66 | `method` |
+| `ui/src/main.tsx` | 67 | `body` |
+| `ui/src/main.tsx` | 68 | `csrf` |
+| `ui/src/main.tsx` | 69 | `key` |
+| `ui/src/main.tsx` | 71 | `response` |
+| `ui/src/main.tsx` | 81 | `value` |
+| `ui/src/main.tsx` | 92 | `App` |
+| `ui/src/main.tsx` | 93 | `[user, setUser]` |
+| `ui/src/main.tsx` | 94 | `[setupRequired, setSetupRequired]` |
+| `ui/src/main.tsx` | 95 | `[fleet, setFleet]` |
+| `ui/src/main.tsx` | 96 | `[selected, setSelected]` |
+| `ui/src/main.tsx` | 97 | `[draft, setDraft]` |
+| `ui/src/main.tsx` | 98 | `[draftRevision, setDraftRevision]` |
+| `ui/src/main.tsx` | 99 | `[attest, setAttest]` |
+| `ui/src/main.tsx` | 100 | `[notice, setNotice]` |
+| `ui/src/main.tsx` | 101 | `[busy, setBusy]` |
+| `ui/src/main.tsx` | 102 | `[intent, setIntent]` |
+| `ui/src/main.tsx` | 107 | `[history, setHistory]` |
+| `ui/src/main.tsx` | 108 | `[cursor, setCursor]` |
+| `ui/src/main.tsx` | 109 | `[audit, setAudit]` |
+| `ui/src/main.tsx` | 110 | `[help, setHelp]` |
+| `ui/src/main.tsx` | 111 | `[now, setNow]` |
+| `ui/src/main.tsx` | 112 | `dialogRef` |
+| `ui/src/main.tsx` | 113 | `aircraft` |
+| `ui/src/main.tsx` | 113 | `item` |
+| `ui/src/main.tsx` | 114 | `writable` |
+| `ui/src/main.tsx` | 116 | `draftMatches` |
+| `ui/src/main.tsx` | 124 | `timer` |
+| `ui/src/main.tsx` | 128 | `dialog` |
+| `ui/src/main.tsx` | 135 | `refresh` |
+| `ui/src/main.tsx` | 136 | `result` |
+| `ui/src/main.tsx` | 143 | `result` |
+| `ui/src/main.tsx` | 151 | `active` |
+| `ui/src/main.tsx` | 152 | `running` |
+| `ui/src/main.tsx` | 153 | `poll` |
+| `ui/src/main.tsx` | 157 | `value` |
+| `ui/src/main.tsx` | 169 | `timer` |
+| `ui/src/main.tsx` | 178 | `item` |
+| `ui/src/main.tsx` | 189 | `perform` |
+| `ui/src/main.tsx` | 190 | `operation` |
+| `ui/src/main.tsx` | 191 | `success` |
+| `ui/src/main.tsx` | 192 | `reload` |
+| `ui/src/main.tsx` | 200 | `error` |
+| `ui/src/main.tsx` | 211 | `login` |
+| `ui/src/main.tsx` | 211 | `event` |
+| `ui/src/main.tsx` | 213 | `data` |
+| `ui/src/main.tsx` | 230 | `error` |
+| `ui/src/main.tsx` | 237 | `selectAircraft` |
+| `ui/src/main.tsx` | 237 | `id` |
+| `ui/src/main.tsx` | 247 | `shown` |
+| `ui/src/main.tsx` | 248 | `pointPath` |
+| `ui/src/main.tsx` | 250 | `p` |
+| `ui/src/main.tsx` | 362 | `event` |
+| `ui/src/main.tsx` | 405 | `item` |
+| `ui/src/main.tsx` | 457 | `p` |
+| `ui/src/main.tsx` | 457 | `i` |
+| `ui/src/main.tsx` | 458 | `[x, y]` |
+| `ui/src/main.tsx` | 519 | `e` |
+| `ui/src/main.tsx` | 533 | `e` |
+| `ui/src/main.tsx` | 543 | `p` |
+| `ui/src/main.tsx` | 543 | `i` |
+| `ui/src/main.tsx` | 546 | `key` |
+| `ui/src/main.tsx` | 559 | `e` |
+| `ui/src/main.tsx` | 562 | `v` |
+| `ui/src/main.tsx` | 562 | `j` |
+| `ui/src/main.tsx` | 622 | `[key, label]` |
+| `ui/src/main.tsx` | 627 | `e` |
+| `ui/src/main.tsx` | 640 | `key` |
+| `ui/src/main.tsx` | 662 | `action` |
+| `ui/src/main.tsx` | 687 | `issue` |
+| `ui/src/main.tsx` | 709 | `value` |
+| `ui/src/main.tsx` | 747 | `e` |
+| `ui/src/main.tsx` | 763 | `item` |
+| `ui/src/main.tsx` | 782 | `event` |
+| `ui/src/main.tsx` | 814 | `captured` |
+| `ui/src/rehearsal.test.ts` | 18 | `assertClear` |
+| `ui/src/rehearsal.test.ts` | 19 | `path` |
+| `ui/src/rehearsal.test.ts` | 20 | `obstacles` |
+| `ui/src/rehearsal.test.ts` | 22 | `i` |
+| `ui/src/rehearsal.test.ts` | 23 | `fraction` |
+| `ui/src/rehearsal.test.ts` | 24 | `a` |
+| `ui/src/rehearsal.test.ts` | 25 | `b` |
+| `ui/src/rehearsal.test.ts` | 26 | `f` |
+| `ui/src/rehearsal.test.ts` | 27 | `x` |
+| `ui/src/rehearsal.test.ts` | 28 | `y` |
+| `ui/src/rehearsal.test.ts` | 31 | `disk` |
+| `ui/src/rehearsal.test.ts` | 41 | `a` |
+| `ui/src/rehearsal.test.ts` | 42 | `b` |
+| `ui/src/rehearsal.test.ts` | 53 | `path` |
+| `ui/src/rehearsal.test.ts` | 61 | `[speed, time]` |
+| `ui/src/rehearsal.test.ts` | 74 | `start` |
+| `ui/src/rehearsal.test.ts` | 75 | `goal` |
+| `ui/src/rehearsal.test.ts` | 81 | `offset` |
+| `ui/src/rehearsal.test.ts` | 82 | `start` |
+| `ui/src/rehearsal.test.ts` | 83 | `goal` |
+| `ui/src/rehearsal.test.ts` | 84 | `obstacles` |
+| `ui/src/rehearsal.test.ts` | 88 | `path` |
+| `ui/src/rehearsal.test.ts` | 96 | `a` |
+| `ui/src/rehearsal.test.ts` | 97 | `b` |
+| `ui/src/rehearsal.test.ts` | 101 | `bad` |
+| `ui/src/rehearsal.test.ts` | 107 | `radius` |
+| `ui/src/rehearsal.test.ts` | 121 | `exercise` |
+| `ui/src/rehearsal.test.ts` | 123 | `prepared` |
+| `ui/src/rehearsal.test.ts` | 125 | `frame` |
+| `ui/src/rehearsal.test.ts` | 133 | `exercise` |
+| `ui/src/rehearsal.test.ts` | 135 | `frame` |
+| `ui/src/rehearsal.test.ts` | 150 | `exercise` |
+| `ui/src/rehearsal.test.ts` | 152 | `result` |
+| `ui/src/rehearsal.test.ts` | 160 | `exercise` |
+| `ui/src/rehearsal.test.ts` | 163 | `stopped` |
+| `ui/src/rehearsal.test.ts` | 168 | `aircraft` |
+| `ui/src/rehearsal.test.ts` | 170 | `p` |
+| `ui/src/rehearsal.test.ts` | 172 | `t` |
+| `ui/src/rehearsal.test.ts` | 173 | `f` |
+| `ui/src/rehearsal.test.ts` | 180 | `blocked` |
+| `ui/src/rehearsal.test.ts` | 181 | `frame` |
+| `ui/src/rehearsal.test.ts` | 188 | `ordinary` |
+| `ui/src/rehearsal.test.ts` | 189 | `time` |
+| `ui/src/rehearsal.ts` | 18 | `BOUND` |
+| `ui/src/rehearsal.ts` | 19 | `CLEARANCE` |
+| `ui/src/rehearsal.ts` | 20 | `SEPARATION` |
+| `ui/src/rehearsal.ts` | 21 | `CELL` |
+| `ui/src/rehearsal.ts` | 22 | `WIDTH` |
+| `ui/src/rehearsal.ts` | 23 | `NODES` |
+| `ui/src/rehearsal.ts` | 24 | `EPSILON` |
+| `ui/src/rehearsal.ts` | 27 | `distance` |
+| `ui/src/rehearsal.ts` | 27 | `a` |
+| `ui/src/rehearsal.ts` | 27 | `b` |
+| `ui/src/rehearsal.ts` | 32 | `segmentDistance` |
+| `ui/src/rehearsal.ts` | 32 | `p` |
+| `ui/src/rehearsal.ts` | 32 | `a` |
+| `ui/src/rehearsal.ts` | 32 | `b` |
+| `ui/src/rehearsal.ts` | 33 | `dx` |
+| `ui/src/rehearsal.ts` | 34 | `dy` |
+| `ui/src/rehearsal.ts` | 35 | `squared` |
+| `ui/src/rehearsal.ts` | 36 | `t` |
+| `ui/src/rehearsal.ts` | 50 | `clearSegment` |
+| `ui/src/rehearsal.ts` | 50 | `a` |
+| `ui/src/rehearsal.ts` | 50 | `b` |
+| `ui/src/rehearsal.ts` | 50 | `obstacles` |
+| `ui/src/rehearsal.ts` | 52 | `o` |
+| `ui/src/rehearsal.ts` | 57 | `validPoint` |
+| `ui/src/rehearsal.ts` | 57 | `p` |
+| `ui/src/rehearsal.ts` | 67 | `MinHeap` |
+| `ui/src/rehearsal.ts` | 70 | `id` |
+| `ui/src/rehearsal.ts` | 70 | `score` |
+| `ui/src/rehearsal.ts` | 71 | `entry` |
+| `ui/src/rehearsal.ts` | 72 | `index` |
+| `ui/src/rehearsal.ts` | 75 | `parent` |
+| `ui/src/rehearsal.ts` | 84 | `first` |
+| `ui/src/rehearsal.ts` | 85 | `last` |
+| `ui/src/rehearsal.ts` | 87 | `index` |
+| `ui/src/rehearsal.ts` | 89 | `child` |
+| `ui/src/rehearsal.ts` | 108 | `planPath` |
+| `ui/src/rehearsal.ts` | 109 | `start` |
+| `ui/src/rehearsal.ts` | 110 | `goal` |
+| `ui/src/rehearsal.ts` | 111 | `obstacles` |
+| `ui/src/rehearsal.ts` | 118 | `o` |
+| `ui/src/rehearsal.ts` | 134 | `point` |
+| `ui/src/rehearsal.ts` | 134 | `id` |
+| `ui/src/rehearsal.ts` | 143 | `cost` |
+| `ui/src/rehearsal.ts` | 144 | `previous` |
+| `ui/src/rehearsal.ts` | 145 | `closed` |
+| `ui/src/rehearsal.ts` | 146 | `heap` |
+| `ui/src/rehearsal.ts` | 147 | `startLinks` |
+| `ui/src/rehearsal.ts` | 148 | `id` |
+| `ui/src/rehearsal.ts` | 153 | `current` |
+| `ui/src/rehearsal.ts` | 157 | `result` |
+| `ui/src/rehearsal.ts` | 158 | `id` |
+| `ui/src/rehearsal.ts` | 162 | `here` |
+| `ui/src/rehearsal.ts` | 163 | `neighbors` |
+| `ui/src/rehearsal.ts` | 165 | `x` |
+| `ui/src/rehearsal.ts` | 166 | `y` |
+| `ui/src/rehearsal.ts` | 167 | `dy` |
+| `ui/src/rehearsal.ts` | 168 | `dx` |
+| `ui/src/rehearsal.ts` | 179 | `next` |
+| `ui/src/rehearsal.ts` | 181 | `there` |
+| `ui/src/rehearsal.ts` | 182 | `improved` |
+| `ui/src/rehearsal.ts` | 194 | `pathLength` |
+| `ui/src/rehearsal.ts` | 194 | `points` |
+| `ui/src/rehearsal.ts` | 198 | `total` |
+| `ui/src/rehearsal.ts` | 198 | `point` |
+| `ui/src/rehearsal.ts` | 198 | `index` |
+| `ui/src/rehearsal.ts` | 204 | `positionAt` |
+| `ui/src/rehearsal.ts` | 204 | `points` |
+| `ui/src/rehearsal.ts` | 204 | `speed` |
+| `ui/src/rehearsal.ts` | 204 | `time` |
+| `ui/src/rehearsal.ts` | 215 | `remaining` |
+| `ui/src/rehearsal.ts` | 216 | `index` |
+| `ui/src/rehearsal.ts` | 217 | `a` |
+| `ui/src/rehearsal.ts` | 218 | `b` |
+| `ui/src/rehearsal.ts` | 219 | `length` |
+| `ui/src/rehearsal.ts` | 221 | `t` |
+| `ui/src/rehearsal.ts` | 233 | `sweptSeparation` |
+| `ui/src/rehearsal.ts` | 233 | `a0` |
+| `ui/src/rehearsal.ts` | 233 | `a1` |
+| `ui/src/rehearsal.ts` | 233 | `b0` |
+| `ui/src/rehearsal.ts` | 233 | `b1` |
+| `ui/src/rehearsal.ts` | 245 | `prepare` |
+| `ui/src/rehearsal.ts` | 245 | `exercise` |
+| `ui/src/rehearsal.ts` | 250 | `route` |
+| `ui/src/rehearsal.ts` | 259 | `paths` |
+| `ui/src/rehearsal.ts` | 259 | `route` |
+| `ui/src/rehearsal.ts` | 260 | `result` |
+| `ui/src/rehearsal.ts` | 261 | `i` |
+| `ui/src/rehearsal.ts` | 262 | `leg` |
+| `ui/src/rehearsal.ts` | 272 | `blocked` |
+| `ui/src/rehearsal.ts` | 272 | `path` |
+| `ui/src/rehearsal.ts` | 273 | `plannedDuration` |
+| `ui/src/rehearsal.ts` | 274 | `path` |
+| `ui/src/rehearsal.ts` | 274 | `i` |
+| `ui/src/rehearsal.ts` | 278 | `duration` |
+| `ui/src/rehearsal.ts` | 279 | `stop` |
+| `ui/src/rehearsal.ts` | 282 | `step` |
+| `ui/src/rehearsal.ts` | 283 | `t` |
+| `ui/src/rehearsal.ts` | 284 | `positions` |
+| `ui/src/rehearsal.ts` | 284 | `path` |
+| `ui/src/rehearsal.ts` | 284 | `i` |
+| `ui/src/rehearsal.ts` | 287 | `before` |
+| `ui/src/rehearsal.ts` | 287 | `path` |
+| `ui/src/rehearsal.ts` | 287 | `i` |
+| `ui/src/rehearsal.ts` | 290 | `conflict` |
+| `ui/src/rehearsal.ts` | 291 | `a` |
+| `ui/src/rehearsal.ts` | 292 | `b` |
+| `ui/src/rehearsal.ts` | 319 | `frameAt` |
+| `ui/src/rehearsal.ts` | 319 | `exercise` |
+| `ui/src/rehearsal.ts` | 319 | `requested` |
+| `ui/src/rehearsal.ts` | 322 | `time` |
+| `ui/src/rehearsal.ts` | 323 | `phase` |
+| `ui/src/rehearsal.ts` | 332 | `aircraft` |
+| `ui/src/rehearsal.ts` | 332 | `route` |
+| `ui/src/rehearsal.ts` | 332 | `index` |
+| `ui/src/rehearsal.ts` | 333 | `path` |
+| `ui/src/rehearsal.ts` | 334 | `point` |
+| `ui/src/rehearsal.ts` | 335 | `projected` |
+| `ui/src/rehearsal.ts` | 336 | `_` |
+| `ui/src/rehearsal.ts` | 336 | `i` |
+| `ui/src/rehearsal.ts` | 359 | `scenario` |
+| `ui/src/rehearsal.ts` | 359 | `name` |
+| `ui/src/rehearsal.ts` | 360 | `route` |
+| `ui/src/rehearsal.ts` | 360 | `id` |
+| `ui/src/rehearsal.ts` | 360 | `points` |
+| `ui/src/rehearsal.ts` | 364 | `[east, north]` |
+| `ui/src/rehearsal.ts` | 425 | `north` |
 | `tests/browser/console.spec.ts` | 6 | `login` |
 | `tests/browser/console.spec.ts` | 6 | `page` |
 | `tests/browser/console.spec.ts` | 6 | `username` |
@@ -565,6 +804,82 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/browser/console.spec.ts` | 117 | `{ page, }` |
 | `tests/browser/console.spec.ts` | 131 | `before` |
 | `tests/browser/console.spec.ts` | 137 | `after` |
+| `tests/browser/rehearsal.spec.ts` | 4 | `{ page, }` |
+| `tests/browser/rehearsal.spec.ts` | 13 | `exercise` |
+| `tests/browser/rehearsal.spec.ts` | 17 | `commandsBefore` |
+| `tests/browser/rehearsal.spec.ts` | 21 | `marker` |
+| `tests/browser/rehearsal.spec.ts` | 22 | `initial` |
+| `tests/browser/rehearsal.spec.ts` | 30 | `stepped` |
+| `tests/browser/rehearsal.spec.ts` | 36 | `paused` |
+| `tests/browser/rehearsal.spec.ts` | 56 | `i` |
+| `tests/browser/rehearsal.spec.ts` | 64 | `downloaded` |
+| `tests/browser/rehearsal.spec.ts` | 68 | `download` |
+| `tests/browser/rehearsal.spec.ts` | 69 | `stream` |
+| `tests/browser/rehearsal.spec.ts` | 70 | `chunks` |
+| `tests/browser/rehearsal.spec.ts` | 71 | `chunk` |
+| `tests/browser/rehearsal.spec.ts` | 72 | `evidence` |
+| `tests/browser/rehearsal.spec.ts` | 89 | `body` |
+| `tests/desktop/app.spec.ts` | 8 | `data` |
+| `tests/desktop/app.spec.ts` | 9 | `options` |
+| `tests/desktop/app.spec.ts` | 15 | `app` |
+| `tests/desktop/app.spec.ts` | 17 | `page` |
+| `tests/desktop/app.spec.ts` | 29 | `exercise` |
+| `tests/desktop/app.spec.ts` | 34 | `marker` |
+| `tests/desktop/app.spec.ts` | 35 | `before` |
+| `tests/desktop/app.spec.ts` | 49 | `security` |
+| `tests/desktop/app.spec.ts` | 49 | `{ BrowserWindow }` |
+| `tests/desktop/app.spec.ts` | 50 | `preferences` |
+| `desktop/main.cjs` | 2 | `{ app, BrowserWindow, dialog, session, Menu }` |
+| `desktop/main.cjs` | 3 | `{ spawn }` |
+| `desktop/main.cjs` | 4 | `{ randomBytes }` |
+| `desktop/main.cjs` | 5 | `{ join }` |
+| `desktop/main.cjs` | 6 | `fs` |
+| `desktop/main.cjs` | 7 | `net` |
+| `desktop/main.cjs` | 8 | `child` |
+| `desktop/main.cjs` | 9 | `closing` |
+| `desktop/main.cjs` | 12 | `freePort` |
+| `desktop/main.cjs` | 13 | `socket` |
+| `desktop/main.cjs` | 14 | `resolve` |
+| `desktop/main.cjs` | 14 | `reject` |
+| `desktop/main.cjs` | 17 | `port` |
+| `desktop/main.cjs` | 18 | `resolve` |
+| `desktop/main.cjs` | 23 | `launch` |
+| `desktop/main.cjs` | 24 | `port` |
+| `desktop/main.cjs` | 25 | `origin` |
+| `desktop/main.cjs` | 26 | `token` |
+| `desktop/main.cjs` | 27 | `nonce` |
+| `desktop/main.cjs` | 28 | `resources` |
+| `desktop/main.cjs` | 31 | `folder` |
+| `desktop/main.cjs` | 33 | `log` |
+| `desktop/main.cjs` | 52 | `failed` |
+| `desktop/main.cjs` | 60 | `ready` |
+| `desktop/main.cjs` | 61 | `attempt` |
+| `desktop/main.cjs` | 63 | `result` |
+| `desktop/main.cjs` | 66 | `data` |
+| `desktop/main.cjs` | 72 | `resolve` |
+| `desktop/main.cjs` | 78 | `isolated` |
+| `desktop/main.cjs` | 81 | `_contents` |
+| `desktop/main.cjs` | 81 | `_permission` |
+| `desktop/main.cjs` | 81 | `callback` |
+| `desktop/main.cjs` | 85 | `details` |
+| `desktop/main.cjs` | 85 | `callback` |
+| `desktop/main.cjs` | 86 | `allowed` |
+| `desktop/main.cjs` | 94 | `details` |
+| `desktop/main.cjs` | 94 | `callback` |
+| `desktop/main.cjs` | 99 | `window` |
+| `desktop/main.cjs` | 114 | `event` |
+| `desktop/main.cjs` | 114 | `url` |
+| `desktop/main.cjs` | 142 | `window` |
+| `desktop/main.cjs` | 151 | `error` |
+| `desktop/main.cjs` | 157 | `event` |
+| `desktop/main.cjs` | 162 | `timer` |
+| `tools/mutation_smoke.mjs` | 4 | `file` |
+| `tools/mutation_smoke.mjs` | 5 | `original` |
+| `tools/mutation_smoke.mjs` | 6 | `mutations` |
+| `tools/mutation_smoke.mjs` | 20 | `suite` |
+| `tools/mutation_smoke.mjs` | 27 | `baseline` |
+| `tools/mutation_smoke.mjs` | 35 | `[name, before, after]` |
+| `tools/mutation_smoke.mjs` | 39 | `result` |
 | `tools/source_index.mjs` | 7 | `collect` |
 | `tools/source_index.mjs` | 7 | `root` |
 | `tools/source_index.mjs` | 8 | `a` |
@@ -580,3 +895,6 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tools/source_index.mjs` | 20 | `name` |
 | `tools/source_index.mjs` | 21 | `line` |
 | `tools/source_index.mjs` | 28 | `row` |
+| `playwright.config.ts` | 3 | `browsers` |
+| `playwright.config.ts` | 21 | `browser` |
+| `playwright.config.ts` | 28 | `browser` |

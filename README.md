@@ -16,6 +16,14 @@ The simulated launch coordinates are PX4's public training defaults, not a user 
 
 ## What it demonstrates
 
+- **Animated path rehearsal:** moving aircraft, full planned routes, ten-second
+  projections and editable circular obstacles. Play, pause, one-second steps, reset
+  and JSON evidence work across five deterministic scenarios, including cooperative
+  rendezvous at agreed endpoints and conservative traffic holds. This independent
+  2D exercise never modifies a reviewed mission or sends aircraft commands.
+- **Installed Windows application:** a per-user installer creates a desktop icon
+  and bundles the private replay service. First launch creates a local operator
+  account without an IDE or command-line setup. Account data stays outside Git.
 - **Fleet awareness:** three fictional replay aircraft show ready, low-battery and
   stale-link conditions. Positions, relative altitude, speed, battery and arrival
   freshness use explicit SI units and a local north/east grid. No external maps,
@@ -43,6 +51,14 @@ The simulated launch coordinates are PX4's public training defaults, not a user 
   No cloud account, paid resource, public host or AKS cluster is created by this repo.
 
 ## Quick start: local replay
+
+For installed use on Windows x64, download **Drone Operations Console Setup 0.2.0.exe**
+and **SHA256SUMS.txt** from the [v0.2.0 release](https://github.com/JasonStys/drone-operations-console/releases/tag/v0.2.0).
+Verify its hash, install and launch the desktop icon. Choose your own account and
+password on first launch. The installer is unsigned; no signing certificate or
+OS-security bypass is provided. See [the rehearsal/desktop guide](docs/REHEARSAL.md).
+
+For source development or the separate Linux native PX4 integration:
 
 Requirements: Python 3.12–3.14, Node.js 24, npm and Git. From a fresh clone:
 
@@ -78,6 +94,8 @@ binds only loopback and must never be exposed publicly or used for private infor
 3. Approve, upload, then start. Confirm the exact aircraft/revision at each step.
 4. Observe the moving replay point. Hold and return affect only the rehearsal.
 5. Load retained replay, refresh audit or download JSON evidence.
+6. Scroll to **Flight path rehearsal**. Play an obstacle detour, add/remove disks,
+   inspect projections, and try **Cooperative rendezvous** or **Crossing traffic hold**.
 
 Ember deliberately has insufficient reserve. Relay deliberately has stale telemetry.
 The operator guide is available in the UI; [operations](docs/OPERATIONS.md) explains
@@ -92,6 +110,7 @@ python -m pytest --cov=console --cov-report=term-missing
 npm run format:check
 npm test
 npm run build
+node tools/mutation_smoke.mjs
 python tools/docs_index.py --check
 python tools/check_repo.py --dist
 npx playwright install chromium firefox webkit
@@ -119,6 +138,8 @@ Actions logs preserve native acceptance records; caches and artifact uploads are
 | `console/api.py` | Hardened authenticated API and production UI delivery. |
 | `console/__main__.py` | Local provisioning and single-worker loopback launcher. |
 | `ui/` | Accessible React UI, responsive styling and independently tested grid utilities. |
+| `ui/src/rehearsal.ts`, `RehearsalPanel.tsx` | Bounded obstacle planner, cooperative scenarios and animated controls. |
+| `desktop/`, `console/desktop.py` | Sandboxed native window and owned replay-only backend lifecycle. |
 | `tests/` | Independent safety/security/state oracles and real browser journeys. |
 | `tools/` | Native PX4/PostgreSQL acceptance, temporary demo server and repository checks. |
 | `deploy/`, `Dockerfile` | Private cloud reference and digest-pinned non-root container. |
