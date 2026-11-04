@@ -1,6 +1,10 @@
-# Drone Operations Console 0.2.0
+# Drone Operations Console 0.2.1
 
 Designed and engineered by Jason Stys.
+
+Patch 0.2.1 disables Electron Builder's implicit tag-triggered uploads. Packaging
+uses `--publish never`; only the explicit release step, after native acceptance,
+publishes the installer/checksum. The failed, unreleased 0.2.0 tag is retained as history.
 
 - Animated 2D routes with ten-second projections, editable obstacle disks and 3 m clearance.
 - Five deterministic scenarios: inspection, detour, cooperative rendezvous, crossing-traffic
