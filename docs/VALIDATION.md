@@ -4,6 +4,15 @@ By Jason Stys. Development observations are not release certification.
 
 ## Version 0.2.0 — November 4, 2026
 
+The [candidate Validation run](https://github.com/JasonStys/drone-operations-console/actions/runs/41905498950)
+passed all nine jobs for source `aba2a240a4a82867ef9dcecf2645975a1d4f10a5`:
+four OS/Python core combinations, **15 real-service browser journeys** across all
+three engines, native PostgreSQL, the non-root image/Bicep reference, actual
+PX4/MAVSDK acceptance, and genuine Windows installer/account/animation/restart
+acceptance. The [CodeQL run](https://github.com/JasonStys/drone-operations-console/actions/runs/41905498862)
+also passed. PR #1 was squash-merged as `038bff5`; its tree was verified identical
+to the tested candidate before this documentation-only evidence update.
+
 Local Windows/Python 3.14: **66 Python tests passed, 92.08% statement coverage**.
 The new desktop entry point is included in that denominator and separately tested
 as a genuine packaged application. **13 TypeScript tests passed**, reporting 100%
