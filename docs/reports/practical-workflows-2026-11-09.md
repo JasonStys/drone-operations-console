@@ -38,9 +38,10 @@ are in the repo, with no remote assets or generative model dependency.
   Test selectors were made explicit for the two distinct replay sliders; snapshot
   assertions now require successful authenticated reads instead of allowing
   undefined error-response fields to appear equal.
-  Hosted Linux fonts exposed a real keyboard accessibility gap when the multi-aircraft
-  position table overflowed horizontally. Its scroll container now has a named,
-  focusable region; browser journeys explicitly focus it and verify horizontal
+  Hosted Linux fonts exposed a real keyboard accessibility gap in horizontally
+  overflowing tables, including existing command history populated by earlier user
+  journeys. Position and command-intent scroll containers now have named,
+  focusable regions; browser journeys explicitly focus both and verify horizontal
   arrow-key scrolling when overflow exists. The axe rule remains enabled.
 - The actual **Windows packaged executable** passed first-account setup, animation,
   custom waypoint application, exact t=7 s replay, renderer isolation and persisted

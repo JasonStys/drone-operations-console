@@ -258,6 +258,22 @@ test("custom scene draft, replay and real file interchange preserve active state
       .poll(() => positionTable.evaluate((element) => element.scrollLeft))
       .toBeGreaterThan(0);
   }
+  const commandTable = page.getByRole("region", {
+    name: "Recent command intents table",
+    exact: true,
+  });
+  await commandTable.focus();
+  await expect(commandTable).toBeFocused();
+  if (
+    await commandTable.evaluate(
+      (element) => element.scrollWidth > element.clientWidth,
+    )
+  ) {
+    await commandTable.press("ArrowRight");
+    await expect
+      .poll(() => commandTable.evaluate((element) => element.scrollLeft))
+      .toBeGreaterThan(0);
+  }
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   expect(await commandSnapshot(page)).toEqual(commands);
 });

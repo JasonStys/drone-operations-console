@@ -686,9 +686,9 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `ui/src/main.tsx` | 687 | `issue` |
 | `ui/src/main.tsx` | 709 | `value` |
 | `ui/src/main.tsx` | 747 | `e` |
-| `ui/src/main.tsx` | 763 | `item` |
-| `ui/src/main.tsx` | 782 | `event` |
-| `ui/src/main.tsx` | 814 | `captured` |
+| `ui/src/main.tsx` | 768 | `item` |
+| `ui/src/main.tsx` | 787 | `event` |
+| `ui/src/main.tsx` | 819 | `captured` |
 | `ui/src/rehearsal-scenes.test.ts` | 12 | `simple` |
 | `ui/src/rehearsal-scenes.test.ts` | 35 | `bytes` |
 | `ui/src/rehearsal-scenes.test.ts` | 56 | `name` |
@@ -954,6 +954,9 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/browser/rehearsal.spec.ts` | 245 | `positionTable` |
 | `tests/browser/rehearsal.spec.ts` | 253 | `element` |
 | `tests/browser/rehearsal.spec.ts` | 258 | `element` |
+| `tests/browser/rehearsal.spec.ts` | 261 | `commandTable` |
+| `tests/browser/rehearsal.spec.ts` | 269 | `element` |
+| `tests/browser/rehearsal.spec.ts` | 274 | `element` |
 | `tests/desktop/app.spec.ts` | 8 | `data` |
 | `tests/desktop/app.spec.ts` | 9 | `options` |
 | `tests/desktop/app.spec.ts` | 15 | `app` |
