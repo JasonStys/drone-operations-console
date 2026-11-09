@@ -299,7 +299,12 @@ export function Rehearsal() {
             />
             Show projected paths
           </label>
-          <div className="table-wrap">
+          <div
+            className="table-wrap"
+            tabIndex={0}
+            role="region"
+            aria-label="Aircraft position table"
+          >
             <table>
               <caption>Synthetic aircraft positions</caption>
               <thead>

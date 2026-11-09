@@ -242,6 +242,22 @@ test("custom scene draft, replay and real file interchange preserve active state
   expect(
     await page.locator("body").evaluate((body) => body.scrollWidth),
   ).toBeLessThanOrEqual(390);
+  const positionTable = exercise.getByRole("region", {
+    name: "Aircraft position table",
+    exact: true,
+  });
+  await positionTable.focus();
+  await expect(positionTable).toBeFocused();
+  if (
+    await positionTable.evaluate(
+      (element) => element.scrollWidth > element.clientWidth,
+    )
+  ) {
+    await positionTable.press("ArrowRight");
+    await expect
+      .poll(() => positionTable.evaluate((element) => element.scrollLeft))
+      .toBeGreaterThan(0);
+  }
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   expect(await commandSnapshot(page)).toEqual(commands);
 });
