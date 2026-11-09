@@ -256,6 +256,26 @@ export function prepare(exercise: Exercise): Prepared {
     )
   )
     throw new Error("Invalid bounded exercise");
+  if (
+    exercise.routes.some(
+      (route) =>
+        !clearSegment(route.points[0]!, route.points[0]!, exercise.obstacles),
+    )
+  )
+    throw new Error(
+      "A starting point is inside an obstacle's clearance area. Move the start or obstacle.",
+    );
+  for (let a = 0; a < exercise.routes.length; a++)
+    for (let b = a + 1; b < exercise.routes.length; b++)
+      if (
+        distance(
+          exercise.routes[a]!.points[0]!,
+          exercise.routes[b]!.points[0]!,
+        ) < SEPARATION
+      )
+        throw new Error(
+          "Friendly starting points need at least 8 m separation.",
+        );
   const paths = exercise.routes.map((route) => {
     const result: XY[] = [];
     for (let i = 1; i < route.points.length; i++) {

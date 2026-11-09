@@ -38,4 +38,4 @@ jobs:
           # GitHub normalizes spaces in uploaded asset names to dots.
           $assetName = (Split-Path -Leaf $installer).Replace(' ', '.')
           "$digest  $assetName" | Set-Content release/installers/SHA256SUMS.txt -Encoding ascii
-          gh release create $env:GITHUB_REF_NAME $installer release/installers/SHA256SUMS.txt --verify-tag --title "Drone Operations Console $version" --notes-file docs/RELEASE_0_2.md
+          gh release create $env:GITHUB_REF_NAME $installer release/installers/SHA256SUMS.txt --verify-tag --title "Drone Operations Console $version" --notes-file docs/RELEASE_0_3.md

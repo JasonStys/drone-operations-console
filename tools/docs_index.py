@@ -28,6 +28,10 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "ui/public/app-icon.png": "512px installer/executable icon rendered from the original repository-owned SVG.",
+    "ui/public/app-icon.svg": "Original vector icon for the local cooperative rehearsal application and browser tab.",
+    "docs/RELEASE_0_3.md": "Version 0.3.0 reusable-scene, replay, installer and model-boundary notes.",
+    "docs/reports/practical-workflows-2026-11-09.md": "Local scene/editor/browser/native verification, independent oracles and remaining hosted gates.",
     "requirements-desktop.lock": "Hash-locked Windows packaging/test dependencies and frozen service builder.",
     "docs/REHEARSAL.md": "Cooperative scenario guide, obstacle/clock semantics, expected results and desktop setup.",
     "docs/RELEASE_0_2.md": "Version 0.2.0 feature summary, installer behavior and model boundaries.",
@@ -97,7 +101,7 @@ def render():
     ]
     for path in files():
         relative = path.relative_to(ROOT).as_posix()
-        text = path.read_text(encoding="utf-8")
+        text = "" if path.suffix == ".png" else path.read_text(encoding="utf-8")
         description = FILE_DESCRIPTIONS.get(relative) or next(
             (line.strip(' #/*!-"<>') for line in text.splitlines() if "Jason Stys:" in line),
             None,

@@ -112,7 +112,7 @@ def create_app(store=None, adapter=None, origin=None, background=True):
 
     app = FastAPI(
         title="Drone Operations Console",
-        version="0.2.1",
+        version="0.3.0",
         lifespan=lifespan,
         docs_url=None,
         redoc_url=None,

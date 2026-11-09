@@ -36,6 +36,30 @@ test("packaged native app creates a private account, animates a route and retain
     await exercise.getByRole("button", { name: "Play rehearsal" }).click();
     await expect(marker).not.toHaveAttribute("transform", before!);
     await exercise.getByRole("button", { name: "Pause rehearsal" }).click();
+    await exercise
+      .getByText("Build a reusable cooperative scene", { exact: true })
+      .click();
+    await exercise
+      .getByLabel("Scene name", { exact: true })
+      .fill("Native fictional inspection");
+    for (const [waypoint, east] of [
+      [1, "-50"],
+      [2, "50"],
+    ] as const) {
+      await exercise
+        .getByLabel(`Aircraft 1 waypoint ${waypoint} east`, { exact: true })
+        .fill(east);
+      await exercise
+        .getByLabel(`Aircraft 1 waypoint ${waypoint} north`, { exact: true })
+        .fill("80");
+    }
+    await exercise
+      .getByRole("button", { name: "Apply scene draft", exact: true })
+      .click();
+    await exercise
+      .getByRole("slider", { name: "Replay time (seconds)", exact: true })
+      .fill("7");
+    await expect(marker).toHaveAttribute("transform", "translate(270,140)");
     expect(
       await page.evaluate(
         () => typeof (window as unknown as { require?: unknown }).require,

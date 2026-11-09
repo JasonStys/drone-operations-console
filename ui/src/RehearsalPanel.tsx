@@ -1,5 +1,7 @@
 /** @file Jason Stys: animated local exercises, future paths and editable obstacle disks. State/functions: docs/SOURCE_MAP.md. */
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { SceneEditor } from "./SceneEditor";
+import { readSceneFile, sceneDocument } from "./rehearsal-scenes";
 import {
   distance,
   frameAt,
@@ -7,6 +9,7 @@ import {
   scenario,
   CLEARANCE,
   type Obstacle,
+  type Exercise,
   type XY,
 } from "./rehearsal";
 
@@ -18,17 +21,14 @@ function svg(point: XY): string {
 /** Local exercise state never modifies the reviewed fleet or invokes aircraft APIs. */
 export function Rehearsal() {
   const [preset, setPreset] = useState("detour");
-  const [obstacles, setObstacles] = useState<Obstacle[]>(
-    scenario("detour").obstacles,
-  );
+  const [scene, setScene] = useState<Exercise>(() => scenario("detour"));
+  const obstacles = scene.obstacles;
+  const generation = useRef(0);
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
   const [showFuture, setShowFuture] = useState(true);
-  const exercise = useMemo(
-    () => prepare({ ...scenario(preset), obstacles }),
-    [preset, obstacles],
-  );
+  const exercise = useMemo(() => prepare(scene), [scene]);
   const frame = frameAt(exercise, time);
   useEffect(() => {
     if (!running) return;
@@ -58,10 +58,47 @@ export function Rehearsal() {
 
   /** Scene edits always start a new paused clock. */
   function reset(next: Obstacle[] = obstacles) {
+    generation.current++;
     setRunning(false);
     setTime(0);
     setError("");
-    setObstacles(next);
+    setScene({ ...scene, obstacles: next });
+  }
+  /** Atomic input replacement never rewrites the reviewed fleet mission. */
+  function applyScene(next: Exercise, selected = "custom") {
+    prepare(next);
+    generation.current++;
+    setScene(next);
+    setPreset(selected);
+    setRunning(false);
+    setTime(0);
+    setError("");
+  }
+  /** Bounded local import; a later edit invalidates a pending file read. */
+  async function importScene(file: File | undefined) {
+    if (!file) return;
+    const revision = ++generation.current;
+    try {
+      const next = await readSceneFile(file);
+      if (revision !== generation.current) return;
+      applyScene(next);
+    } catch (failure) {
+      if (revision === generation.current)
+        setError(
+          failure instanceof Error ? failure.message : "Invalid scene file",
+        );
+    }
+  }
+  /** Save reusable scene inputs separately from time-indexed evidence. */
+  function downloadScene() {
+    const url = URL.createObjectURL(
+      new Blob([sceneDocument(scene)], { type: "application/json" }),
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "cooperative-scene.json";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
   }
   /** Check bounded geometry before accepting a user-authored disk. */
   function addObstacle(event: FormEvent<HTMLFormElement>) {
@@ -73,7 +110,7 @@ export function Rehearsal() {
       radius: Number(data.get("radius")),
     };
     try {
-      prepare({ ...scenario(preset), obstacles: [...obstacles, obstacle] });
+      prepare({ ...scene, obstacles: [...obstacles, obstacle] });
       reset([...obstacles, obstacle]);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Invalid obstacle");
@@ -198,8 +235,8 @@ export function Rehearsal() {
                   transform={`translate(${svg(a.point)})`}
                   data-testid={`moving-aircraft-${i}`}
                 >
-                  <circle r="11" className={`moving aircraft-${i}`} />
-                  <path d="M-6 -6L6 6M-6 6L6 -6" className="drone-cross" />
+                  <circle r="2" className={`moving aircraft-${i}`} />
+                  <path d="M-2 -2L2 2M-2 2L2 -2" className="drone-cross" />
                   <text x="16" y="-14">
                     {a.name}
                   </text>
@@ -237,6 +274,23 @@ export function Rehearsal() {
             <button onClick={() => reset()}>Reset rehearsal</button>
             <button onClick={download}>Download rehearsal evidence</button>
           </div>
+          <label>
+            Replay time (seconds)
+            <input
+              type="range"
+              min="0"
+              max={Math.max(exercise.stop, 0.1)}
+              step="0.1"
+              value={time}
+              disabled={running || exercise.stop === 0}
+              onChange={(event) => setTime(Number(event.target.value))}
+            />
+          </label>
+          <p className="muted">
+            Scrub while paused to inspect or repeat a moment. Display markers
+            have a 1 m radius; the model uses point centerlines and 3 m obstacle
+            clearance, not a physical aircraft footprint.
+          </p>
           <label className="check">
             <input
               type="checkbox"
@@ -285,10 +339,12 @@ export function Rehearsal() {
             <select
               value={preset}
               onChange={(e) => {
-                setPreset(e.target.value);
-                reset(scenario(e.target.value).obstacles);
+                applyScene(scenario(e.target.value), e.target.value);
               }}
             >
+              {preset === "custom" && (
+                <option value="custom">Custom cooperative scene</option>
+              )}
               <option value="detour">Obstacle detour</option>
               <option value="survey">Perimeter inspection</option>
               <option value="meeting">Cooperative rendezvous</option>
@@ -298,6 +354,26 @@ export function Rehearsal() {
           </label>
           <h3>{exercise.name}</h3>
           <p>{exercise.description}</p>
+          <div className="scene-transfer">
+            <button onClick={downloadScene}>Save reusable scene</button>
+            <label>
+              Open reusable scene
+              <input
+                type="file"
+                accept=".json,application/json"
+                disabled={running}
+                onChange={(event) => {
+                  void importScene(event.target.files?.[0]);
+                  event.target.value = "";
+                }}
+              />
+            </label>
+            <p className="muted">
+              Version 1 JSON, 32 KiB maximum. Only local cooperative scene data;
+              imported content is never sent to the fleet API.
+            </p>
+          </div>
+          <SceneEditor scene={scene} disabled={running} apply={applyScene} />
           <form onSubmit={addObstacle}>
             <fieldset disabled={running || obstacles.length >= 8}>
               <legend>Add obstacle · meters</legend>
@@ -344,7 +420,9 @@ export function Rehearsal() {
             {obstacles.length}/8 disks. Editing resets the clock. Full-height
             exclusion areas; no altitude bypass.
           </p>
-          <p role="alert">{error}</p>
+          <p role="alert" aria-label="Scene interchange error">
+            {error}
+          </p>
           <ul className="obstacle-list">
             {obstacles.map((o, i) => (
               <li key={i}>
