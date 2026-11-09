@@ -5,21 +5,54 @@ import ts from "typescript";
 
 /** Visit authored TS/TSX/MJS files only; no dependency or runtime tree is evaluated. */
 function collect(root) {
-  return fs.readdirSync(root, { withFileTypes: true }).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0).flatMap((entry) => {
-    const name = path.join(root, entry.name);
-    return entry.isDirectory() ? collect(name) : /\.(?:ts|tsx|mjs|cjs)$/.test(name) ? [name] : [];
-  });
+  return fs
+    .readdirSync(root, { withFileTypes: true })
+    .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
+    .flatMap((entry) => {
+      const name = path.join(root, entry.name);
+      return entry.isDirectory()
+        ? collect(name)
+        : /\.(?:ts|tsx|mjs|cjs)$/.test(name)
+          ? [name]
+          : [];
+    });
 }
 
-for (const file of [...collect("ui/src"), ...collect("tests/browser"), ...collect("tests/desktop"), ...collect("desktop"), ...collect("tools").filter((name) => name.endsWith(".mjs")), "vite.config.ts", "playwright.config.ts", "playwright.desktop.config.ts"]) {
-  const source = ts.createSourceFile(file, fs.readFileSync(file, "utf8"), ts.ScriptTarget.Latest, true);
+for (const file of [
+  ...collect("ui/src"),
+  ...collect("tests/browser"),
+  ...collect("tests/desktop"),
+  ...collect("desktop"),
+  ...collect("tools").filter((name) => name.endsWith(".mjs")),
+  "vite.config.ts",
+  "playwright.config.ts",
+  "playwright.desktop.config.ts",
+]) {
+  const source = ts.createSourceFile(
+    file,
+    fs.readFileSync(file, "utf8"),
+    ts.ScriptTarget.Latest,
+    true,
+  );
   const records = new Map();
   function visit(node) {
-    if (ts.isVariableDeclaration(node) || ts.isFunctionDeclaration(node) || ts.isClassDeclaration(node) || ts.isParameter(node)) {
+    if (
+      ts.isVariableDeclaration(node) ||
+      ts.isFunctionDeclaration(node) ||
+      ts.isClassDeclaration(node) ||
+      ts.isParameter(node)
+    ) {
       if (node.name) {
-        const name = node.name.getText(source).replace(/\s+/g, " ").replaceAll("|", "/");
-        const line = source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1;
-        records.set(`${line}:${name}`, `| \`${file.replaceAll("\\", "/")}\` | ${line} | \`${name}\` |`);
+        const name = node.name
+          .getText(source)
+          .replace(/\s+/g, " ")
+          .replaceAll("|", "/");
+        const line =
+          source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1;
+        records.set(
+          `${line}:${name}`,
+          `| \`${file.replaceAll("\\", "/")}\` | ${line} | \`${name}\` |`,
+        );
       }
     }
     ts.forEachChild(node, visit);

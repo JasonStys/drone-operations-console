@@ -10,7 +10,11 @@ export default defineConfig({
   test: {
     include: ["src/**/*.test.ts"],
     coverage: {
-      include: ["src/geometry.ts", "src/rehearsal.ts"],
+      include: [
+        "src/geometry.ts",
+        "src/rehearsal.ts",
+        "src/rehearsal-scenes.ts",
+      ],
       thresholds: { statements: 95, branches: 90, functions: 95, lines: 95 },
     },
   },

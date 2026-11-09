@@ -749,7 +749,12 @@ function App() {
                 </label>
               )}
               <h3>Recent command intents</h3>
-              <div className="table-wrap">
+              <div
+                className="table-wrap"
+                tabIndex={0}
+                role="region"
+                aria-label="Recent command intents table"
+              >
                 <table>
                   <thead>
                     <tr>

@@ -14,6 +14,11 @@ not a flight controller and not operational flight software. There is no real-ai
 serial-radio, targeting, surveillance-identification or arbitrary endpoint feature.
 The simulated launch coordinates are PX4's public training defaults, not a user location.
 
+Version **0.3.0** adds reusable cooperative scene drafts, waypoint/aircraft controls,
+bounded local scene save/open and paused replay scrubbing. Invalid starts and
+imports preserve the active exercise. See the [scene guide](docs/REHEARSAL.md) and
+[workflow validation](docs/reports/practical-workflows-2026-11-09.md).
+
 ## What it demonstrates
 
 - **Animated path rehearsal:** moving aircraft, full planned routes, ten-second
@@ -21,6 +26,11 @@ The simulated launch coordinates are PX4's public training defaults, not a user 
   and JSON evidence work across five deterministic scenarios, including cooperative
   rendezvous at agreed endpoints and conservative traffic holds. This independent
   2D exercise never modifies a reviewed mission or sends aircraft commands.
+- **Reusable civilian exercises:** edit 1–3 friendly routes and 2–8 waypoints each,
+  explicitly apply a draft, save/open up to 32 KiB of strict UTF-8 scene JSON and
+  scrub to any paused moment. Invalid/malformed imports and unsafe initial positions
+  cannot replace a valid scene. Display markers distinguish annotations from the
+  model's point-centerline clearance.
 - **Installed Windows application:** a per-user installer creates a desktop icon
   and bundles the private replay service. First launch creates a local operator
   account without an IDE or command-line setup. Account data stays outside Git.

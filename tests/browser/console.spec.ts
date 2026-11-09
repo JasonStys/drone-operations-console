@@ -55,7 +55,9 @@ test("operator reviews an exact target and records a complete rehearsal", async 
   await page.getByRole("button", { name: "Refresh audit" }).click();
   await expect(page.locator(".audit")).toContainText("command.accepted");
   await page.getByRole("button", { name: "Load retained replay" }).click();
-  await expect(page.getByRole("slider")).toBeVisible();
+  await expect(
+    page.getByRole("slider", { name: /^Replay observation/ }),
+  ).toBeVisible();
   const [download] = await Promise.all([
     page.waitForEvent("download"),
     page.getByRole("link", { name: /Download JSON evidence/ }).click(),

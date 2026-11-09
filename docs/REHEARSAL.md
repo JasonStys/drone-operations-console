@@ -1,6 +1,6 @@
 # Animated route rehearsal
 
-By Jason Stys. Version 0.2.0 adds an independent 2D exercise to the authenticated
+By Jason Stys. Version 0.3.0 extends the independent 2D exercise in the authenticated
 console. The exercise cannot modify a fleet plan, send aircraft commands, connect
 to PX4, identify objects, pursue or evade a target.
 
@@ -20,6 +20,33 @@ bypass. Editing resets and pauses the exercise. Remove disks with numbered butto
 These settings are temporary and reset on reload. Download rehearsal JSON to save
 the synthetic inputs, model assumptions and sampled results. Accounts, fleet plans
 and command audit data are not included in that download.
+
+## Reusable scenes and replay
+
+Expand **Build a reusable cooperative scene** to edit a draft: name, purpose,
+one to three friendly aircraft, unique IDs, speeds and two to eight local waypoints
+per route. Add/remove waypoints and aircraft with their labeled controls. Draft
+edits do not change the active exercise until **Apply scene draft** succeeds.
+**Copy current scene into editor** deliberately discards the draft. Existing disks
+are retained; use the obstacle controls to change them. A failure keeps the current
+scene and replay time intact. Starting points must be outside every disk's 3 m
+clearance and at least 8 m apart. A blocked destination is still a meaningful
+unavailable-route case; all aircraft hold at valid starts.
+
+Pause, then move **Replay time (seconds)** to inspect an earlier/later moment.
+This recomputes the same deterministic state, without accumulating integration
+drift. Playback, projection and positional tables share this clock. Markers have
+a nominal 1 m display radius; the model uses point centerlines, not a physical
+aircraft body or certified swept-volume model. Names are annotations, not footprints.
+
+**Save reusable scene** downloads only version-one scene inputs; **Open reusable
+scene** restores a nonempty UTF-8 JSON file up to 32 KiB. The closed schema requires
+`simulation_only:true`, scene name/purpose, route IDs/names/speeds/waypoints and
+obstacle disks. Unknown fields, invalid numbers, duplicate IDs and invalid starts
+are rejected. Malformed UTF-8 is rejected rather than silently replaced. A newer
+scene edit wins over a pending file read. Imported files stay in this browser/app;
+they are never uploaded to the fleet API or translated into aircraft commands.
+Save files before closing; scenes are not account-synced or automatically retained.
 
 ## Scenarios and independent expectations
 
@@ -44,7 +71,7 @@ from actual endpoint arrival. Planning costs O((V+E) log V × O) with O(V) auxil
 memory per leg, where O is obstacle count. Interpolation scales with route points.
 Separation checks use 0.05 s intervals with a 0.8 m conservative inflation, covering
 maximum relative movement of two 8 m/s aircraft, including bends. Swept segment
-checks may hold early. No avoidance claim applies to conflicting initial positions.
+checks may hold early. Conflicting initial positions are rejected before animation.
 
 This does not model aerodynamics, altitude, battery, wind, weather, real terrain,
 unknown intent, uncertainty, navigation or legal airspace. Projection visualizes
