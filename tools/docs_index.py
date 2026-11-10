@@ -30,6 +30,7 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/reports/office-package-guard-2026-11-10.md": "Dated Office embedded-part guard and actual regression validation results.",
     "docs/handbook.md": "Organized current usage, design, security and test guidance.",
     "docs/reports/project-guide.docx": "Reviewed Word project guide tied to the declared source revision.",
     "docs/reports/validation-review.docx": "Reviewed Word validation observations with historical result scopes.",
