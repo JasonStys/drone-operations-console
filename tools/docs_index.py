@@ -11,6 +11,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from publication_text import public_text
+
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {
     ".git",
@@ -28,6 +30,12 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/handbook.md": "Organized current usage, design, security and test guidance.",
+    "docs/reports/project-guide.docx": "Reviewed Word project guide tied to the declared source revision.",
+    "docs/reports/validation-review.docx": "Reviewed Word validation observations with historical result scopes.",
+    "docs/reports/validation-evidence.xlsx": "Reviewed Excel Tables of source-bound workflows and test-source inventory.",
+    "docs/reports/publications.json": "Exact publication digests, page and tab approvals and evidence baselines.",
+    "docs/reports/documentation-refresh-2026-11-09.md": "Documentation integration checks, scope and interpretation limits.",
     "ui/public/app-icon.png": "512px installer/executable icon rendered from the original repository-owned SVG.",
     "ui/public/app-icon.svg": "Original vector icon for the local cooperative rehearsal application and browser tab.",
     "docs/RELEASE_0_3.md": "Version 0.3.0 reusable-scene, replay, installer and model-boundary notes.",
@@ -101,7 +109,7 @@ def render():
     ]
     for path in files():
         relative = path.relative_to(ROOT).as_posix()
-        text = "" if path.suffix == ".png" else path.read_text(encoding="utf-8")
+        text = "" if path.suffix == ".png" else public_text(path, ROOT)
         description = FILE_DESCRIPTIONS.get(relative) or next(
             (line.strip(' #/*!-"<>') for line in text.splitlines() if "Jason Stys:" in line),
             None,

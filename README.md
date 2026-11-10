@@ -62,8 +62,8 @@ imports preserve the active exercise. See the [scene guide](docs/REHEARSAL.md) a
 
 ## Quick start: local replay
 
-For installed use on Windows x64, download **Drone Operations Console Setup 0.2.1.exe**
-and **SHA256SUMS.txt** from the [v0.2.1 release](https://github.com/JasonStys/drone-operations-console/releases/tag/v0.2.1).
+For installed use on Windows x64, download **Drone.Operations.Console.Setup.0.3.0.exe**
+and **SHA256SUMS.txt** from the [v0.3.0 release](https://github.com/JasonStys/drone-operations-console/releases/tag/v0.3.0).
 Verify its hash, install and launch the desktop icon. Choose your own account and
 password on first launch. The installer is unsigned; no signing certificate or
 OS-security bypass is provided. See [the rehearsal/desktop guide](docs/REHEARSAL.md).
@@ -137,24 +137,24 @@ Actions logs preserve native acceptance records; caches and artifact uploads are
 
 ## Structure and major responsibilities
 
-| Path | Responsibility |
-| --- | --- |
-| `console/domain.py` | Strict typed plans, units, geometry, freshness and safety blockers. |
-| `console/auth.py` | Provisioned identities, Argon2id verification, sessions, roles and CSRF. |
-| `console/store.py` | SQL schema, transactions, bounded observation history and private sessions. |
-| `console/service.py` | Revision-bound approvals, boot-bound uploads and durable command dispatch. |
-| `console/replay.py` | Explicit synthetic logical rehearsal, not a physics simulator. |
-| `console/px4.py` | App-owned pinned Linux PX4 process and native MAVSDK observations/commands. |
-| `console/api.py` | Hardened authenticated API and production UI delivery. |
-| `console/__main__.py` | Local provisioning and single-worker loopback launcher. |
-| `ui/` | Accessible React UI, responsive styling and independently tested grid utilities. |
-| `ui/src/rehearsal.ts`, `RehearsalPanel.tsx` | Bounded obstacle planner, cooperative scenarios and animated controls. |
-| `desktop/`, `console/desktop.py` | Sandboxed native window and owned replay-only backend lifecycle. |
-| `tests/` | Independent safety/security/state oracles and real browser journeys. |
-| `tools/` | Native PX4/PostgreSQL acceptance, temporary demo server and repository checks. |
-| `deploy/`, `Dockerfile` | Private cloud reference and digest-pinned non-root container. |
-| `.github/workflows/` | Multi-OS tests, browser/SQL/native/container gates and CodeQL. |
-| `docs/` | Design, security, operations, research, test reports and exact source/file indexes. |
+| Path                                        | Responsibility                                                                      |
+| ------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `console/domain.py`                         | Strict typed plans, units, geometry, freshness and safety blockers.                 |
+| `console/auth.py`                           | Provisioned identities, Argon2id verification, sessions, roles and CSRF.            |
+| `console/store.py`                          | SQL schema, transactions, bounded observation history and private sessions.         |
+| `console/service.py`                        | Revision-bound approvals, boot-bound uploads and durable command dispatch.          |
+| `console/replay.py`                         | Explicit synthetic logical rehearsal, not a physics simulator.                      |
+| `console/px4.py`                            | App-owned pinned Linux PX4 process and native MAVSDK observations/commands.         |
+| `console/api.py`                            | Hardened authenticated API and production UI delivery.                              |
+| `console/__main__.py`                       | Local provisioning and single-worker loopback launcher.                             |
+| `ui/`                                       | Accessible React UI, responsive styling and independently tested grid utilities.    |
+| `ui/src/rehearsal.ts`, `RehearsalPanel.tsx` | Bounded obstacle planner, cooperative scenarios and animated controls.              |
+| `desktop/`, `console/desktop.py`            | Sandboxed native window and owned replay-only backend lifecycle.                    |
+| `tests/`                                    | Independent safety/security/state oracles and real browser journeys.                |
+| `tools/`                                    | Native PX4/PostgreSQL acceptance, temporary demo server and repository checks.      |
+| `deploy/`, `Dockerfile`                     | Private cloud reference and digest-pinned non-root container.                       |
+| `.github/workflows/`                        | Multi-OS tests, browser/SQL/native/container gates and CodeQL.                      |
+| `docs/`                                     | Design, security, operations, research, test reports and exact source/file indexes. |
 
 Every authored file is summarized in [FILE_CATALOG](docs/FILE_CATALOG.md). Source
 headers link to the generated [SOURCE_MAP](docs/SOURCE_MAP.md), which lists function,
@@ -179,3 +179,9 @@ operation is read-only; a public or operational deployment needs additional revi
 Contact: [Jason Stys on LinkedIn](https://www.linkedin.com/in/jason-stys-31b30b351/).
 Use GitHub issues for reproducible **non-sensitive** questions; never post passwords,
 personal flight records or credentials. [Security boundaries](docs/SECURITY.md).
+
+## Documentation editions
+
+Start with the [organized handbook](docs/handbook.md) for current usage, design, security and test guidance. Reviewed downloadable editions: [project-guide.docx](docs/reports/project-guide.docx) · [validation-review.docx](docs/reports/validation-review.docx) · [validation-evidence.xlsx](docs/reports/validation-evidence.xlsx).
+
+[Publication identities and source scope](docs/reports/publications.json) · [Documentation validation record](docs/reports/documentation-refresh-2026-11-09.md). Historical results retain their own tested revision and date.
