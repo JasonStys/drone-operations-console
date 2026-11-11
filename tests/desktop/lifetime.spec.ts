@@ -200,7 +200,7 @@ test("real frozen work finishes before repeated Quit and window Close release ow
     });
     expect((await readFile(exitedPath, "utf8")).trim()).toBe(String(ready.pid));
     await writeFile(
-      "test-results/native-held-work.json",
+      test.info().outputPath("native-held-work.json"),
       JSON.stringify(
         {
           source,

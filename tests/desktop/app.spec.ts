@@ -112,7 +112,9 @@ test("packaged native app creates a private account, animates a route and retain
       };
     });
     expect(security).toEqual({ sandbox: true, isolated: true, node: false });
-    await page.screenshot({ path: "test-results/native-rehearsal.png" });
+    await page.screenshot({
+      path: test.info().outputPath("native-rehearsal.png"),
+    });
     await app.close();
     app = await _electron.launch(options);
     page = await app.firstWindow();
@@ -221,7 +223,7 @@ test("actual packaged app opens its exact version while old upgrade resources re
         .version,
     ).toBe("0.3.2");
     await page.screenshot({
-      path: "test-results/native-versioned-upgrade.png",
+      path: test.info().outputPath("native-versioned-upgrade.png"),
     });
   } finally {
     await application.close();

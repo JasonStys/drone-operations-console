@@ -1334,21 +1334,21 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/desktop/app.spec.ts` | 105 | `security` |
 | `tests/desktop/app.spec.ts` | 105 | `{ BrowserWindow }` |
 | `tests/desktop/app.spec.ts` | 106 | `preferences` |
-| `tests/desktop/app.spec.ts` | 137 | `owned` |
-| `tests/desktop/app.spec.ts` | 138 | `software` |
-| `tests/desktop/app.spec.ts` | 143 | `member` |
-| `tests/desktop/app.spec.ts` | 150 | `leftovers` |
-| `tests/desktop/app.spec.ts` | 156 | `sentinel` |
-| `tests/desktop/app.spec.ts` | 158 | `name` |
-| `tests/desktop/app.spec.ts` | 159 | `path` |
-| `tests/desktop/app.spec.ts` | 163 | `{ verifyResources }` |
-| `tests/desktop/app.spec.ts` | 173 | `application` |
-| `tests/desktop/app.spec.ts` | 181 | `page` |
-| `tests/desktop/app.spec.ts` | 186 | `health` |
-| `tests/desktop/app.spec.ts` | 204 | `exercise` |
-| `tests/desktop/app.spec.ts` | 216 | `name` |
-| `tests/desktop/app.spec.ts` | 218 | `current` |
-| `tests/desktop/app.spec.ts` | 228 | `absolute` |
+| `tests/desktop/app.spec.ts` | 139 | `owned` |
+| `tests/desktop/app.spec.ts` | 140 | `software` |
+| `tests/desktop/app.spec.ts` | 145 | `member` |
+| `tests/desktop/app.spec.ts` | 152 | `leftovers` |
+| `tests/desktop/app.spec.ts` | 158 | `sentinel` |
+| `tests/desktop/app.spec.ts` | 160 | `name` |
+| `tests/desktop/app.spec.ts` | 161 | `path` |
+| `tests/desktop/app.spec.ts` | 165 | `{ verifyResources }` |
+| `tests/desktop/app.spec.ts` | 175 | `application` |
+| `tests/desktop/app.spec.ts` | 183 | `page` |
+| `tests/desktop/app.spec.ts` | 188 | `health` |
+| `tests/desktop/app.spec.ts` | 206 | `exercise` |
+| `tests/desktop/app.spec.ts` | 218 | `name` |
+| `tests/desktop/app.spec.ts` | 220 | `current` |
+| `tests/desktop/app.spec.ts` | 230 | `absolute` |
 | `tests/desktop/lifetime.spec.ts` | 11 | `until` |
 | `tests/desktop/lifetime.spec.ts` | 12 | `check` |
 | `tests/desktop/lifetime.spec.ts` | 13 | `milliseconds` |
