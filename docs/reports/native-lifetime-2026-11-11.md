@@ -131,6 +131,17 @@ creation, preserving earlier delivery evidence. Mock-provider cases validate the
 decisions, not actual hosted upload success. No release was dispatched, published
 or installed as part of this source checkpoint.
 
+The first PR validation at `8fc2fd6f1d7f2f667fdec9444f28cc4245e416b7` exposed
+a macOS fixture-location problem: the OS temporary directory uses the system
+`/var` alias, so the intentional lexical-ancestor refusal happened before the
+member-specific tests. Those failures also reduced measured coverage; neither
+was accepted as a passing result. The fixture now canonicalizes only its known
+OS temporary base before creating its own directories and checking cleanup scope.
+Production user-supplied paths are never canonicalized into acceptance, and the
+actual deliberate ancestor/final aliases remain required refusal cases on every
+OS. Test counts, assertions and coverage minimums are unchanged. The original
+failed hosted log is retained; fresh exact-head checks remain required.
+
 ## Limits
 
 Windows-only unsigned packaging; packaged executable launch is not a clean NSIS

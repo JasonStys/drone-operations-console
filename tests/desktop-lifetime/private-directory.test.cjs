@@ -20,13 +20,16 @@ function refused(operation, pattern) {
 
 /** Create only inert owned paths; cleanup is confined to the resolved exact temporary root. */
 function fixture(t) {
-  const root = fs.mkdtempSync(join(tmpdir(), "ops-private-admission-"));
+  // The OS's temporary base may itself use a system alias (macOS /var -> /private/var).
+  // Canonicalize this test-owned base, never the production workspace being admitted.
+  const temporary = fs.realpathSync(tmpdir());
+  const root = fs.mkdtempSync(join(temporary, "ops-private-admission-"));
   const profile = join(root, "profile");
   const program = join(root, "program");
   fs.mkdirSync(program);
   t.after(() => {
     const target = resolve(root);
-    assert.ok(target.startsWith(resolve(tmpdir()) + sep));
+    assert.ok(target.startsWith(temporary + sep));
     assert.ok(target.split(sep).at(-1).startsWith("ops-private-admission-"));
     fs.rmSync(target, { recursive: true });
   });
