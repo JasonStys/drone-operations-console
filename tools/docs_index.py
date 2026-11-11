@@ -30,6 +30,8 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/RELEASE_0_3_2.md": "Version 0.3.2 version-scoped packaged resources and preservation/installer acceptance limits.",
+    "docs/reports/native-resource-upgrade-2026-11-11.md": "Actual stale shared-UI installation fault, strict versioned resource repair and independent upgrade regressions.",
     "docs/reports/main-codeql-delivery-gate-2026-11-11.md": "Actual failed main preflight, exact processed-analysis/SARIF replacement and independent guard regressions.",
     "docs/RELEASE_0_3_1.md": "Version 0.3.1 completion-based Windows lifetime, resource identity, upgrade and delivery limits.",
     "docs/reports/native-lifetime-2026-11-11.md": "Actual interrupted-work reproduction, completion repair, regression scopes and pending delivery gates.",

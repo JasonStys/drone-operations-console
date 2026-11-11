@@ -84,7 +84,36 @@ def test_invalid_actual_identity_bytes_do_not_fall_back(tmp_path, monkeypatch, r
 
 def test_complete_product_version_surfaces_agree():
     """Check actual source surfaces rather than only a fake builder response."""
-    assert contract.configuration(Path(__file__).resolve().parents[1]) == __version__ == "0.3.1"
+    assert contract.configuration(Path(__file__).resolve().parents[1]) == __version__ == "0.3.2"
+
+
+@pytest.mark.parametrize(
+    "wrong",
+    [
+        [],
+        [{"from": "dist", "to": "ui"}, {"from": "release/drone-console-service", "to": "service"}],
+        [
+            {"from": "dist", "to": "runtime/0.3.1/ui"},
+            {"from": "release/drone-console-service", "to": "runtime/${version}/service"},
+        ],
+        [{"from": "dist", "to": "runtime/${version}/ui"}],
+        [
+            {"from": "elsewhere", "to": "runtime/${version}/ui"},
+            {"from": "release/drone-console-service", "to": "runtime/${version}/service"},
+        ],
+    ],
+)
+def test_actual_build_rejects_missing_shared_stale_or_foreign_resource_mapping(tmp_path, wrong):
+    """Coherent versions alone cannot bless a builder that merges active files into an old directory."""
+    root = Path(__file__).resolve().parents[1]
+    (tmp_path / "console").mkdir()
+    for name in ("pyproject.toml", "package.json", "package-lock.json", "console/__init__.py"):
+        (tmp_path / name).write_bytes((root / name).read_bytes())
+    package = json.loads((tmp_path / "package.json").read_text(encoding="utf-8"))
+    package["build"]["extraResources"] = wrong
+    (tmp_path / "package.json").write_text(json.dumps(package), encoding="utf-8")
+    with pytest.raises(ValueError, match="exact version macro"):
+        contract.configuration(tmp_path)
 
 
 @pytest.mark.parametrize("surface", ["project", "package", "lock", "lock-root", "runtime"])
@@ -95,7 +124,22 @@ def test_independent_product_surface_faults_refuse_freezing(tmp_path, surface):
         '[project]\nname="drone-operations-console"\nversion="0.3.1"\n'
     )
     for filename, value in [
-        ("package.json", {"name": identity.PRODUCT, "version": "0.3.1"}),
+        (
+            "package.json",
+            {
+                "name": identity.PRODUCT,
+                "version": "0.3.1",
+                "build": {
+                    "extraResources": [
+                        {"from": "dist", "to": "runtime/${version}/ui"},
+                        {
+                            "from": "release/drone-console-service",
+                            "to": "runtime/${version}/service",
+                        },
+                    ]
+                },
+            },
+        ),
         (
             "package-lock.json",
             {"name": identity.PRODUCT, "version": "0.3.1", "packages": {"": {"version": "0.3.1"}}},

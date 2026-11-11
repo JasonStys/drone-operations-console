@@ -326,11 +326,14 @@ def main(argv=None):
         return
     installer = ROOT / f"release/installers/Drone Operations Console Setup {args.version}.exe"
     value = digest(installer, cap=512 * 1024 * 1024)
-    notes = (ROOT / "docs/RELEASE_0_3_1.md").read_text(encoding="utf-8")
-    notes = notes.replace(
-        "](reports/native-lifetime-2026-11-11.md)",
-        f"](https://github.com/{REPOSITORY}/blob/{before['source_commit']}/docs/reports/native-lifetime-2026-11-11.md)",
+    notes = (ROOT / "docs" / f"RELEASE_{args.version.replace('.', '_')}.md").read_text(
+        encoding="utf-8"
     )
+    for report in ("native-lifetime-2026-11-11.md", "native-resource-upgrade-2026-11-11.md"):
+        notes = notes.replace(
+            f"](reports/{report})",
+            f"](https://github.com/{REPOSITORY}/blob/{before['source_commit']}/docs/reports/{report})",
+        )
     if re.search(r"\]\((?!https://)[^)]+\)", notes):
         raise ValueError("Release notes must retain absolute source-bound Markdown links")
     sidecar_folder = ROOT / ".runtime/release-sidecars" / args.version
