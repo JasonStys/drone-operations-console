@@ -54,3 +54,19 @@ copied-package test is equivalent resource-selection proof, not an NSIS install/
 Actual downloaded installer acceptance and old-account compatibility remain separate. The app is
 an unsigned Windows cooperative simulator; no live aircraft, hardware or operational targeting is
 introduced. Historical 0.3.0/0.3.1 source and failed delivery observations retain their own identities.
+
+## Clean Windows package checkpoint
+
+At clean source `8109986e26e0952dc558c682f4e928f8ec3de287`, the patched3.14.10 frozen service and real
+NSIS candidate built successfully. The actual package contains the exact `runtime/0.3.2/ui` and
+`runtime/0.3.2/service` destinations selected by the loader. The installer SHA256 is
+`5ab68d28630cb178467a562bee09bcf6c53dde7c930885bb400b80a394995ff5`.
+
+All three real native tests passed: account/animation/sandbox/restart6.9s, copied-package mixed-old-
+layout preservation/actual new GUI6.7s, and separately frozen held-work/repeated-Quit/PID proof19.8s.
+The independent observer confirmed child exit0 at16.324s and owner exit0 at16.450s after the old15s
+boundary, with no forced cleanup. No installed app or ordinary profile was used. The source suite
+passed212 Python tests at92.13% against the original85% floor,73 Node tests at99.14% lines/98.50%
+branches/100% functions against95/90/95, and46 UI utility tests at100%. Formatting, strict metadata,
+source/file maps and public-source policy passed. Current hosted results and actual downloaded NSIS
+upgrade acceptance remain separate; the existing failed0.3.1 draft is preserved.
