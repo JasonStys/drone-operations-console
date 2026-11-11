@@ -38,6 +38,11 @@ def configuration(root: Path) -> str:
         or runtime != [version]
     ):
         raise ValueError("Desktop product/version surfaces disagree")
+    if package.get("build", {}).get("extraResources") != [
+        {"from": "dist", "to": "runtime/${version}/ui"},
+        {"from": "release/drone-console-service", "to": "runtime/${version}/service"},
+    ]:
+        raise ValueError("Desktop resource destinations must use the exact version macro")
     return version
 
 

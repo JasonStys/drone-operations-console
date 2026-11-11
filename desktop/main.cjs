@@ -6,7 +6,7 @@ const { join, dirname } = require("node:path");
 const fs = require("node:fs");
 const net = require("node:net");
 const { OwnedLifetime } = require("./owned-lifetime.cjs");
-const { verifyResources } = require("./resources.cjs");
+const { verifyResources, resourceDirectories } = require("./resources.cjs");
 const { openPrivateLog } = require("./private-directory.cjs");
 let nativeWindow;
 const lifetime = new OwnedLifetime({
@@ -43,13 +43,12 @@ async function launch() {
   const resources = app.isPackaged
     ? process.resourcesPath
     : join(__dirname, "..", "release");
-  const serviceRoot = join(
+  const { serviceRoot, uiRoot } = resourceDirectories(
     resources,
-    app.isPackaged ? "service" : "drone-console-service",
+    join(__dirname, ".."),
+    app.isPackaged,
+    app.getVersion(),
   );
-  const uiRoot = app.isPackaged
-    ? join(resources, "ui")
-    : join(__dirname, "..", "dist");
   const metadata = verifyResources(serviceRoot, uiRoot, app.getVersion());
   const folder = app.getPath("userData");
   const log = openPrivateLog(folder, [

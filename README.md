@@ -7,12 +7,12 @@
 operator web application designed and engineered by [Jason Stys](https://github.com/JasonStys).
 TypeScript/React provides the interface; Python/FastAPI enforces authority and
 safety; SQL records missions, approvals and command outcomes; the optional native
-MAVSDK C++ library connects to an app-owned, pinned PX4 SIH simulator.
+MAVSDK C++ library connects to an app-owned, pinned PX 4 SIH simulator.
 
 This is an original engineering portfolio prototype—not a fork of a ground station,
 not a flight controller and not operational flight software. There is no real-aircraft,
 serial-radio, targeting, surveillance-identification or arbitrary endpoint feature.
-The simulated launch coordinates are PX4's public training defaults, not a user location.
+The simulated launch coordinates are PX 4's public training defaults, not a user location.
 
 Version **0.3.1** preserves reusable cooperative scene drafts, waypoint/aircraft controls,
 bounded local scene save/open and paused replay scrubbing. Invalid starts and
@@ -58,27 +58,27 @@ check exists on main.
   persistent outcomes. Duplicates do not repeat effects. Restarted pending commands
   become unknown, never automatically resent; uploads from an older service boot
   cannot authorize a new simulator. An acknowledgement is not physical completion.
-- **Private workspace:** CLI-provisioned viewer/operator/admin accounts, Argon2id
+- **Private workspace:** CLI-provisioned viewer/operator/admin accounts, Argon 2id
   password hashes, opaque HttpOnly sessions, CSRF checks, exact Origin/Host checks,
   bounded request bodies, rate-limited login and restrictive browser headers.
 - **Replay and evidence:** latest 300 observations per aircraft, command history,
   audit review and JSON downloads. Exports exclude password/session hashes and CSRF.
-- **Genuine integration:** an isolated CI job builds pinned PX4 source and exercises
+- **Genuine integration:** an isolated CI job builds pinned PX 4 source and exercises
   the real native MAVSDK/API path. Replay, mocked/unit results and actual simulator
-  evidence are kept separate. Missing PX4 never silently falls back to replay.
+  evidence are kept separate. Missing PX 4 never silently falls back to replay.
 - **Deployment:** digest-pinned non-root container; native PostgreSQL acceptance;
   a private, read-only Azure Container Apps reference with Key Vault secret references.
   No cloud account, paid resource, public host or AKS cluster is created by this repo.
 
 ## Quick start: local replay
 
-For installed use on Windows x64, download **Drone.Operations.Console.Setup.0.3.0.exe**
-and **SHA256SUMS.txt** from the [v0.3.0 release](https://github.com/JasonStys/drone-operations-console/releases/tag/v0.3.0).
+For installed use on Windows x 64, download **Drone.Operations.Console.Setup.0.3.0.exe**
+and **SHA 256SUMS.txt** from the [v 0.3.0 release](https://github.com/JasonStys/drone-operations-console/releases/tag/v0.3.0).
 Verify its hash, install and launch the desktop icon. Choose your own account and
 password on first launch. The installer is unsigned; no signing certificate or
 OS-security bypass is provided. See [the rehearsal/desktop guide](docs/REHEARSAL.md).
 
-For source development or the separate Linux native PX4 integration:
+For source development or the separate Linux native PX 4 integration:
 
 Requirements: Python 3.12–3.14, Node.js 24, npm and Git. From a fresh clone:
 
@@ -140,7 +140,7 @@ python -m pip_audit --disable-pip --no-deps -r requirements-dev.lock
 ```
 
 Core Python statement coverage has an 85% gate; pure TypeScript route/freshness
-utilities have separate 95% statements / 90% branches gates. Native PX4 and UI
+utilities have separate 95% statements / 90% branches gates. Native PX 4 and UI
 journeys are integration tests, not part of either unit-coverage denominator.
 See [test strategy](docs/TESTING.md) and [observed validation](docs/VALIDATION.md).
 Actions logs preserve native acceptance records; caches and artifact uploads are off.
@@ -150,18 +150,18 @@ Actions logs preserve native acceptance records; caches and artifact uploads are
 | Path                                        | Responsibility                                                                      |
 | ------------------------------------------- | ----------------------------------------------------------------------------------- |
 | `console/domain.py`                         | Strict typed plans, units, geometry, freshness and safety blockers.                 |
-| `console/auth.py`                           | Provisioned identities, Argon2id verification, sessions, roles and CSRF.            |
+| `console/auth.py`                           | Provisioned identities, Argon 2id verification, sessions, roles and CSRF.            |
 | `console/store.py`                          | SQL schema, transactions, bounded observation history and private sessions.         |
 | `console/service.py`                        | Revision-bound approvals, boot-bound uploads and durable command dispatch.          |
 | `console/replay.py`                         | Explicit synthetic logical rehearsal, not a physics simulator.                      |
-| `console/px4.py`                            | App-owned pinned Linux PX4 process and native MAVSDK observations/commands.         |
+| `console/px4.py`                            | App-owned pinned Linux PX 4 process and native MAVSDK observations/commands.         |
 | `console/api.py`                            | Hardened authenticated API and production UI delivery.                              |
 | `console/__main__.py`                       | Local provisioning and single-worker loopback launcher.                             |
 | `ui/`                                       | Accessible React UI, responsive styling and independently tested grid utilities.    |
 | `ui/src/rehearsal.ts`, `RehearsalPanel.tsx` | Bounded obstacle planner, cooperative scenarios and animated controls.              |
 | `desktop/`, `console/desktop.py`            | Sandboxed native window and owned replay-only backend lifecycle.                    |
 | `tests/`                                    | Independent safety/security/state oracles and real browser journeys.                |
-| `tools/`                                    | Native PX4/PostgreSQL acceptance, temporary demo server and repository checks.      |
+| `tools/`                                    | Native PX 4/PostgreSQL acceptance, temporary demo server and repository checks.      |
 | `deploy/`, `Dockerfile`                     | Private cloud reference and digest-pinned non-root container.                       |
 | `.github/workflows/`                        | Multi-OS tests, browser/SQL/native/container gates and CodeQL.                      |
 | `docs/`                                     | Design, security, operations, research, test reports and exact source/file indexes. |
@@ -178,7 +178,7 @@ attestations, not independent fact verification. Recovery commands can fail. Rep
 returns home immediately and does not model wind, energy use or vehicle dynamics.
 The grid is a small-area approximation, not navigation/cartography software.
 
-The native adapter supports **one managed PX4 SIH quadrotor on Linux**, not arbitrary
+The native adapter supports **one managed PX 4 SIH quadrotor on Linux**, not arbitrary
 aircraft, autopilots or mobile hardware. A trusted OS could proxy loopback or replace
 the binary; commit/hash checks are not attestation against that attacker. Native
 SDK fields have different update behavior; arrival freshness represents position,
@@ -195,3 +195,14 @@ personal flight records or credentials. [Security boundaries](docs/SECURITY.md).
 Start with the [organized handbook](docs/handbook.md) for current usage, design, security and test guidance. Reviewed downloadable editions: [project-guide.docx](docs/reports/project-guide.docx) · [validation-review.docx](docs/reports/validation-review.docx) · [validation-evidence.xlsx](docs/reports/validation-evidence.xlsx).
 
 [Publication identities and source scope](docs/reports/publications.json) · [Documentation validation record](docs/reports/documentation-refresh-2026-11-09.md). Historical results retain their own tested revision and date.
+
+## Version-scoped native resources
+
+The 0.3.2 native patch separates each app version's compiled UI and frozen service instead of merging
+new hashed assets into a shared old UI directory. Strict source/runtime/digest/complete-inventory
+checks remain; older files are preserved without being adopted or silently deleted. The actual
+old 0.3.0-to-0.3.1 installer attempt exposed this issue after fresh-package tests passed. See
+[0.3.2 notes](docs/RELEASE_0_3_2.md) and the
+[upgrade validation record](docs/reports/native-resource-upgrade-2026-11-11.md) for exact scope and
+current acceptance status. Copied packaged-app tests do not substitute for the separate real NSIS
+upgrade and user-profile compatibility acceptance.

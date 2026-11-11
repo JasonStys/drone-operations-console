@@ -3,6 +3,23 @@ const fs = require("node:fs");
 const { createHash } = require("node:crypto");
 const { join } = require("node:path");
 
+/** Select only this exact app version; old NSIS resource leftovers are never adopted or deleted. */
+function resourceDirectories(resources, developmentRoot, packaged, version) {
+  const match =
+    typeof version === "string" &&
+    /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.exec(version);
+  if (!match || match[0] !== version)
+    throw new Error("Invalid application resource version");
+  if (packaged) {
+    const root = join(resources, "runtime", version);
+    return { serviceRoot: join(root, "service"), uiRoot: join(root, "ui") };
+  }
+  return {
+    serviceRoot: join(developmentRoot, "release", "drone-console-service"),
+    uiRoot: join(developmentRoot, "dist"),
+  };
+}
+
 /** Read/hash only one actual regular descriptor; pathname growth cannot create an unbounded allocation. */
 function readBounded(path, cap = 4096) {
   const descriptor = fs.openSync(
@@ -147,4 +164,10 @@ function verifyResources(serviceRoot, uiRoot, version) {
   return metadata;
 }
 
-module.exports = { readBounded, patchedPython, inventory, verifyResources };
+module.exports = {
+  resourceDirectories,
+  readBounded,
+  patchedPython,
+  inventory,
+  verifyResources,
+};

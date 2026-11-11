@@ -1,6 +1,6 @@
 {
   "name": "drone-operations-console",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -55,11 +55,11 @@
     "extraResources": [
       {
         "from": "dist",
-        "to": "ui"
+        "to": "runtime/${version}/ui"
       },
       {
         "from": "release/drone-console-service",
-        "to": "service"
+        "to": "runtime/${version}/service"
       }
     ],
     "win": {

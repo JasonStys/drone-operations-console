@@ -10,11 +10,12 @@ const {
   patchedPython,
   inventory,
   verifyResources,
+  resourceDirectories,
 } = require("../../desktop/resources.cjs");
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 /** Independent authored bytes/expected digests make actual file mismatches observable. */
-function fixture(t) {
+function fixture(t, version = "0.3.1") {
   const root = fs.mkdtempSync(path.join(tmpdir(), "ops-native-resources-"));
   t.after(() => {
     assert(path.resolve(root).startsWith(path.resolve(tmpdir()) + path.sep));
@@ -41,7 +42,7 @@ function fixture(t) {
   const metadata = {
     schema_version: 1,
     name: "drone-operations-console",
-    version: "0.3.1",
+    version,
     source_commit: "b".repeat(40),
     source_dirty: false,
     python_version: "3.14.10",
@@ -64,9 +65,97 @@ function fixture(t) {
     ui,
     metadata,
     save,
-    verify: () => verifyResources(service, ui, "0.3.1"),
+    verify: () => verifyResources(service, ui, version),
   };
 }
+
+test("versioned resources ignore preserved legacy leftovers while retaining the exact active inventory", (t) => {
+  const f = fixture(t, "0.3.2");
+  const active = resourceDirectories(f.root, f.root, true, "0.3.2");
+  fs.cpSync(f.service, active.serviceRoot, { recursive: true });
+  fs.cpSync(f.ui, active.uiRoot, { recursive: true });
+  const old = path.join(f.ui, "assets", "index-CQbaKg54.js");
+  fs.writeFileSync(old, "old public resource sentinel");
+  assert.throws(f.verify, /UI inventory mismatch/);
+  assert.deepEqual(
+    verifyResources(active.serviceRoot, active.uiRoot, "0.3.2"),
+    f.metadata,
+  );
+  assert.equal(fs.readFileSync(old, "utf8"), "old public resource sentinel");
+  const stray = path.join(active.uiRoot, "assets", "unexpected.js");
+  fs.writeFileSync(stray, "active-version extra file must still fail");
+  assert.throws(
+    () => verifyResources(active.serviceRoot, active.uiRoot, "0.3.2"),
+    /UI inventory mismatch/,
+  );
+});
+
+for (const version of [
+  undefined,
+  null,
+  "",
+  "../0.3.2",
+  "0.3.2/elsewhere",
+  "0.3.2\n",
+  "00.3.2",
+  "0.3.2-beta",
+]) {
+  test(`resource selection refuses invalid product version ${JSON.stringify(version)}`, () => {
+    assert.throws(
+      () => resourceDirectories("resources", "project", true, version),
+      /resource version/,
+    );
+  });
+}
+
+test("development paths remain explicit and absent new resources never fall back to old copies", (t) => {
+  const f = fixture(t, "0.3.2");
+  assert.deepEqual(resourceDirectories("unused", f.root, false, "0.3.2"), {
+    serviceRoot: path.join(f.root, "release", "drone-console-service"),
+    uiRoot: path.join(f.root, "dist"),
+  });
+  const active = resourceDirectories(f.root, f.root, true, "0.3.2");
+  assert.throws(
+    () => verifyResources(active.serviceRoot, active.uiRoot, "0.3.2"),
+    /ENOENT/,
+  );
+  assert.deepEqual(f.verify(), f.metadata);
+});
+
+test("actual locked electron-builder expands the supported version macro to the loader's exact directories", () => {
+  const { getFileMatchers } = require("app-builder-lib/out/fileMatcher.js");
+  const { expandMacro } = require("app-builder-lib/out/util/macroExpander.js");
+  const project = path.resolve(__dirname, "../..");
+  const info = JSON.parse(
+    fs.readFileSync(path.join(project, "package.json"), "utf8"),
+  );
+  const destination = path.join(
+    project,
+    ".runtime",
+    "macro-fixture",
+    "resources",
+  );
+  const matches = getFileMatchers(info.build, "extraResources", destination, {
+    defaultSrc: project,
+    globalOutDir: path.join(project, "release/installers"),
+    customBuildOptions: {},
+    macroExpander: (pattern) =>
+      expandMacro(pattern, "x64", { version: info.version }),
+  });
+  assert.equal(matches.length, 2);
+  const active = resourceDirectories(destination, project, true, info.version);
+  assert.deepEqual(
+    matches.map((value) => value.to),
+    [active.uiRoot, active.serviceRoot],
+  );
+  assert.deepEqual(
+    matches.map((value) => value.from),
+    [
+      path.join(project, "dist"),
+      path.join(project, "release/drone-console-service"),
+    ],
+  );
+});
 
 test("actual complete resource bytes return their immutable source/version", (t) => {
   const f = fixture(t);
