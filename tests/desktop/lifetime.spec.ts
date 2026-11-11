@@ -22,6 +22,15 @@ async function until<T>(
   throw new Error("Deadline exceeded: " + label);
 }
 
+/** Cleanup opens only owned gates and never overwrites an existing file or turns failure into success. */
+async function cleanupGate(path: string): Promise<void> {
+  try {
+    await writeFile(path, "cleanup gate", { flag: "wx" });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+  }
+}
+
 test("real frozen work finishes before repeated Quit and window Close release ownership", async () => {
   const fixture = resolve(
     process.env.OPS_LIFETIME_FIXTURE ?? ".runtime/lifetime-fixture",
@@ -29,6 +38,9 @@ test("real frozen work finishes before repeated Quit and window Close release ow
   const run = await mkdtemp(join(tmpdir(), "drone-owned-work-"));
   const readyPath = join(run, "ready.json");
   const exitedPath = join(run, "service-exited.txt");
+  const heldPath = join(run, "held-entered.txt");
+  const releasePath = join(run, "release-work.txt");
+  const receivedPath = join(run, "response-received.txt");
   const source = JSON.parse(
     await readFile(join(fixture, "source.json"), "utf8"),
   );
@@ -54,6 +66,9 @@ test("real frozen work finishes before repeated Quit and window Close release ow
     OPS_DESKTOP_TEST_DATA: join(run, "profile"),
     OPS_PROBE_READY: readyPath,
     OPS_PROBE_EXITED: exitedPath,
+    OPS_PROBE_HELD: heldPath,
+    OPS_PROBE_RELEASE: releasePath,
+    OPS_PROBE_RECEIVED: receivedPath,
   };
   delete environment.ELECTRON_RUN_AS_NODE;
   const application = await _electron.launch({
@@ -70,26 +85,17 @@ test("real frozen work finishes before repeated Quit and window Close release ow
       done();
     }),
   );
-  let ready:
-    { pid: number; control: number; nonce: string; token: string } | undefined;
+  let ready: { pid: number; nonce: string } | undefined;
   let released = false;
-  const control = async (path: string) => {
-    if (!ready) throw new Error("Fixture not ready");
-    const response = await fetch(`http://127.0.0.1:${ready.control}${path}`, {
-      headers: { "X-Probe-Nonce": ready.nonce },
-      signal: AbortSignal.timeout(2000),
-    });
-    expect(response.status).toBe(200);
-    return response.json();
-  };
+  let acknowledged = false;
   try {
     const page = await application.firstWindow();
     await page.waitForURL(/^http:\/\/127\.0\.0\.1:\d+\/$/);
     ready = JSON.parse(await readFile(readyPath, "utf8"));
     if (!ready) throw new Error("Missing owned fixture identity");
-    const origin = new URL(page.url()).origin;
-    const health = await fetch(origin + "/healthz").then((response) =>
-      response.json(),
+    expect(Number.isInteger(ready.pid) && ready.pid > 0).toBe(true);
+    const health = await page.evaluate(async () =>
+      (await fetch("/healthz")).json(),
     );
     expect(health.launcher_nonce).toBe(ready.nonce);
     expect(health.source_commit).toBe(source.source.source_commit);
@@ -119,15 +125,31 @@ test("real frozen work finishes before repeated Quit and window Close release ow
       3000,
       "independent opened process handle",
     );
-    const held = fetch(origin + "/__owned_qa_hold", {
-      headers: { "X-Ops-Launch-Token": ready.token },
-      signal: AbortSignal.timeout(45000),
-    }).then(async (response) => ({
-      status: response.status,
-      body: await response.json(),
-    }));
+    let responseReceived = false;
+    // The real owner injects its launch capability on this actual renderer request;
+    // no token or file contents are copied into a network request by the test.
+    const held = page
+      .evaluate(async () => {
+        const response = await fetch("/__owned_qa_hold", {
+          signal: AbortSignal.timeout(45000),
+        });
+        return { status: response.status, body: await response.json() };
+      })
+      .then((response) => {
+        responseReceived = true;
+        return response;
+      });
     await until(
-      async () => (await control("/state")).held,
+      async () => {
+        try {
+          return (
+            (await readFile(heldPath, "utf8")).trim() === String(ready?.pid)
+          );
+        } catch (error) {
+          if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+          throw error;
+        }
+      },
       5000,
       "real handler entry",
     );
@@ -139,10 +161,8 @@ test("real frozen work finishes before repeated Quit and window Close release ow
     await new Promise((done) => setTimeout(done, 16000));
     expect(ownerExit).toBeUndefined();
     expect(owner.exitCode).toBeNull();
-    expect(await control("/state")).toMatchObject({
-      held: true,
-      released: false,
-    });
+    expect(responseReceived).toBe(false);
+    expect(released).toBe(false);
     const window = await application.evaluate(({ app, BrowserWindow }) => {
       app.quit();
       const current = BrowserWindow.getAllWindows()[0];
@@ -158,9 +178,11 @@ test("real frozen work finishes before repeated Quit and window Close release ow
     expect(window.destroyed).toBe(false);
     expect(window.title).toContain("Finishing current work");
     expect(ownerExit).toBeUndefined();
-    await control("/release");
+    await writeFile(releasePath, "release", { flag: "wx" });
     released = true;
     expect(await held).toEqual({ status: 200, body: { completed: true } });
+    await writeFile(receivedPath, "received actual response", { flag: "wx" });
+    acknowledged = true;
     await until(
       async () => ownerExit ?? false,
       10000,
@@ -184,6 +206,8 @@ test("real frozen work finishes before repeated Quit and window Close release ow
           source,
           passed: true,
           real_held_response_completed: true,
+          owned_file_release_and_response_acknowledgment: true,
+          launch_token_persisted_or_copied_to_request_by_test: false,
           old15s_boundary_crossed: true,
           repeated_quit_and_close_retained_window: window,
           child,
@@ -197,7 +221,14 @@ test("real frozen work finishes before repeated Quit and window Close release ow
       ),
     );
   } finally {
-    if (ready && !released) await control("/release");
-    if (!ownerExit) await application.close();
+    try {
+      if (!released) await cleanupGate(releasePath);
+    } finally {
+      try {
+        if (!acknowledged) await cleanupGate(receivedPath);
+      } finally {
+        if (!ownerExit) await application.close();
+      }
+    }
   }
 });

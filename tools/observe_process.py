@@ -3,11 +3,10 @@
 Functions/variables: docs/SOURCE_MAP.md. No process enumeration or user-data read.
 """
 
-import ctypes
+import ctypes.wintypes
 import json
 import sys
 import time
-from ctypes import wintypes
 from pathlib import Path
 
 
@@ -16,13 +15,20 @@ def main():
     pid = int(sys.argv[1])
     output = Path(sys.argv[2])
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
-    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
-    kernel.OpenProcess.restype = wintypes.HANDLE
-    kernel.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
-    kernel.WaitForSingleObject.restype = wintypes.DWORD
-    kernel.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
-    kernel.GetExitCodeProcess.restype = wintypes.BOOL
-    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel.OpenProcess.argtypes = [
+        ctypes.wintypes.DWORD,
+        ctypes.wintypes.BOOL,
+        ctypes.wintypes.DWORD,
+    ]
+    kernel.OpenProcess.restype = ctypes.wintypes.HANDLE
+    kernel.WaitForSingleObject.argtypes = [ctypes.wintypes.HANDLE, ctypes.wintypes.DWORD]
+    kernel.WaitForSingleObject.restype = ctypes.wintypes.DWORD
+    kernel.GetExitCodeProcess.argtypes = [
+        ctypes.wintypes.HANDLE,
+        ctypes.POINTER(ctypes.wintypes.DWORD),
+    ]
+    kernel.GetExitCodeProcess.restype = ctypes.wintypes.BOOL
+    kernel.CloseHandle.argtypes = [ctypes.wintypes.HANDLE]
     handle = kernel.OpenProcess(0x100000 | 0x1000, False, pid)
     if not handle:
         raise ctypes.WinError(ctypes.get_last_error())
@@ -30,7 +36,7 @@ def main():
         output.with_suffix(".ready").write_text(str(pid), encoding="utf-8")
         started = time.monotonic()
         wait = kernel.WaitForSingleObject(handle, 40000)
-        code = wintypes.DWORD()
+        code = ctypes.wintypes.DWORD()
         if not kernel.GetExitCodeProcess(handle, ctypes.byref(code)):
             raise ctypes.WinError(ctypes.get_last_error())
         output.write_text(

@@ -142,6 +142,27 @@ actual deliberate ancestor/final aliases remain required refusal cases on every
 OS. Test counts, assertions and coverage minimums are unchanged. The original
 failed hosted log is retained; fresh exact-head checks remain required.
 
+All 11 corrected-head checks then passed at
+`ac4f3b407ce4e19021135e27ccf55bfa71f4fcec`, including native Windows and genuine
+Linux PX4. An additional PR-ref alert API audit nevertheless found four open
+findings: one mixed `ctypes` import-style note and three file-data-to-outbound-HTTP
+warnings in the QA held-work harness. Passing workflow/aggregate status alone
+was therefore not treated as zero alerts or release clearance.
+
+The QA harness now requests held work through the actual Electron renderer,
+letting the unchanged native header hook supply its launch capability. No launch
+token is written to a ready file or copied from file data into outbound requests.
+Separate explicit owned file gates release held work and acknowledge the actual
+HTTP response before the QA child finalizes, avoiding a race where destroying
+the renderer could hide its successful response. Nonce equality remains an
+assertion, and the actual handler, 16-second boundary, repeated Close/Quit,
+HTTP 200, finalization marker and independent process-handle checks remain.
+The separate control HTTP listener is removed; the shipping product has no QA
+route or additional gate. The observer uses one qualified `ctypes.wintypes`
+import. No query suppression, alert dismissal, retry, coverage-floor change or
+production-runtime change implements these corrections; new hosted scans and
+actual frozen acceptance remain required before claiming resolution.
+
 ## Limits
 
 Windows-only unsigned packaging; packaged executable launch is not a clean NSIS
