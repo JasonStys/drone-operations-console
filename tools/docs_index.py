@@ -30,6 +30,9 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/reports/windows-application-guide-0.3.2.docx": "Current illustrated installed application guide with actual screenshots and exact source/limits.",
+    "docs/reports/windows-application-guide-0.3.2.json": "Current Word, source, screenshot and independently reviewed-page digests.",
+    "docs/reports/installed-windows-0.3.2-2026-11-11.md": "Observed installed workflows, version, data boundaries and practical limits.",
     "docs/RELEASE_0_3_2.md": "Version 0.3.2 version-scoped packaged resources and preservation/installer acceptance limits.",
     "docs/reports/native-resource-upgrade-2026-11-11.md": "Actual stale shared-UI installation fault, strict versioned resource repair and independent upgrade regressions.",
     "docs/reports/main-codeql-delivery-gate-2026-11-11.md": "Actual failed main preflight, exact processed-analysis/SARIF replacement and independent guard regressions.",

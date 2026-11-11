@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "repository": "drone-operations-console",
+  "runtimeVersion": "0.3.2",
+  "runtimeSource": "97f595f1f3afbe612350018fc0bd7df68ebe633a",
+  "createdAt": "2026-11-11T14:14:09.207Z",
+  "author": "Jason Stys",
+  "document": "windows-application-guide-0.3.2.docx",
+  "sha256": "0d0f8a0c61d7d49f5e2dbacee114cbb1b122bc9d6b98ed1ea282b7bc09ee14cc",
+  "screenshots": [
+    {
+      "file": "new-same-plan.png",
+      "sha256": "4ded4e4c177ae7d1d55da8f02c4691abcbfe409aee3359e8ebd39063d714c583",
+      "width": 2139,
+      "height": 1377,
+      "caption": "The actual 0.3.2 installation reopened the same synthetic operator and revision 2 inspection plan created by the preserved installed 0.3.0 app."
+    },
+    {
+      "file": "new-complete-rehearsal.png",
+      "sha256": "b0053fdce9292a5f231e31df0eece805ae8c4ca10c503923c82992915cb97383",
+      "width": 1949,
+      "height": 1766,
+      "caption": "The actual installed rehearsal shows the complete projected route, circular obstacle, moving marker and playback controls. Movement was observed before pausing for this screenshot; the rehearsal sends no aircraft commands."
+    }
+  ],
+  "snippets": [
+    {
+      "file": "desktop/resources.cjs",
+      "first": 7,
+      "last": 20,
+      "sha256": "5703e9a0b3e11809befaa2e5964e896fa121e4c63f63fb9665b78f2dc96a8d0f",
+      "url": "https://github.com/JasonStys/drone-operations-console/blob/97f595f1f3afbe612350018fc0bd7df68ebe633a/desktop/resources.cjs#L7"
+    }
+  ],
+  "observedTests": [
+    {
+      "name": "Actual installed workflows",
+      "observed": "The independently downloaded NSIS update passed. Actual installed 0.3.0 created the account/plan, then 0.3.2 retained exact identity, plans and original audit rows. Both closed normally; normal account directories stayed unchanged.",
+      "result": "Passed"
+    },
+    {
+      "name": "Original core and source gates",
+      "observed": "All three original current-main native tests passed: installed account/animation/restart, installed-bundle retained-old-layout proof, and a separate same-source frozen held-work/repeated-Quit fixture. Original Python/Node/UI/browser/PostgreSQL/PX4/container gates also passed.",
+      "result": "Passed"
+    },
+    {
+      "name": "Assets and current security",
+      "observed": "Provider/download hashes, complete installed-byte identity, current exact-main workflows and processed raw CodeQL results passed with zero open main alerts.",
+      "result": "Passed"
+    },
+    {
+      "name": "Launch and data boundary",
+      "observed": "Individual Desktop and Start-menu targets verified. Only synthetic profiles were exercised; installed EXE tests are distinct from ordinary default-profile shortcut activation.",
+      "result": "Passed"
+    }
+  ],
+  "visualReview": {
+    "approved": true,
+    "reviewer": "audit_space_drone",
+    "ooxmlSchema": "passed",
+    "pages": [
+      {
+        "page": 1,
+        "sha256": "738d9d05bc1d12a778bac15b580d8afd5439db24794c9dba5bf65ec8968a13bf"
+      },
+      {
+        "page": 2,
+        "sha256": "719f978b3fe63b93b73ab0353c1e2a5ce55d390461b77080cd8c4af05146173b"
+      },
+      {
+        "page": 3,
+        "sha256": "2eaf5c4ecf0358e47c7334e03ef2d70e6dc07e8b87b6afd405e1d923b35a49d2"
+      },
+      {
+        "page": 4,
+        "sha256": "3cac4cad07af91645b17e9d3867b4d518a1a2233a8cee5e20404fd594b276d4e"
+      }
+    ],
+    "scope": "Every current page reviewed individually; prior inspection carried only by exact unchanged page hashes. Actual installed synthetic workflows, no ordinary-user profile replay.",
+    "checkedUtc": "2026-11-11T15:14:50.695693+00:00"
+  }
+}
