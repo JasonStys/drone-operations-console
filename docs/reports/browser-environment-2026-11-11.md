@@ -1,0 +1,9 @@
+# Actual three-engine service browser environment
+
+By Jason Stys. At guide-PR source `329f05c92bba10d2f9c83ab83a63aba2432b35ab`, the actual pinned PX4 build, verified Eigen/tool setup and authenticated MAVSDK/API job 130638970981 passed. PostgreSQL, all core jobs, the Windows package and semantic scans also completed. A separate browser job 130638971036 was canceled while installing Ubuntu OS dependencies, before its service assertions began. That setup result is not a product test failure or a passing browser result.
+
+Only the browser job now uses the [official matching Playwright image](https://playwright.dev/docs/docker) `mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f`, with nonroot user 1001. The original 15-minute job bound and all original three-engine service tests remain. The separate real autopilot, PostgreSQL, native packaged application and lifecycle jobs are unchanged.
+
+The mandatory host probe resolves the actual `@playwright/test` driver through its own dependency graph and requires that exact installed/locked version. Each real Chromium, Firefox and WebKit must refuse an absent executable, launch normally, render accented text, retain focus and demonstrate real font metrics and horizontal bounds at 390/1400 pixels. Outside resources are blocked and must count zero. There is no host-validation bypass or ignored install failure. Six actual-workflow positive/negative controls preserve the exact digest, identity, engine set and original application assertions.
+
+Local controls do not execute a Linux image or replace hosted browser acceptance. Fresh full hosted completion is still required. No local Docker command, OS package change, normal profile, product runtime/version, published release or approved Word byte was changed.

@@ -48,6 +48,9 @@ jobs:
   browser:
     name: Real service / three browser engines
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
+      options: --user 1001
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -58,7 +61,9 @@ jobs:
         with: {node-version: '24', package-manager-cache: false}
       - run: python -m pip install --require-hashes -r requirements-dev.lock
       - run: npm ci --ignore-scripts && npm run build
-      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Prove all three actual locked browsers before unchanged service journeys
+        timeout-minutes: 3
+        run: node tools/check_browser_host.mjs chromium firefox webkit
       - run: npm run test:e2e
   desktop:
     name: Actual Windows package / private account / animation / restart

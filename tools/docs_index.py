@@ -30,6 +30,8 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/reports/browser-environment-2026-11-11.md": "Actual separate browser setup failure, exact official engine image and mandatory unchanged service journeys.",
+    "tools/check_browser_host.mjs": "Real locked three-engine launch, absent-executable rejection, font/focus/responsive bounds and zero outside resources before original service tests.",
     "docs/reports/px4-build-setup-2026-11-11.md": "Actual APT setup failure, fixed vendor build-tool/source identities and unchanged mandatory PX4/MAVSDK assertions.",
     "tools/px4_build_host.py": "Hosted-only fixed provider-hash CMake/Ninja, exact Eigen source and actual compiler/header/arithmetic proof before unchanged PX4/MAVSDK assertions.",
     "docs/reports/windows-application-guide-0.3.2.docx": "Current illustrated installed application guide with actual screenshots and exact source/limits.",
