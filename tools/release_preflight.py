@@ -17,7 +17,6 @@ from tools.desktop_contract import configuration, digest, source_metadata
 REPOSITORY = "JasonStys/drone-operations-console"
 ROOT = Path(__file__).resolve().parents[1]
 CHECKS = {
-    "CodeQL",
     "analyze",
     "Core / ubuntu-24.04 / 3.12",
     "Core / ubuntu-24.04 / 3.14",
@@ -29,6 +28,8 @@ CHECKS = {
     "Actual PX4 SIH / native MAVSDK / API evidence",
     "Non-root image / real service smoke",
 }
+ANALYSIS_KEY = ".github/workflows/codeql.yml:analyze"
+QUERY_PACKS = {"codeql/javascript-queries": "js/", "codeql/python-queries": "py/"}
 
 if not __debug__:
     raise RuntimeError("Release decisions refuse optimized Python")
@@ -39,12 +40,17 @@ def gh(*args):
     binary = shutil.which("gh")
     if not binary:
         raise RuntimeError("GitHub CLI missing")
-    return subprocess.run([binary, *args], capture_output=True, text=True, timeout=60)
+    return subprocess.run(
+        [binary, *args], capture_output=True, text=True, encoding="utf-8", timeout=60
+    )
 
 
-def api(path, *, absent_tag=False):
+def api(path, *, absent_tag=False, sarif=False):
     """Only a specific absent Git tag may return None; authentication/network/provider errors stay errors."""
-    result = gh("api", "-H", "X-GitHub-Api-Version: 2022-11-28", path)
+    headers = ["-H", "X-GitHub-Api-Version: 2022-11-28"]
+    if sarif:
+        headers += ["-H", "Accept: application/sarif+json"]
+    result = gh("api", *headers, path)
     if result.returncode:
         if (
             absent_tag
@@ -72,8 +78,133 @@ def pages(path, key=None):
     raise ValueError("GitHub list exceeded reviewed complete-page bound")
 
 
+def processed_codeql(source):
+    """Bind actual processed main metadata AND both language SARIF rule packs, not a PR-only check name."""
+    analyses = pages(
+        f"repos/{REPOSITORY}/code-scanning/analyses?tool_name=CodeQL&ref=refs%2Fheads%2Fmain"
+    )
+    if any(not isinstance(row, dict) for row in analyses):
+        raise ValueError("Unexpected CodeQL analysis record")
+    selected = [row for row in analyses if row.get("commit_sha") == source]
+    if len(selected) != 1:
+        raise ValueError("Exact-source main CodeQL analysis missing or ambiguous")
+    analysis = selected[0]
+    metadata_tool = analysis.get("tool")
+    if not isinstance(metadata_tool, dict) or not isinstance(metadata_tool.get("version"), str):
+        raise ValueError("Processed CodeQL tool identity is missing")
+    if (
+        any(
+            analysis.get(field) != expected
+            for field, expected in {
+                "commit_sha": source,
+                "ref": "refs/heads/main",
+                "analysis_key": ANALYSIS_KEY,
+                "category": ANALYSIS_KEY,
+                "error": "",
+                "warning": "",
+            }.items()
+        )
+        or type(analysis.get("id")) is not int
+        or analysis["id"] < 1
+        or type(analysis.get("rules_count")) is not int
+        or analysis["rules_count"] < 1
+        or type(analysis.get("results_count")) is not int
+        or analysis["results_count"] != 0
+        or metadata_tool.get("name") != "CodeQL"
+        or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", metadata_tool["version"])
+    ):
+        raise ValueError("Processed main CodeQL metadata is incomplete or nonpassing")
+    sarif = api(f"repos/{REPOSITORY}/code-scanning/analyses/{analysis['id']}", sarif=True)
+    if not isinstance(sarif, dict):
+        raise ValueError("Unexpected processed CodeQL SARIF shape")
+    runs = sarif.get("runs")
+    if sarif.get("version") != "2.1.0" or not isinstance(runs, list) or len(runs) != 1:
+        raise ValueError("Unexpected processed CodeQL SARIF shape")
+    run = runs[0]
+    if not isinstance(run, dict) or not isinstance(run.get("tool"), dict):
+        raise ValueError("Processed CodeQL SARIF run/tool missing")
+    tool = run.get("tool", {})
+    driver = tool.get("driver", {})
+    properties = run.get("properties")
+    automation = run.get("automationDetails")
+    if (
+        not isinstance(driver, dict)
+        or not isinstance(properties, dict)
+        or not isinstance(automation, dict)
+        or not isinstance(properties.get("codeqlConfigSummary"), dict)
+    ):
+        raise ValueError("Processed CodeQL SARIF source/suite identity is incomplete")
+    if (
+        driver.get("name") != "CodeQL"
+        or driver.get("semanticVersion") != analysis["tool"]["version"]
+        or driver.get("rules", []) != []
+        or run.get("results") != []
+        or automation.get("id") != ANALYSIS_KEY + "/"
+        or run.get("versionControlProvenance")
+        != [
+            {
+                "branch": "refs/heads/main",
+                "repositoryUri": f"https://github.com/{REPOSITORY}",
+                "revisionId": source,
+            }
+        ]
+        or properties["codeqlConfigSummary"].get("queries")
+        != [{"type": "builtinSuite", "uses": "security-and-quality"}]
+    ):
+        raise ValueError("Processed CodeQL SARIF source/suite/result identity disagrees")
+    extensions = tool.get("extensions")
+    if not isinstance(extensions, list):
+        raise ValueError("CodeQL language query packs are missing")
+    counts = {}
+    names = set()
+    for extension in extensions:
+        if not isinstance(extension, dict):
+            raise ValueError("CodeQL query pack identity is invalid")
+        name = extension.get("name")
+        rules = extension.get("rules", [])
+        if not isinstance(name, str) or name in names or not isinstance(rules, list):
+            raise ValueError("CodeQL query pack identity is invalid or ambiguous")
+        names.add(name)
+        if name in QUERY_PACKS:
+            if any(not isinstance(rule, dict) for rule in rules):
+                raise ValueError("CodeQL rule record is invalid")
+            ids = [rule.get("id") for rule in rules]
+            if (
+                not ids
+                or any(
+                    not isinstance(rule, str) or not rule.startswith(QUERY_PACKS[name])
+                    for rule in ids
+                )
+                or len(set(ids)) != len(ids)
+            ):
+                raise ValueError("CodeQL language rules are empty or ambiguous")
+            counts[name] = len(ids)
+        elif rules:
+            raise ValueError("Unexpected CodeQL rule-bearing query pack")
+    if set(counts) != set(QUERY_PACKS) or sum(counts.values()) != analysis["rules_count"]:
+        raise ValueError("Both actual CodeQL languages and matching rule counts are required")
+    return {
+        field: analysis[field]
+        for field in (
+            "id",
+            "commit_sha",
+            "ref",
+            "analysis_key",
+            "category",
+            "rules_count",
+            "results_count",
+            "error",
+            "warning",
+        )
+    } | {
+        "language_rule_counts": counts,
+        "sarif_results_count": 0,
+        "tool_version": analysis["tool"]["version"],
+    }
+
+
 def check_main(root: Path, version: str) -> dict:
-    """Require actual main push workflows AND aggregate CodeQL checks, not scanner-job success alone."""
+    """Require actual main push workflows, processed CodeQL/SARIF and every present check to pass."""
     if (
         os.environ.get("GITHUB_ACTIONS") != "true"
         or os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch"
@@ -143,18 +274,23 @@ def check_main(root: Path, version: str) -> dict:
         }.items()
     ):
         raise ValueError("Exact owned active release check missing or ambiguous")
-    # Only this authenticated manual run is currently executing. Required push/aggregate
+    # Only this authenticated manual run is currently executing. Required push checks
     # and every unrelated current check remain subject to the original strict policy.
     checks = [row for row in checks if row not in own_checks]
     counts = Counter(row["name"] for row in checks)
     if any(counts[name] != 1 for name in CHECKS):
-        raise ValueError("Required validation or aggregate check missing/ambiguous")
+        raise ValueError("Required validation or scanner check missing/ambiguous")
     if any(
         row.get("status") != "completed" or row.get("conclusion") != "success"
         for row in checks
         if row["name"] in CHECKS
     ):
-        raise ValueError("Required validation or aggregate check has not passed")
+        raise ValueError("Required validation or scanner check has not passed")
+    aggregate = [row for row in checks if row["name"] == "CodeQL"]
+    if len(aggregate) > 1 or any(
+        row.get("status") != "completed" or row.get("conclusion") != "success" for row in aggregate
+    ):
+        raise ValueError("Present CodeQL aggregate check failed or is ambiguous")
     if any(
         row.get("head_sha") != source
         or row.get("status") != "completed"
@@ -164,7 +300,8 @@ def check_main(root: Path, version: str) -> dict:
         raise ValueError("Additional current-source checks still require review")
     if pages(f"repos/{REPOSITORY}/code-scanning/alerts?state=open&ref=refs%2Fheads%2Fmain"):
         raise ValueError("Open main code-scanning alerts require review")
-    return {**metadata, "main_validation_runs": accepted}
+    analysis = processed_codeql(source)
+    return {**metadata, "main_validation_runs": accepted, "main_codeql_analysis": analysis}
 
 
 def require_absent(version):
