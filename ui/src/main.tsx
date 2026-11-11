@@ -849,7 +849,7 @@ function App() {
         <a href="https://www.linkedin.com/in/jason-stys-31b30b351/">
           Contact Jason
         </a>
-        <span>Simulator-only engineering portfolio · v0.2.1</span>
+        <span>Simulator-only engineering portfolio · v{__APP_VERSION__}</span>
       </footer>
     </>
   );

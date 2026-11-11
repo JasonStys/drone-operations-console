@@ -30,6 +30,8 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/RELEASE_0_3_1.md": "Version 0.3.1 completion-based Windows lifetime, resource identity, upgrade and delivery limits.",
+    "docs/reports/native-lifetime-2026-11-11.md": "Actual interrupted-work reproduction, completion repair, regression scopes and pending delivery gates.",
     "docs/reports/office-package-guard-2026-11-10.md": "Dated Office embedded-part guard and actual regression validation results.",
     "docs/handbook.md": "Organized current usage, design, security and test guidance.",
     "docs/reports/project-guide.docx": "Reviewed Word project guide tied to the declared source revision.",

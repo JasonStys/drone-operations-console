@@ -2,11 +2,22 @@
 const { app, BrowserWindow, dialog, session, Menu } = require("electron");
 const { spawn } = require("node:child_process");
 const { randomBytes } = require("node:crypto");
-const { join } = require("node:path");
+const { join, dirname } = require("node:path");
 const fs = require("node:fs");
 const net = require("node:net");
-let child;
-let closing = false;
+const { OwnedLifetime } = require("./owned-lifetime.cjs");
+const { verifyResources } = require("./resources.cjs");
+const { openPrivateLog } = require("./private-directory.cjs");
+let nativeWindow;
+const lifetime = new OwnedLifetime({
+  exit: (code) => app.exit(code),
+  waiting: () => {
+    if (nativeWindow && !nativeWindow.isDestroyed())
+      nativeWindow.setTitle(
+        "Finishing current work — keep this window open — Drone Operations Console",
+      );
+  },
+});
 
 /** Reserve a loopback port; the unpredictable readiness nonce rejects a competing listener. */
 async function freePort() {
@@ -22,25 +33,33 @@ async function freePort() {
 /** Start only the bundled synthetic replay service, with no shell or renderer privileges. */
 async function launch() {
   const port = await freePort();
+  if (lifetime.stopping) {
+    lifetime.noChild();
+    return;
+  }
   const origin = `http://127.0.0.1:${port}`;
   const token = randomBytes(32).toString("hex");
   const nonce = randomBytes(32).toString("hex");
   const resources = app.isPackaged
     ? process.resourcesPath
     : join(__dirname, "..", "release");
+  const serviceRoot = join(
+    resources,
+    app.isPackaged ? "service" : "drone-console-service",
+  );
+  const uiRoot = app.isPackaged
+    ? join(resources, "ui")
+    : join(__dirname, "..", "dist");
+  const metadata = verifyResources(serviceRoot, uiRoot, app.getVersion());
   const folder = app.getPath("userData");
-  fs.mkdirSync(folder, { recursive: true, mode: 0o700 });
-  const log = fs.openSync(join(folder, "service.log"), "a", 0o600);
-  child = spawn(
-    join(resources, "service", "drone-console-service.exe"),
-    [
-      "--port",
-      String(port),
-      "--ui",
-      app.isPackaged ? join(resources, "ui") : join(__dirname, "..", "dist"),
-      "--data",
-      folder,
-    ],
+  const log = openPrivateLog(folder, [
+    dirname(app.getPath("exe")),
+    serviceRoot,
+    uiRoot,
+  ]);
+  const child = spawn(
+    join(serviceRoot, "drone-console-service.exe"),
+    ["--port", String(port), "--ui", uiRoot, "--data", folder],
     {
       cwd: folder,
       env: { ...process.env, OPS_LAUNCH_TOKEN: token, OPS_LAUNCH_NONCE: nonce },
@@ -49,32 +68,14 @@ async function launch() {
     },
   );
   fs.closeSync(log);
+  lifetime.attach(child);
   let failed = false;
   child.once("error", () => {
     failed = true;
   });
   child.once("exit", () => {
     failed = true;
-    if (!closing) app.quit();
   });
-  let ready = false;
-  for (let attempt = 0; attempt < 160 && !failed; attempt++) {
-    try {
-      const result = await fetch(origin + "/healthz", {
-        signal: AbortSignal.timeout(1000),
-      });
-      const data = await result.json();
-      ready = result.ok && data.launcher_nonce === nonce;
-    } catch {
-      /* A bounded startup wait never accepts an unrelated HTTP service. */
-    }
-    if (ready) break;
-    await new Promise((resolve) => setTimeout(resolve, 250));
-  }
-  if (!ready)
-    throw new Error(
-      "The private replay service did not start. Account data has been preserved.",
-    );
   const isolated = session.fromPartition("drone-console-" + nonce, {
     cache: false,
   });
@@ -97,7 +98,8 @@ async function launch() {
     callback({ requestHeaders: details.requestHeaders });
   });
   const window = new BrowserWindow({
-    title: "Drone Operations Console — Jason Stys",
+    title:
+      "Starting private replay service — Drone Operations Console — Jason Stys",
     width: 1440,
     height: 980,
     minWidth: 390,
@@ -109,6 +111,15 @@ async function launch() {
       sandbox: true,
       webSecurity: true,
     },
+  });
+  nativeWindow = window;
+  window.on("close", (event) => {
+    if (lifetime.finished) return;
+    event.preventDefault();
+    lifetime.stop();
+  });
+  window.on("page-title-updated", (event) => {
+    if (lifetime.stopping) event.preventDefault();
   });
   window.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
   window.webContents.on("will-navigate", (event, url) => {
@@ -128,6 +139,33 @@ async function launch() {
       },
     ]),
   );
+  let ready = false;
+  for (
+    let attempt = 0;
+    attempt < 160 && !failed && !lifetime.stopping;
+    attempt++
+  ) {
+    try {
+      const result = await fetch(origin + "/healthz", {
+        signal: AbortSignal.timeout(1000),
+      });
+      const data = await result.json();
+      ready =
+        result.ok &&
+        data.launcher_nonce === nonce &&
+        data.version === metadata.version &&
+        data.source_commit === metadata.source_commit;
+    } catch {
+      /* A bounded startup wait never accepts an unrelated HTTP service. */
+    }
+    if (ready) break;
+    await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+  if (lifetime.stopping) return;
+  if (!ready)
+    throw new Error(
+      "The private replay service did not start. Account data has been preserved.",
+    );
   await window.loadURL(origin + "/");
 }
 
@@ -136,8 +174,10 @@ app.setPath(
   process.env.OPS_DESKTOP_TEST_DATA ||
     join(app.getPath("appData"), "DroneOperationsConsole"),
 );
-if (!app.requestSingleInstanceLock()) app.quit();
-else {
+if (!app.requestSingleInstanceLock()) {
+  lifetime.noChild();
+  lifetime.stop();
+} else {
   app.on("second-instance", () => {
     const window = BrowserWindow.getAllWindows()[0];
     if (window) {
@@ -149,19 +189,15 @@ else {
     .whenReady()
     .then(launch)
     .catch((error) => {
-      dialog.showErrorBox("Drone Operations Console", error.message);
-      app.quit();
+      if (!lifetime.stopping)
+        dialog.showErrorBox("Drone Operations Console", error.message);
+      if (lifetime.pending) lifetime.noChild(true);
+      else lifetime.stop(true);
     });
 }
-app.on("window-all-closed", () => app.quit());
+app.on("window-all-closed", () => lifetime.stop());
 app.on("before-quit", (event) => {
-  if (closing || !child || child.exitCode !== null) return;
+  if (lifetime.finished) return;
   event.preventDefault();
-  closing = true;
-  child.stdin.end();
-  const timer = setTimeout(() => app.exit(0), 15000);
-  child.once("exit", () => {
-    clearTimeout(timer);
-    app.exit(0);
-  });
+  lifetime.stop();
 });
