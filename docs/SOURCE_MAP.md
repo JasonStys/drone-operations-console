@@ -434,79 +434,84 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tests/test_desktop_release_gate.py` | 47 | `name` |
 | `tests/test_desktop_release_gate.py` | 58 | `state` |
 | `tests/test_desktop_release_gate.py` | 78 | `api(path)` |
-| `tests/test_desktop_release_gate.py` | 101 | `test_actual_required_source_and_aggregate_set_is_explicit(provider)` |
-| `tests/test_desktop_release_gate.py` | 103 | `root` |
-| `tests/test_desktop_release_gate.py` | 103 | `state` |
-| `tests/test_desktop_release_gate.py` | 104 | `result` |
-| `tests/test_desktop_release_gate.py` | 108 | `path` |
-| `tests/test_desktop_release_gate.py` | 121 | `test_untrusted_context_fails_before_provider_calls(provider, monkeypatch, variable, value)` |
-| `tests/test_desktop_release_gate.py` | 123 | `root` |
-| `tests/test_desktop_release_gate.py` | 123 | `state` |
-| `tests/test_desktop_release_gate.py` | 130 | `test_wrong_version_or_current_main_never_prepares(provider)` |
-| `tests/test_desktop_release_gate.py` | 132 | `root` |
-| `tests/test_desktop_release_gate.py` | 132 | `state` |
-| `tests/test_desktop_release_gate.py` | 151 | `test_each_wrong_main_workflow_field_blocks(provider, field, value)` |
-| `tests/test_desktop_release_gate.py` | 153 | `root` |
-| `tests/test_desktop_release_gate.py` | 153 | `state` |
-| `tests/test_desktop_release_gate.py` | 160 | `test_missing_and_ambiguous_workflows_do_not_use_a_fallback(provider, duplicate)` |
-| `tests/test_desktop_release_gate.py` | 161 | `root` |
-| `tests/test_desktop_release_gate.py` | 161 | `state` |
-| `tests/test_desktop_release_gate.py` | 171 | `test_aggregate_cannot_be_missing_failed_or_ambiguous_behind_green_scanner(provider, fault)` |
-| `tests/test_desktop_release_gate.py` | 173 | `root` |
-| `tests/test_desktop_release_gate.py` | 173 | `state` |
-| `tests/test_desktop_release_gate.py` | 174 | `aggregate` |
-| `tests/test_desktop_release_gate.py` | 174 | `row` |
-| `tests/test_desktop_release_gate.py` | 189 | `test_open_alert_and_additional_failed_check_are_not_waived(provider)` |
-| `tests/test_desktop_release_gate.py` | 190 | `root` |
-| `tests/test_desktop_release_gate.py` | 190 | `state` |
-| `tests/test_desktop_release_gate.py` | 219 | `test_active_release_exception_is_bound_to_exact_provider_run(provider, field, value)` |
-| `tests/test_desktop_release_gate.py` | 221 | `root` |
-| `tests/test_desktop_release_gate.py` | 221 | `state` |
-| `tests/test_desktop_release_gate.py` | 230 | `test_only_actual_active_owned_suite_is_exempt(provider, fault)` |
-| `tests/test_desktop_release_gate.py` | 232 | `root` |
-| `tests/test_desktop_release_gate.py` | 232 | `state` |
-| `tests/test_desktop_release_gate.py` | 233 | `own` |
-| `tests/test_desktop_release_gate.py` | 248 | `test_complete_provider_page_cap_cannot_become_absence(monkeypatch)` |
-| `tests/test_desktop_release_gate.py` | 250 | `calls` |
-| `tests/test_desktop_release_gate.py` | 252 | `api(path)` |
-| `tests/test_desktop_release_gate.py` | 254 | `_` |
-| `tests/test_desktop_release_gate.py` | 263 | `test_existing_draft_or_published_release_is_never_reused(provider, published)` |
-| `tests/test_desktop_release_gate.py` | 264 | `_root` |
-| `tests/test_desktop_release_gate.py` | 264 | `state` |
-| `tests/test_desktop_release_gate.py` | 275 | `test_read_only_prepare_does_not_invoke_release_creation(provider, monkeypatch)` |
-| `tests/test_desktop_release_gate.py` | 276 | `_state` |
-| `tests/test_desktop_release_gate.py` | 276 | `root` |
-| `tests/test_desktop_release_gate.py` | 295 | `test_actual_local_payload_hashes_bind_a_new_draft_without_touching_old_releases(provider, monkeypatch, fault)` |
-| `tests/test_desktop_release_gate.py` | 299 | `root` |
-| `tests/test_desktop_release_gate.py` | 299 | `state` |
-| `tests/test_desktop_release_gate.py` | 301 | `folder` |
-| `tests/test_desktop_release_gate.py` | 303 | `installer` |
-| `tests/test_desktop_release_gate.py` | 304 | `payload` |
-| `tests/test_desktop_release_gate.py` | 306 | `old_sums` |
-| `tests/test_desktop_release_gate.py` | 308 | `sha` |
-| `tests/test_desktop_release_gate.py` | 309 | `asset_name` |
-| `tests/test_desktop_release_gate.py` | 310 | `sums` |
-| `tests/test_desktop_release_gate.py` | 311 | `sidecar` |
-| `tests/test_desktop_release_gate.py` | 312 | `old` |
-| `tests/test_desktop_release_gate.py` | 314 | `calls` |
-| `tests/test_desktop_release_gate.py` | 315 | `original_api` |
-| `tests/test_desktop_release_gate.py` | 317 | `gh()` |
-| `tests/test_desktop_release_gate.py` | 323 | `created` |
-| `tests/test_desktop_release_gate.py` | 343 | `api(path)` |
-| `tests/test_desktop_release_gate.py` | 345 | `assets` |
-| `tests/test_desktop_release_gate.py` | 375 | `test_existing_local_versioned_sidecar_is_preserved_before_any_upload(provider, monkeypatch)` |
-| `tests/test_desktop_release_gate.py` | 377 | `_state` |
-| `tests/test_desktop_release_gate.py` | 377 | `root` |
-| `tests/test_desktop_release_gate.py` | 379 | `folder` |
-| `tests/test_desktop_release_gate.py` | 382 | `sidecar` |
-| `tests/test_desktop_release_gate.py` | 403 | `test_only_explicit_authenticated_tag404_is_an_absence(monkeypatch, code, missing, accepted)` |
-| `tests/test_desktop_release_gate.py` | 405 | `response` |
-| `tests/test_desktop_release_gate.py` | 411 | `endpoint` |
-| `tests/test_desktop_release_gate.py` | 421 | `test_release_workflow_is_manual_main_draft_only_with_original_validation_lanes()` |
-| `tests/test_desktop_release_gate.py` | 423 | `root` |
-| `tests/test_desktop_release_gate.py` | 424 | `workflow` |
-| `tests/test_desktop_release_gate.py` | 431 | `validation` |
-| `tests/test_desktop_release_gate.py` | 432 | `actual` |
+| `tests/test_desktop_release_gate.py` | 105 | `test_actual_required_source_and_aggregate_set_is_explicit(provider)` |
+| `tests/test_desktop_release_gate.py` | 107 | `root` |
+| `tests/test_desktop_release_gate.py` | 107 | `state` |
+| `tests/test_desktop_release_gate.py` | 108 | `result` |
+| `tests/test_desktop_release_gate.py` | 112 | `path` |
+| `tests/test_desktop_release_gate.py` | 125 | `test_untrusted_context_fails_before_provider_calls(provider, monkeypatch, variable, value)` |
+| `tests/test_desktop_release_gate.py` | 127 | `root` |
+| `tests/test_desktop_release_gate.py` | 127 | `state` |
+| `tests/test_desktop_release_gate.py` | 134 | `test_wrong_version_or_current_main_never_prepares(provider)` |
+| `tests/test_desktop_release_gate.py` | 136 | `root` |
+| `tests/test_desktop_release_gate.py` | 136 | `state` |
+| `tests/test_desktop_release_gate.py` | 155 | `test_each_wrong_main_workflow_field_blocks(provider, field, value)` |
+| `tests/test_desktop_release_gate.py` | 157 | `root` |
+| `tests/test_desktop_release_gate.py` | 157 | `state` |
+| `tests/test_desktop_release_gate.py` | 164 | `test_missing_and_ambiguous_workflows_do_not_use_a_fallback(provider, duplicate)` |
+| `tests/test_desktop_release_gate.py` | 165 | `root` |
+| `tests/test_desktop_release_gate.py` | 165 | `state` |
+| `tests/test_desktop_release_gate.py` | 175 | `test_aggregate_cannot_be_missing_failed_or_ambiguous_behind_green_scanner(provider, fault)` |
+| `tests/test_desktop_release_gate.py` | 177 | `root` |
+| `tests/test_desktop_release_gate.py` | 177 | `state` |
+| `tests/test_desktop_release_gate.py` | 178 | `aggregate` |
+| `tests/test_desktop_release_gate.py` | 178 | `row` |
+| `tests/test_desktop_release_gate.py` | 193 | `test_open_alert_and_additional_failed_check_are_not_waived(provider)` |
+| `tests/test_desktop_release_gate.py` | 194 | `root` |
+| `tests/test_desktop_release_gate.py` | 194 | `state` |
+| `tests/test_desktop_release_gate.py` | 223 | `test_active_release_exception_is_bound_to_exact_provider_run(provider, field, value)` |
+| `tests/test_desktop_release_gate.py` | 225 | `root` |
+| `tests/test_desktop_release_gate.py` | 225 | `state` |
+| `tests/test_desktop_release_gate.py` | 234 | `test_only_actual_active_owned_suite_is_exempt(provider, fault)` |
+| `tests/test_desktop_release_gate.py` | 236 | `root` |
+| `tests/test_desktop_release_gate.py` | 236 | `state` |
+| `tests/test_desktop_release_gate.py` | 237 | `own` |
+| `tests/test_desktop_release_gate.py` | 252 | `test_complete_provider_page_cap_cannot_become_absence(monkeypatch)` |
+| `tests/test_desktop_release_gate.py` | 254 | `calls` |
+| `tests/test_desktop_release_gate.py` | 256 | `api(path)` |
+| `tests/test_desktop_release_gate.py` | 258 | `_` |
+| `tests/test_desktop_release_gate.py` | 267 | `test_existing_draft_or_published_release_is_never_reused(provider, published)` |
+| `tests/test_desktop_release_gate.py` | 268 | `_root` |
+| `tests/test_desktop_release_gate.py` | 268 | `state` |
+| `tests/test_desktop_release_gate.py` | 279 | `test_read_only_prepare_does_not_invoke_release_creation(provider, monkeypatch)` |
+| `tests/test_desktop_release_gate.py` | 280 | `_state` |
+| `tests/test_desktop_release_gate.py` | 280 | `root` |
+| `tests/test_desktop_release_gate.py` | 299 | `test_actual_local_payload_hashes_bind_a_new_draft_without_touching_old_releases(provider, monkeypatch, fault)` |
+| `tests/test_desktop_release_gate.py` | 303 | `root` |
+| `tests/test_desktop_release_gate.py` | 303 | `state` |
+| `tests/test_desktop_release_gate.py` | 305 | `folder` |
+| `tests/test_desktop_release_gate.py` | 307 | `installer` |
+| `tests/test_desktop_release_gate.py` | 308 | `payload` |
+| `tests/test_desktop_release_gate.py` | 310 | `old_sums` |
+| `tests/test_desktop_release_gate.py` | 312 | `sha` |
+| `tests/test_desktop_release_gate.py` | 313 | `asset_name` |
+| `tests/test_desktop_release_gate.py` | 314 | `sums` |
+| `tests/test_desktop_release_gate.py` | 315 | `sidecar` |
+| `tests/test_desktop_release_gate.py` | 316 | `old` |
+| `tests/test_desktop_release_gate.py` | 318 | `calls` |
+| `tests/test_desktop_release_gate.py` | 319 | `original_api` |
+| `tests/test_desktop_release_gate.py` | 321 | `gh()` |
+| `tests/test_desktop_release_gate.py` | 326 | `notes` |
+| `tests/test_desktop_release_gate.py` | 335 | `created` |
+| `tests/test_desktop_release_gate.py` | 355 | `api(path)` |
+| `tests/test_desktop_release_gate.py` | 357 | `assets` |
+| `tests/test_desktop_release_gate.py` | 387 | `test_existing_local_versioned_sidecar_is_preserved_before_any_upload(provider, monkeypatch)` |
+| `tests/test_desktop_release_gate.py` | 389 | `_state` |
+| `tests/test_desktop_release_gate.py` | 389 | `root` |
+| `tests/test_desktop_release_gate.py` | 391 | `folder` |
+| `tests/test_desktop_release_gate.py` | 394 | `sidecar` |
+| `tests/test_desktop_release_gate.py` | 406 | `test_unreviewed_relative_or_plain_http_release_links_cannot_reach_upload(provider, monkeypatch, target)` |
+| `tests/test_desktop_release_gate.py` | 410 | `_state` |
+| `tests/test_desktop_release_gate.py` | 410 | `root` |
+| `tests/test_desktop_release_gate.py` | 412 | `folder` |
+| `tests/test_desktop_release_gate.py` | 434 | `test_only_explicit_authenticated_tag404_is_an_absence(monkeypatch, code, missing, accepted)` |
+| `tests/test_desktop_release_gate.py` | 436 | `response` |
+| `tests/test_desktop_release_gate.py` | 442 | `endpoint` |
+| `tests/test_desktop_release_gate.py` | 452 | `test_release_workflow_is_manual_main_draft_only_with_original_validation_lanes()` |
+| `tests/test_desktop_release_gate.py` | 454 | `root` |
+| `tests/test_desktop_release_gate.py` | 455 | `workflow` |
+| `tests/test_desktop_release_gate.py` | 462 | `validation` |
+| `tests/test_desktop_release_gate.py` | 463 | `actual` |
 | `tests/test_domain.py` | 23 | `sample()` |
 | `tests/test_domain.py` | 56 | `test_point_rejects_unsafe_values(changes)` |
 | `tests/test_domain.py` | 73 | `i` |
@@ -711,69 +716,73 @@ Descriptions are in file/function/class headers. TS uses TypeScript AST; CSS/HTM
 | `tools/publication_text.py` | 41 | `member` |
 | `tools/publication_text.py` | 51 | `stream` |
 | `tools/publication_text.py` | 52 | `payload` |
-| `tools/release_preflight.py` | 16 | `REPOSITORY` |
-| `tools/release_preflight.py` | 17 | `ROOT` |
-| `tools/release_preflight.py` | 18 | `CHECKS` |
-| `tools/release_preflight.py` | 36 | `gh()` |
-| `tools/release_preflight.py` | 38 | `binary` |
-| `tools/release_preflight.py` | 44 | `api(path)` |
-| `tools/release_preflight.py` | 46 | `result` |
-| `tools/release_preflight.py` | 53 | `body` |
-| `tools/release_preflight.py` | 60 | `pages(path, key)` |
-| `tools/release_preflight.py` | 62 | `rows` |
-| `tools/release_preflight.py` | 63 | `page` |
-| `tools/release_preflight.py` | 64 | `value` |
-| `tools/release_preflight.py` | 65 | `batch` |
-| `tools/release_preflight.py` | 74 | `check_main(root, version)` |
-| `tools/release_preflight.py` | 84 | `metadata` |
-| `tools/release_preflight.py` | 85 | `source` |
-| `tools/release_preflight.py` | 88 | `own_run_id` |
-| `tools/release_preflight.py` | 91 | `own_run` |
-| `tools/release_preflight.py` | 95 | `field` |
-| `tools/release_preflight.py` | 95 | `value` |
-| `tools/release_preflight.py` | 109 | `runs` |
-| `tools/release_preflight.py` | 110 | `expected` |
-| `tools/release_preflight.py` | 114 | `accepted` |
-| `tools/release_preflight.py` | 115 | `name` |
-| `tools/release_preflight.py` | 115 | `workflow` |
-| `tools/release_preflight.py` | 116 | `row` |
-| `tools/release_preflight.py` | 116 | `selected` |
-| `tools/release_preflight.py` | 119 | `row` |
-| `tools/release_preflight.py` | 120 | `field` |
-| `tools/release_preflight.py` | 120 | `value` |
-| `tools/release_preflight.py` | 131 | `checks` |
-| `tools/release_preflight.py` | 132 | `own_checks` |
-| `tools/release_preflight.py` | 133 | `row` |
-| `tools/release_preflight.py` | 137 | `field` |
-| `tools/release_preflight.py` | 137 | `value` |
-| `tools/release_preflight.py` | 147 | `checks` |
-| `tools/release_preflight.py` | 147 | `row` |
-| `tools/release_preflight.py` | 148 | `counts` |
+| `tools/release_preflight.py` | 17 | `REPOSITORY` |
+| `tools/release_preflight.py` | 18 | `ROOT` |
+| `tools/release_preflight.py` | 19 | `CHECKS` |
+| `tools/release_preflight.py` | 37 | `gh()` |
+| `tools/release_preflight.py` | 39 | `binary` |
+| `tools/release_preflight.py` | 45 | `api(path)` |
+| `tools/release_preflight.py` | 47 | `result` |
+| `tools/release_preflight.py` | 54 | `body` |
+| `tools/release_preflight.py` | 61 | `pages(path, key)` |
+| `tools/release_preflight.py` | 63 | `rows` |
+| `tools/release_preflight.py` | 64 | `page` |
+| `tools/release_preflight.py` | 65 | `value` |
+| `tools/release_preflight.py` | 66 | `batch` |
+| `tools/release_preflight.py` | 75 | `check_main(root, version)` |
+| `tools/release_preflight.py` | 85 | `metadata` |
+| `tools/release_preflight.py` | 86 | `source` |
+| `tools/release_preflight.py` | 89 | `own_run_id` |
+| `tools/release_preflight.py` | 92 | `own_run` |
+| `tools/release_preflight.py` | 96 | `field` |
+| `tools/release_preflight.py` | 96 | `value` |
+| `tools/release_preflight.py` | 110 | `runs` |
+| `tools/release_preflight.py` | 111 | `expected` |
+| `tools/release_preflight.py` | 115 | `accepted` |
+| `tools/release_preflight.py` | 116 | `name` |
+| `tools/release_preflight.py` | 116 | `workflow` |
+| `tools/release_preflight.py` | 117 | `row` |
+| `tools/release_preflight.py` | 117 | `selected` |
+| `tools/release_preflight.py` | 120 | `row` |
+| `tools/release_preflight.py` | 121 | `field` |
+| `tools/release_preflight.py` | 121 | `value` |
+| `tools/release_preflight.py` | 132 | `checks` |
+| `tools/release_preflight.py` | 133 | `own_checks` |
+| `tools/release_preflight.py` | 134 | `row` |
+| `tools/release_preflight.py` | 138 | `field` |
+| `tools/release_preflight.py` | 138 | `value` |
+| `tools/release_preflight.py` | 148 | `checks` |
 | `tools/release_preflight.py` | 148 | `row` |
-| `tools/release_preflight.py` | 149 | `name` |
-| `tools/release_preflight.py` | 153 | `row` |
-| `tools/release_preflight.py` | 161 | `row` |
-| `tools/release_preflight.py` | 169 | `require_absent(version)` |
-| `tools/release_preflight.py` | 171 | `tag` |
-| `tools/release_preflight.py` | 174 | `row` |
-| `tools/release_preflight.py` | 178 | `main(argv)` |
-| `tools/release_preflight.py` | 180 | `parser` |
-| `tools/release_preflight.py` | 183 | `args` |
-| `tools/release_preflight.py` | 184 | `before` |
-| `tools/release_preflight.py` | 189 | `installer` |
-| `tools/release_preflight.py` | 190 | `value` |
-| `tools/release_preflight.py` | 191 | `sidecar_folder` |
-| `tools/release_preflight.py` | 193 | `sidecar` |
-| `tools/release_preflight.py` | 194 | `stream` |
-| `tools/release_preflight.py` | 196 | `result` |
-| `tools/release_preflight.py` | 214 | `rows` |
-| `tools/release_preflight.py` | 216 | `row` |
-| `tools/release_preflight.py` | 228 | `asset_rows` |
-| `tools/release_preflight.py` | 229 | `assets` |
-| `tools/release_preflight.py` | 229 | `row` |
-| `tools/release_preflight.py` | 230 | `expected` |
-| `tools/release_preflight.py` | 236 | `name` |
-| `tools/release_preflight.py` | 236 | `sha` |
+| `tools/release_preflight.py` | 149 | `counts` |
+| `tools/release_preflight.py` | 149 | `row` |
+| `tools/release_preflight.py` | 150 | `name` |
+| `tools/release_preflight.py` | 154 | `row` |
+| `tools/release_preflight.py` | 162 | `row` |
+| `tools/release_preflight.py` | 170 | `require_absent(version)` |
+| `tools/release_preflight.py` | 172 | `tag` |
+| `tools/release_preflight.py` | 175 | `row` |
+| `tools/release_preflight.py` | 179 | `main(argv)` |
+| `tools/release_preflight.py` | 181 | `parser` |
+| `tools/release_preflight.py` | 184 | `args` |
+| `tools/release_preflight.py` | 185 | `before` |
+| `tools/release_preflight.py` | 190 | `installer` |
+| `tools/release_preflight.py` | 191 | `value` |
+| `tools/release_preflight.py` | 192 | `notes` |
+| `tools/release_preflight.py` | 193 | `notes` |
+| `tools/release_preflight.py` | 199 | `sidecar_folder` |
+| `tools/release_preflight.py` | 201 | `sidecar` |
+| `tools/release_preflight.py` | 202 | `stream` |
+| `tools/release_preflight.py` | 204 | `notes_path` |
+| `tools/release_preflight.py` | 205 | `stream` |
+| `tools/release_preflight.py` | 207 | `result` |
+| `tools/release_preflight.py` | 225 | `rows` |
+| `tools/release_preflight.py` | 227 | `row` |
+| `tools/release_preflight.py` | 239 | `asset_rows` |
+| `tools/release_preflight.py` | 240 | `assets` |
+| `tools/release_preflight.py` | 240 | `row` |
+| `tools/release_preflight.py` | 241 | `expected` |
+| `tools/release_preflight.py` | 247 | `name` |
+| `tools/release_preflight.py` | 247 | `sha` |
 | `tools/serve_test.py` | 20 | `main()` |
 | `tools/serve_test.py` | 23 | `folder` |
 | `tools/serve_test.py` | 24 | `store` |

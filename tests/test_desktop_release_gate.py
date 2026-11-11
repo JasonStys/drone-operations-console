@@ -95,6 +95,10 @@ def provider(monkeypatch, tmp_path):
         raise AssertionError(path)
 
     monkeypatch.setattr(gate, "api", api)
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "docs/RELEASE_0_3_1.md").write_text(
+        "# Source notes\n[Validation](reports/native-lifetime-2026-11-11.md)\n", encoding="utf-8"
+    )
     return state, tmp_path
 
 
@@ -319,6 +323,14 @@ def test_actual_local_payload_hashes_bind_a_new_draft_without_touching_old_relea
         assert args[:3] == ("release", "create", "v0.3.1")
         assert "--draft" in args and "--clobber" not in args and "--publish" not in args
         assert args[args.index("--target") + 1] == SOURCE
+        notes = (root / ".runtime/release-sidecars/0.3.1/RELEASE-NOTES.md").read_text(
+            encoding="utf-8"
+        )
+        assert (
+            f"https://github.com/{gate.REPOSITORY}/blob/{SOURCE}/docs/reports/native-lifetime-2026-11-11.md"
+            in notes
+        )
+        assert "](reports/" not in notes
         assert installer.read_bytes() == payload and sidecar.read_text(encoding="ascii") == sums
         created = {
             "id": 42,
@@ -388,6 +400,25 @@ def test_existing_local_versioned_sidecar_is_preserved_before_any_upload(provide
     with pytest.raises(FileExistsError):
         gate.main(["draft", "--version", "0.3.1"])
     assert sidecar.read_bytes() == b"previous attempt"
+
+
+@pytest.mark.parametrize("target", ["../unreviewed.md", "http://example.invalid/plain"])
+def test_unreviewed_relative_or_plain_http_release_links_cannot_reach_upload(
+    provider, monkeypatch, target
+):
+    """Provider body links must remain source-bound; release-page-relative URLs are not silently published."""
+    _state, root = provider
+    monkeypatch.setattr(gate, "ROOT", root)
+    folder = root / "release/installers"
+    folder.mkdir(parents=True)
+    (folder / "Drone Operations Console Setup 0.3.1.exe").write_bytes(b"inert fixture")
+    (root / "docs/RELEASE_0_3_1.md").write_text(f"[Unknown]({target})\n", encoding="utf-8")
+    monkeypatch.setattr(
+        gate, "gh", lambda *_args: pytest.fail("unsafe release link reached upload")
+    )
+    with pytest.raises(ValueError, match="source-bound Markdown"):
+        gate.main(["draft", "--version", "0.3.1"])
+    assert not (root / ".runtime/release-sidecars").exists()
 
 
 @pytest.mark.parametrize(

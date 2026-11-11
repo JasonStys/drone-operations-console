@@ -6,6 +6,7 @@ No publish, overwrite, clobber, delete, retry or failed-check bypass is provided
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 from collections import Counter
@@ -188,11 +189,21 @@ def main(argv=None):
         return
     installer = ROOT / f"release/installers/Drone Operations Console Setup {args.version}.exe"
     value = digest(installer, cap=512 * 1024 * 1024)
+    notes = (ROOT / "docs/RELEASE_0_3_1.md").read_text(encoding="utf-8")
+    notes = notes.replace(
+        "](reports/native-lifetime-2026-11-11.md)",
+        f"](https://github.com/{REPOSITORY}/blob/{before['source_commit']}/docs/reports/native-lifetime-2026-11-11.md)",
+    )
+    if re.search(r"\]\((?!https://)[^)]+\)", notes):
+        raise ValueError("Release notes must retain absolute source-bound Markdown links")
     sidecar_folder = ROOT / ".runtime/release-sidecars" / args.version
     sidecar_folder.mkdir(parents=True, exist_ok=False)
     sidecar = sidecar_folder / "SHA256SUMS.txt"
     with sidecar.open("x", encoding="ascii", newline="\n") as stream:
         stream.write(value + "  " + installer.name.replace(" ", ".") + "\n")
+    notes_path = sidecar_folder / "RELEASE-NOTES.md"
+    with notes_path.open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(notes)
     result = gh(
         "release",
         "create",
@@ -207,7 +218,7 @@ def main(argv=None):
         "--title",
         "Drone Operations Console " + args.version,
         "--notes-file",
-        str(ROOT / "docs/RELEASE_0_3_1.md"),
+        str(notes_path),
     )
     if result.returncode:
         raise RuntimeError("New draft assembly failed; previous releases were not changed")

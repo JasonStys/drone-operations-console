@@ -88,6 +88,49 @@ actual PC installer upgrade remain pending. Do not infer public release readines
 from local unit tests or baseline composition evidence. Existing 0.3.0 accounts,
 installer, source evidence and installed files remain unchanged by this source work.
 
+## Later clean candidate acceptance
+
+A clean candidate at source `38672b9412b03b73e80ffa96c5206d867ee04485` was then
+frozen with final Python 3.14.10 and packaged as an unsigned NSIS installer.
+The 144,467,171-byte **local candidate** installer SHA-256 was
+`63c57abaa75f60ec68cdf801967740c633e5aae28dac996408a55220e5326caf`.
+This is not a digest for a published or installed new release.
+
+The actual packaged product passed private account creation, effective renderer
+sandbox/isolation, moving routes, editable scene/scrub, matching source/version/UI
+and login after restart in 5.7 seconds. A separate QA frozen service with the exact
+product owner/UI passed the held-work journey in 21.0 seconds. Repeated Quit and
+Close retained the visible waiting owner beyond the former timer, then explicit
+release produced HTTP 200 and the real service-finally marker. The independent
+child handle observed exit 0 after 16.697 seconds; the owner exited 0 after
+16.792 seconds. No force cleanup or normal/installed profile was used.
+
+The product's frozen Python DLL matched the actual patched SDK byte-for-byte:
+`d8a06cc6ca3348925ea29e343e1c5c5895fe0bb433ff913e1cee44caf358aa6a`.
+Its manifest records clean source, product version, complete UI inventory and
+actual service/Python DLL hashes. Later delivery-helper/report changes do not
+retroactively change this candidate's source identity. Exact latest-head/main
+hosted builds remain mandatory before new delivery.
+
+After the delivery-helper controls were finalized, the full source suite passed
+169 Python tests with 92.13% combined statement coverage, retaining the original
+85% minimum and explicit native-entry denominator described above.
+
+All 18 existing journeys across Chromium, Firefox and WebKit passed, including
+roles, accessibility/responsive controls, scene errors and actual JSON interchange.
+All three deliberate geometry/motion/hold faults were detected and original source
+restored. Locked npm and Windows packaging dependency advisory checks reported no
+known vulnerabilities at this dated check; that is not a future vulnerability guarantee.
+
+The draft gate excludes only its authenticated active manual run/check-suite,
+whose workflow, source, main ref and in-progress state must match. It still requires
+every push validation and aggregate CodeQL check and refuses unrelated failures.
+Release notes bind the report to the accepted immutable source rather than a
+release-page-relative URL. Versioned local checksum/note files use exclusive
+creation, preserving earlier delivery evidence. Mock-provider cases validate these
+decisions, not actual hosted upload success. No release was dispatched, published
+or installed as part of this source checkpoint.
+
 ## Limits
 
 Windows-only unsigned packaging; packaged executable launch is not a clean NSIS
