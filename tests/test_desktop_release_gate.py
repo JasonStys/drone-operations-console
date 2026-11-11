@@ -3,6 +3,7 @@
 import copy
 import hashlib
 import json
+import sys
 from types import SimpleNamespace
 
 import pytest
@@ -10,6 +11,16 @@ import pytest
 from tools import release_preflight as gate
 
 SOURCE = "a" * 40
+
+
+def test_real_cli_transport_decodes_sarif_unicode_as_utf8(monkeypatch):
+    """Real bytes include CP1252-undefined UTF-8 sequences; no locale fallback/replacement is accepted."""
+    monkeypatch.setattr(gate.shutil, "which", lambda _name: sys.executable)
+    value = {"description": "Actual analysis: 日本語 — ‘quoted’"}
+    encoded = json.dumps(value, ensure_ascii=False).encode("utf-8")
+    result = gate.gh("-c", f"import sys;sys.stdout.buffer.write({encoded!r})")
+    assert result.returncode == 0
+    assert json.loads(result.stdout) == value
 
 
 @pytest.fixture
@@ -63,6 +74,52 @@ def provider(monkeypatch, tmp_path):
         "calls": [],
         "releases": [],
         "tag": None,
+        "analyses": [
+            {
+                "id": 501,
+                "commit_sha": SOURCE,
+                "ref": "refs/heads/main",
+                "analysis_key": gate.ANALYSIS_KEY,
+                "category": gate.ANALYSIS_KEY,
+                "error": "",
+                "warning": "",
+                "rules_count": 3,
+                "results_count": 0,
+                "tool": {"name": "CodeQL", "version": "2.27.4"},
+            }
+        ],
+        "sarif": {
+            "version": "2.1.0",
+            "runs": [
+                {
+                    "tool": {
+                        "driver": {"name": "CodeQL", "semanticVersion": "2.27.4"},
+                        "extensions": [
+                            {
+                                "name": "codeql/javascript-queries",
+                                "rules": [{"id": "js/fixture-one"}, {"id": "js/fixture-two"}],
+                            },
+                            {"name": "codeql/python-queries", "rules": [{"id": "py/fixture-one"}]},
+                            {"name": "codeql/python-all", "rules": []},
+                        ],
+                    },
+                    "results": [],
+                    "automationDetails": {"id": gate.ANALYSIS_KEY + "/"},
+                    "versionControlProvenance": [
+                        {
+                            "branch": "refs/heads/main",
+                            "repositoryUri": f"https://github.com/{gate.REPOSITORY}",
+                            "revisionId": SOURCE,
+                        }
+                    ],
+                    "properties": {
+                        "codeqlConfigSummary": {
+                            "queries": [{"type": "builtinSuite", "uses": "security-and-quality"}]
+                        }
+                    },
+                }
+            ],
+        },
         "own_run": {
             "id": 900,
             "path": ".github/workflows/desktop-release.yml",
@@ -88,6 +145,11 @@ def provider(monkeypatch, tmp_path):
             return {"check_runs": copy.deepcopy(state["checks"])}
         if "/code-scanning/alerts?" in path:
             return copy.deepcopy(state["alerts"])
+        if "/code-scanning/analyses?" in path:
+            return copy.deepcopy(state["analyses"])
+        if path.endswith("/code-scanning/analyses/501"):
+            assert _kwargs == {"sarif": True}, "Processed SARIF media type must be requested"
+            return copy.deepcopy(state["sarif"])
         if "/git/ref/tags/" in path:
             return state["tag"]
         if "/releases?" in path:
@@ -102,12 +164,17 @@ def provider(monkeypatch, tmp_path):
     return state, tmp_path
 
 
-def test_actual_required_source_and_aggregate_set_is_explicit(provider):
-    """A scanner job alone cannot stand in for the independently processed CodeQL check."""
+def test_actual_main_without_pr_aggregate_requires_processed_both_language_analysis(provider):
+    """Reproduce actual main: scanner plus nine validation jobs; no PR-only aggregate check exists."""
     state, root = provider
     result = gate.check_main(root, "0.3.1")
     assert result["source_commit"] == SOURCE and result["main_validation_runs"] == [1, 2]
-    assert {"CodeQL", "analyze"} <= gate.CHECKS and len(gate.CHECKS) == 11
+    assert "CodeQL" not in gate.CHECKS and "analyze" in gate.CHECKS and len(gate.CHECKS) == 10
+    assert result["main_codeql_analysis"]["id"] == 501
+    assert result["main_codeql_analysis"]["language_rule_counts"] == {
+        "codeql/javascript-queries": 2,
+        "codeql/python-queries": 1,
+    }
     assert any(
         "code-scanning/alerts?state=open&ref=refs%2Fheads%2Fmain" in path for path in state["calls"]
     )
@@ -171,22 +238,160 @@ def test_missing_and_ambiguous_workflows_do_not_use_a_fallback(provider, duplica
         gate.check_main(root, "0.3.1")
 
 
-@pytest.mark.parametrize("fault", ["missing", "duplicate", "failure", "pending", "wrong-source"])
-def test_aggregate_cannot_be_missing_failed_or_ambiguous_behind_green_scanner(provider, fault):
-    """Reproduce the delayed postprocessing class: analyze/workflow remain green in every negative fixture."""
+@pytest.mark.parametrize(
+    "fault", [None, "duplicate", "failure", "pending", "wrong-source", "neutral", "skipped"]
+)
+def test_present_aggregate_cannot_be_failed_or_ambiguous_behind_green_scanner(provider, fault):
+    """Main may omit the PR aggregate; a present check never gets a failure/neutral/pending waiver."""
     state, root = provider
-    aggregate = next(row for row in state["checks"] if row["name"] == "CodeQL")
-    if fault == "missing":
-        state["checks"].remove(aggregate)
-    elif fault == "duplicate":
+    aggregate = {
+        "name": "CodeQL",
+        "head_sha": SOURCE,
+        "status": "completed",
+        "conclusion": "success",
+    }
+    state["checks"].append(aggregate)
+    if fault == "duplicate":
         state["checks"].append(dict(aggregate))
     elif fault == "failure":
         aggregate["conclusion"] = "failure"
     elif fault == "pending":
         aggregate["status"] = "in_progress"
-    else:
+    elif fault == "wrong-source":
         aggregate["head_sha"] = "b" * 40
+    elif fault in {"neutral", "skipped"}:
+        aggregate["conclusion"] = fault
+    if fault is None:
+        assert gate.check_main(root, "0.3.1")["main_codeql_analysis"]["rules_count"] == 3
+        return
     with pytest.raises(ValueError):
+        gate.check_main(root, "0.3.1")
+
+
+@pytest.mark.parametrize("fault", ["missing", "duplicate", "old-source"])
+def test_green_jobs_without_one_current_processed_analysis_cannot_prepare(provider, fault):
+    """Positive main layout is unchanged: all jobs green, zero alerts, no optional PR aggregate."""
+    state, root = provider
+    if fault == "missing":
+        state["analyses"] = []
+    elif fault == "duplicate":
+        state["analyses"].append(copy.deepcopy(state["analyses"][0]))
+    else:
+        state["analyses"][0]["commit_sha"] = "b" * 40
+    with pytest.raises(ValueError, match="analysis missing or ambiguous"):
+        gate.check_main(root, "0.3.1")
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("ref", "refs/pull/6/merge"),
+        ("analysis_key", ".github/workflows/other.yml:analyze"),
+        ("category", "/language:python"),
+        ("error", "source extraction failed"),
+        ("warning", "partial extraction"),
+        ("rules_count", 0),
+        ("rules_count", True),
+        ("results_count", 1),
+        ("results_count", False),
+        ("id", True),
+        ("tool", {"name": "Other", "version": "2.27.4"}),
+        ("tool", None),
+    ],
+)
+def test_each_actual_analysis_identity_error_warning_and_count_is_required(provider, field, value):
+    """Zero open alerts is insufficient when source extraction/metadata is incomplete or wrong-scope."""
+    state, root = provider
+    state["analyses"][0][field] = value
+    with pytest.raises(ValueError):
+        gate.check_main(root, "0.3.1")
+
+
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "missing-runs",
+        "two-runs",
+        "wrong-version",
+        "raw-result",
+        "missing-results",
+        "driver-version",
+        "wrong-ref",
+        "wrong-repository",
+        "wrong-source",
+        "wrong-category",
+        "wrong-suite",
+        "missing-python",
+        "empty-python",
+        "duplicate-pack",
+        "duplicate-rule",
+        "wrong-rule-language",
+        "unexpected-rule-pack",
+        "metadata-rule-count",
+        "missing-extensions",
+    ],
+)
+def test_actual_sarif_must_match_source_suite_both_languages_and_zero_results(provider, fault):
+    """Independent whole-report mutations cannot pass behind successful metadata/checks."""
+    state, root = provider
+    sarif = state["sarif"]
+    run = sarif["runs"][0]
+    packs = run["tool"]["extensions"]
+    if fault == "missing-runs":
+        sarif["runs"] = []
+    elif fault == "two-runs":
+        sarif["runs"].append(copy.deepcopy(run))
+    elif fault == "wrong-version":
+        sarif["version"] = "2.0.0"
+    elif fault == "raw-result":
+        run["results"] = [{"ruleId": "py/fixture-one", "level": "note"}]
+    elif fault == "missing-results":
+        del run["results"]
+    elif fault == "driver-version":
+        run["tool"]["driver"]["semanticVersion"] = "2.27.3"
+    elif fault == "wrong-ref":
+        run["versionControlProvenance"][0]["branch"] = "refs/pull/6/merge"
+    elif fault == "wrong-repository":
+        run["versionControlProvenance"][0]["repositoryUri"] = "https://github.com/other/project"
+    elif fault == "wrong-source":
+        run["versionControlProvenance"][0]["revisionId"] = "b" * 40
+    elif fault == "wrong-category":
+        run["automationDetails"]["id"] = "/language:python/"
+    elif fault == "wrong-suite":
+        run["properties"]["codeqlConfigSummary"]["queries"][0]["uses"] = "default"
+    elif fault == "missing-python":
+        packs.pop(1)
+        state["analyses"][0]["rules_count"] = 2
+    elif fault == "empty-python":
+        packs[1]["rules"] = []
+    elif fault == "duplicate-pack":
+        packs.append(copy.deepcopy(packs[0]))
+    elif fault == "duplicate-rule":
+        packs[0]["rules"][1] = copy.deepcopy(packs[0]["rules"][0])
+    elif fault == "wrong-rule-language":
+        packs[0]["rules"][0]["id"] = "py/not-javascript"
+    elif fault == "unexpected-rule-pack":
+        packs.append({"name": "other/queries", "rules": [{"id": "other/rule"}]})
+    elif fault == "metadata-rule-count":
+        state["analyses"][0]["rules_count"] = 4
+    elif fault == "missing-extensions":
+        del run["tool"]["extensions"]
+    with pytest.raises(ValueError):
+        gate.check_main(root, "0.3.1")
+
+
+def test_an_analysis_provider_failure_is_not_zero_findings_or_absence(provider, monkeypatch):
+    """A metadata request error aborts before any payload/sidecar or release write."""
+    _state, root = provider
+    original = gate.api
+
+    def unavailable(path, **kwargs):
+        if "/code-scanning/analyses?" in path:
+            raise RuntimeError("fixture provider503")
+        return original(path, **kwargs)
+
+    monkeypatch.setattr(gate, "api", unavailable)
+    with pytest.raises(RuntimeError, match="provider503"):
         gate.check_main(root, "0.3.1")
 
 

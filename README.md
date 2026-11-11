@@ -24,7 +24,10 @@ patched Python and complete UI/service hashes are checked before opening private
 data. See [0.3.1 notes](docs/RELEASE_0_3_1.md) and the
 [lifetime validation report](docs/reports/native-lifetime-2026-11-11.md).
 Source changes do not replace historical 0.3.0 downloads; a new installer remains
-subject to exact-main, aggregate CodeQL and genuine packaged-app acceptance.
+subject to exact-main, processed CodeQL and genuine packaged-app acceptance.
+The [main-scan delivery gate](docs/reports/main-codeql-delivery-gate-2026-11-11.md)
+checks actual source-bound analysis/SARIF rather than assuming a PR-only aggregate
+check exists on main.
 
 ## What it demonstrates
 

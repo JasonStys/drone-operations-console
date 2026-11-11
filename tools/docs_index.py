@@ -30,6 +30,7 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/reports/main-codeql-delivery-gate-2026-11-11.md": "Actual failed main preflight, exact processed-analysis/SARIF replacement and independent guard regressions.",
     "docs/RELEASE_0_3_1.md": "Version 0.3.1 completion-based Windows lifetime, resource identity, upgrade and delivery limits.",
     "docs/reports/native-lifetime-2026-11-11.md": "Actual interrupted-work reproduction, completion repair, regression scopes and pending delivery gates.",
     "docs/reports/office-package-guard-2026-11-10.md": "Dated Office embedded-part guard and actual regression validation results.",

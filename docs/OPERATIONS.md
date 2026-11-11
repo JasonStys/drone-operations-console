@@ -81,8 +81,9 @@ Before release: reviewed public-safe diff, current storage observation, locked
 dependencies, all unit/browser/native SQL/PX4/container/source gates and CodeQL green.
 After publishing: inspect exact commit/run links and fresh clone instructions.
 Version 0.3.1 draft assembly is manual on trusted current `main` only. It checks
-the exact successful Validation/CodeQL push runs, processed aggregate checks and
-open main alerts before and after new-draft creation. An existing tag, remote
+the exact successful Validation/CodeQL push runs, actual processed main analysis
+and SARIF, every present aggregate check and open main alerts before and after
+new-draft creation. An existing tag, remote
 draft/published version or local versioned checksum attempt is refused. The
 workflow does not publish, overwrite release assets or install on this PC.
 Review the exact new installer/checksums, native evidence and immutable source

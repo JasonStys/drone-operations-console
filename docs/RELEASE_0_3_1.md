@@ -31,7 +31,9 @@ Hashes detect inconsistency within trusted installed resources; they do not defe
 against an administrator replacing both code and its manifest, and are not signing.
 
 The manual release workflow requires the current main push Validation and CodeQL
-runs, required aggregate checks and no open main scanning alerts. It refuses an
+runs, actual source-bound processed CodeQL/SARIF and no open main scanning alerts.
+A present aggregate check must also pass; main need not create a PR-only check.
+It refuses an
 existing tag or draft/published version and creates a new verified **draft** only
 after native acceptance. Public publication and actual installer upgrade are separate
 owner-reviewed steps. Failed/historical releases and accounts are not overwritten.
