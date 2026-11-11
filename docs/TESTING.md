@@ -40,6 +40,21 @@ unit-coverage measurement. `OPS_INSTALLED_APP` can select the actually installed
 The new desktop module remains included in the Python coverage denominator, even
 though its runtime is primarily checked by the native integration journey.
 
+Version 0.3.1 adds `npm run test:lifecycle` with 95% line/function and 90% branch
+floors for the three native lifetime/resource/private-directory modules. It also requires a separate
+actual frozen Uvicorn fixture: after `python tools/build_desktop.py` and
+`npm run package:desktop`, run `python -m tools.build_lifetime_fixture` followed by
+`npm run test:desktop`. Use an absent `--output` and matching
+`OPS_LIFETIME_FIXTURE` for a new attempt; previous evidence is never overwritten.
+The native test holds real work across the old 15-second forced-exit boundary,
+requests Quit and window Close again, then explicitly releases the operation.
+HTTP 200, the service-finally marker, an independent opened Windows child handle
+and actual owner exit must all succeed. This QA-only service is never shipped.
+`OPS_DESKTOP_PYTHON` can select the exact patched build interpreter for its process
+observer. Account/rehearsal/restart tests still launch the real packaged product.
+Both are executable acceptance, not an NSIS install transaction. See the
+[dated report](reports/native-lifetime-2026-11-11.md) for actual observation scopes.
+
 Run the README sequence from the repo root. Playwright needs the exact locked
 browser revisions; `npx playwright install` installs them. Windows restricted
 processes may require normal user permissions and a writable temporary directory.

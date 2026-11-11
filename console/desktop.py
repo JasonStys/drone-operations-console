@@ -13,6 +13,7 @@ from pathlib import Path
 import uvicorn
 
 from console.api import create_app
+from console.desktop_identity import read_identity
 
 
 def main():
@@ -26,6 +27,7 @@ def main():
         raise ValueError("Invalid desktop launch configuration")
     if len(os.environ.get("OPS_LAUNCH_TOKEN", "")) != 64:
         raise ValueError("Owned desktop launch token required")
+    metadata = read_identity(Path(__file__).with_name("RELEASE.json"))
     args.data.mkdir(parents=True, exist_ok=True, mode=0o700)
     os.environ["OPS_ADAPTER"] = "replay"
     os.environ["OPS_ORIGIN"] = f"http://127.0.0.1:{args.port}"
@@ -35,7 +37,7 @@ def main():
     os.environ.pop("OPS_READ_ONLY", None)
     server = uvicorn.Server(
         uvicorn.Config(
-            create_app(),
+            create_app(runtime_identity=metadata),
             host="127.0.0.1",
             port=args.port,
             access_log=False,

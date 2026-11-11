@@ -25,6 +25,16 @@ database is not encrypted by this app. Use OS ACLs, a private account and encryp
 disk/backups. The computer owner, DB operator or a process running as that user can
 access workspace data; do not promise secrecy from those administrators.
 
+Native 0.3.1 verifies clean recorded source/version, final patched Python 3.14.10+
+within 3.14, actual frozen service/DLL digests and the complete bounded UI inventory
+before opening the private workspace. Readiness binds nonce, source and version;
+it cannot adopt a merely healthy unrelated listener. These local manifests detect
+inconsistency, not a malicious OS owner replacing both the executable and metadata.
+Closing the window retains ownership until the known service actually closes;
+repeated Quit cannot bypass its wait or turn failed work into an exit 0. There is
+no new kill timer. Signed distribution, malicious local administration and indefinite
+stuck-handler recovery remain outside this control; keep OS protections enabled.
+
 Native mode owns one pinned PX4 binary/process and a loopback SDK link. It is not
 an RF/security boundary against an administrator that replaces binaries, proxies
 loopback or interferes with native callbacks. It never supplies real-flight safety,

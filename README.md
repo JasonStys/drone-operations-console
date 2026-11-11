@@ -14,10 +14,17 @@ not a flight controller and not operational flight software. There is no real-ai
 serial-radio, targeting, surveillance-identification or arbitrary endpoint feature.
 The simulated launch coordinates are PX4's public training defaults, not a user location.
 
-Version **0.3.0** adds reusable cooperative scene drafts, waypoint/aircraft controls,
+Version **0.3.1** preserves reusable cooperative scene drafts, waypoint/aircraft controls,
 bounded local scene save/open and paused replay scrubbing. Invalid starts and
 imports preserve the active exercise. See the [scene guide](docs/REHEARSAL.md) and
 [workflow validation](docs/reports/practical-workflows-2026-11-09.md).
+The native lifetime repair keeps the visible owner open while its private service
+finishes current work, including repeated Quit/Close requests. Source/version,
+patched Python and complete UI/service hashes are checked before opening private
+data. See [0.3.1 notes](docs/RELEASE_0_3_1.md) and the
+[lifetime validation report](docs/reports/native-lifetime-2026-11-11.md).
+Source changes do not replace historical 0.3.0 downloads; a new installer remains
+subject to exact-main, aggregate CodeQL and genuine packaged-app acceptance.
 
 ## What it demonstrates
 

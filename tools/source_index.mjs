@@ -22,6 +22,7 @@ for (const file of [
   ...collect("ui/src"),
   ...collect("tests/browser"),
   ...collect("tests/desktop"),
+  ...collect("tests/desktop-lifetime"),
   ...collect("desktop"),
   ...collect("tools").filter((name) => name.endsWith(".mjs")),
   "vite.config.ts",
@@ -39,6 +40,7 @@ for (const file of [
     if (
       ts.isVariableDeclaration(node) ||
       ts.isFunctionDeclaration(node) ||
+      ts.isMethodDeclaration(node) ||
       ts.isClassDeclaration(node) ||
       ts.isParameter(node)
     ) {
@@ -54,6 +56,14 @@ for (const file of [
           `| \`${file.replaceAll("\\", "/")}\` | ${line} | \`${name}\` |`,
         );
       }
+    }
+    if (ts.isConstructorDeclaration(node)) {
+      const line =
+        source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1;
+      records.set(
+        `${line}:constructor`,
+        `| \`${file.replaceAll("\\", "/")}\` | ${line} | \`constructor\` |`,
+      );
     }
     ts.forEachChild(node, visit);
   }

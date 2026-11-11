@@ -1,7 +1,8 @@
 /** @file Jason Stys: genuine packaged app account setup, animation, renderer sandbox and persistence checks. Locations: docs/SOURCE_MAP.md. */
 import { test, expect, _electron } from "@playwright/test";
-import { mkdtempSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 
 test("packaged native app creates a private account, animates a route and retains login across restart", async () => {
@@ -30,6 +31,25 @@ test("packaged native app creates a private account, animates a route and retain
       name: "Animated route rehearsal",
     });
     await expect(exercise).toBeVisible();
+    const identity = JSON.parse(
+      readFileSync(
+        join(dirname(options.executablePath), "resources/service/RELEASE.json"),
+        "utf8",
+      ),
+    );
+    expect(identity.source_dirty).toBe(false);
+    expect(identity.version).toBe("0.3.1");
+    expect(identity.source_commit).toBe(
+      execFileSync("git", ["-c", "safe.directory=.", "rev-parse", "HEAD"], {
+        encoding: "utf8",
+      }).trim(),
+    );
+    const health = await page.evaluate(async () =>
+      (await fetch("/healthz")).json(),
+    );
+    expect(health.version).toBe(identity.version);
+    expect(health.source_commit).toBe(identity.source_commit);
+    await expect(page.getByText("v0.3.1", { exact: false })).toBeVisible();
     await exercise.scrollIntoViewIfNeeded();
     const marker = exercise.getByTestId("moving-aircraft-0");
     const before = await marker.getAttribute("transform");

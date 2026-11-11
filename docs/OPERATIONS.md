@@ -80,6 +80,14 @@ durable edge broker/lease design and independently test failure/reconciliation.
 Before release: reviewed public-safe diff, current storage observation, locked
 dependencies, all unit/browser/native SQL/PX4/container/source gates and CodeQL green.
 After publishing: inspect exact commit/run links and fresh clone instructions.
+Version 0.3.1 draft assembly is manual on trusted current `main` only. It checks
+the exact successful Validation/CodeQL push runs, processed aggregate checks and
+open main alerts before and after new-draft creation. An existing tag, remote
+draft/published version or local versioned checksum attempt is refused. The
+workflow does not publish, overwrite release assets or install on this PC.
+Review the exact new installer/checksums, native evidence and immutable source
+before separately publishing and testing the installer transaction. Retain failed
+candidates; do not convert an unknown or still-running check into a passed gate.
 Rollback triggers: broken auth, wrong-target authority, false-success evidence,
 unbounded/misleading inputs or leaked secrets. Stop the service, preserve private
 evidence, restore a reviewed prior source and independently verified stopped backup.

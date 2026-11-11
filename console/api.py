@@ -20,6 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import func, select
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+from console import __version__
 from console.auth import add_user, credentials, identity, operator, require_csrf, revoke
 from console.domain import Command, Plan, Preflight
 from console.replay import Replay
@@ -51,7 +52,7 @@ class Approval(BaseModel):
     checks: Preflight
 
 
-def create_app(store=None, adapter=None, origin=None, background=True):
+def create_app(store=None, adapter=None, origin=None, background=True, runtime_identity=None):
     """Create one workspace service. Injectable store/adapter are for independent tests only."""
     origin = origin or os.environ.get("OPS_ORIGIN", "http://127.0.0.1:8840")
     parsed = urlsplit(origin)
@@ -112,7 +113,7 @@ def create_app(store=None, adapter=None, origin=None, background=True):
 
     app = FastAPI(
         title="Drone Operations Console",
-        version="0.3.0",
+        version=__version__,
         lifespan=lifespan,
         docs_url=None,
         redoc_url=None,
@@ -176,7 +177,13 @@ def create_app(store=None, adapter=None, origin=None, background=True):
         return {
             "status": "ok",
             "simulation_only": True,
+            "version": __version__,
             **({"launcher_nonce": os.environ.get("OPS_LAUNCH_NONCE", "")} if launch_token else {}),
+            **(
+                {"source_commit": runtime_identity["source_commit"]}
+                if launch_token and runtime_identity
+                else {}
+            ),
         }
 
     @app.get("/api/setup")
