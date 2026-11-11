@@ -27,6 +27,7 @@ def edition(root: Path, name: str, main: str, text: bytes = b"<document>public</
     "name,main",
     [
         ("project-guide.docx", "word/document.xml"),
+        ("windows-application-guide-0.3.2.docx", "word/document.xml"),
         ("validation-review.docx", "word/document.xml"),
         ("validation-evidence.xlsx", "xl/workbook.xml"),
     ],

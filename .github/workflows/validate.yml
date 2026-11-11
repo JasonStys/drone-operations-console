@@ -48,6 +48,9 @@ jobs:
   browser:
     name: Real service / three browser engines
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
+      options: --user 1001
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -58,7 +61,9 @@ jobs:
         with: {node-version: '24', package-manager-cache: false}
       - run: python -m pip install --require-hashes -r requirements-dev.lock
       - run: npm ci --ignore-scripts && npm run build
-      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Prove all three actual locked browsers before unchanged service journeys
+        timeout-minutes: 3
+        run: node tools/check_browser_host.mjs chromium firefox webkit
       - run: npm run test:e2e
   desktop:
     name: Actual Windows package / private account / animation / restart
@@ -117,8 +122,17 @@ jobs:
           path: .runtime/px4
           submodules: recursive
           persist-credentials: false
-      - run: sudo apt-get update && sudo apt-get install -y build-essential cmake ninja-build bc libeigen3-dev
+      - name: Check out exact official Eigen mirror source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: eigen-mirror/eigen
+          ref: 3147391d946bb4b6c68edd901f2add6ac1f31f8c # verified primary upstream3.4.0
+          path: .runtime/eigen
+          persist-credentials: false
       - run: python -m pip install --require-hashes -r requirements-sitl.lock
+      - name: Verify actual hash-pinned job-local build tools and Eigen behavior
+        timeout-minutes: 5
+        run: python tools/px4_build_host.py
       - name: Build actual pinned autopilot (not a mock)
         run: make -C .runtime/px4 px4_sitl_default -j2
       - name: Assert authenticated real simulator workflow

@@ -30,6 +30,13 @@ EXCLUDED = {
     "playwright-report",
 }
 FILE_DESCRIPTIONS = {
+    "docs/reports/browser-environment-2026-11-11.md": "Actual separate browser setup failure, exact official engine image and mandatory unchanged service journeys.",
+    "tools/check_browser_host.mjs": "Real locked three-engine launch, absent-executable rejection, font/focus/responsive bounds and zero outside resources before original service tests.",
+    "docs/reports/px4-build-setup-2026-11-11.md": "Actual APT setup failure, fixed vendor build-tool/source identities and unchanged mandatory PX4/MAVSDK assertions.",
+    "tools/px4_build_host.py": "Hosted-only fixed provider-hash CMake/Ninja, exact Eigen source and actual compiler/header/arithmetic proof before unchanged PX4/MAVSDK assertions.",
+    "docs/reports/windows-application-guide-0.3.2.docx": "Current illustrated installed application guide with actual screenshots and exact source/limits.",
+    "docs/reports/windows-application-guide-0.3.2.json": "Current Word, source, screenshot and independently reviewed-page digests.",
+    "docs/reports/installed-windows-0.3.2-2026-11-11.md": "Observed installed workflows, version, data boundaries and practical limits.",
     "docs/RELEASE_0_3_2.md": "Version 0.3.2 version-scoped packaged resources and preservation/installer acceptance limits.",
     "docs/reports/native-resource-upgrade-2026-11-11.md": "Actual stale shared-UI installation fault, strict versioned resource repair and independent upgrade regressions.",
     "docs/reports/main-codeql-delivery-gate-2026-11-11.md": "Actual failed main preflight, exact processed-analysis/SARIF replacement and independent guard regressions.",

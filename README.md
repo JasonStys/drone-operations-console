@@ -206,3 +206,8 @@ old 0.3.0-to-0.3.1 installer attempt exposed this issue after fresh-package test
 [upgrade validation record](docs/reports/native-resource-upgrade-2026-11-11.md) for exact scope and
 current acceptance status. Copied packaged-app tests do not substitute for the separate real NSIS
 upgrade and user-profile compatibility acceptance.
+
+
+## Current Windows application guide
+
+The published **0.3.2** application has a [four-page illustrated guide](docs/reports/windows-application-guide-0.3.2.docx) with actual installed screenshots, a worked journey, immutable-source excerpt and practical limits. Read the [installed validation](docs/reports/installed-windows-0.3.2-2026-11-11.md) and [review manifest](docs/reports/windows-application-guide-0.3.2.json) for exact scope. Historical editions remain unchanged.
