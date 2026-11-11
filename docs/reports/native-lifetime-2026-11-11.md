@@ -60,7 +60,7 @@ privately rather than relabeled as application passes.
   remains; it is not relabeled as a failing test or hidden.
 
 The repository-native held-work regression freezes a **separate QA-only** service
-with a control listener, copying exact product owner/UI bytes and retaining the real
+with explicit owned release/response-acknowledgment gates, copying exact product owner/UI bytes and retaining the real
 factory, launch capability and Uvicorn lifecycle. Its held route never enters the
 shipping service. The ordinary packaged-account/rehearsal/restart journey remains
 required, along with matching health source/version, visible UI version and renderer
@@ -162,6 +162,16 @@ route or additional gate. The observer uses one qualified `ctypes.wintypes`
 import. No query suppression, alert dismissal, retry, coverage-floor change or
 production-runtime change implements these corrections; new hosted scans and
 actual frozen acceptance remain required before claiming resolution.
+
+The revised fixture was actually frozen from clean source
+`6a2b4e49ec3fac956bd8b3f29aeb7809e8b17e04` and passed its unchanged real
+held-work journey in 21.0 seconds. The renderer received HTTP 200 before the
+explicit response acknowledgment; finalization completed, the independent child
+handle recorded exit 0 after 16.214 seconds and the owner exited 0 after
+16.337 seconds. Repeated Quit/Close retained the waiting window beyond the old
+15-second boundary. No forced cleanup, installed profile, persisted launch token
+or file-data-to-HTTP request was used. This is new exact-source native fixture
+evidence; prior candidate/run/alert observations retain their original identities.
 
 ## Limits
 
